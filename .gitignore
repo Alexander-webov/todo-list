@@ -1,0 +1,10 @@
+.env.local
+.env*.local
+node_modules/
+.next/
+out/
+.DS_Store
+*.pem
+.env
+.env.example
+supabase

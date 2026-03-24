@@ -1,0 +1,91 @@
+.gate {
+  position: relative;
+  margin-top: -60px;
+  padding-top: 60px;
+}
+
+.blur {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent, var(--bg) 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.box {
+  position: relative;
+  z-index: 2;
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  border-radius: 16px;
+  padding: 36px 32px;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(59,130,246,0.08);
+}
+
+.icon {
+  font-size: 36px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.4px;
+  margin-bottom: 10px;
+}
+
+.sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.perks {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.perk {
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btnPrimary {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 13px 20px;
+  text-decoration: none;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+.btnPrimary:hover {
+  background: var(--accent-hover);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.btnSecondary {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.btnSecondary:hover { color: var(--text); }

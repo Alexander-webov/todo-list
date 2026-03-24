@@ -1,0 +1,78 @@
+'use client';
+import { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import styles from './auth.module.css';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      setError('Неверный email или пароль');
+      setLoading(false);
+    } else {
+      router.push('/');
+      router.refresh();
+    }
+  }
+
+  return (
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <a href="/" className={styles.logo}>⚡ FreelanceHub</a>
+        <h1 className={styles.title}>Вход</h1>
+
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.field}>
+            <label className={styles.label}>Email</label>
+            <input
+              type="email" required
+              className={styles.input}
+              placeholder="your@email.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Пароль</label>
+            <input
+              type="password" required
+              className={styles.input}
+              placeholder="••••••••"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </div>
+
+          {error && <p className={styles.error}>{error}</p>}
+
+          <button type="submit" className={styles.btn} disabled={loading}>
+            {loading ? 'Входим...' : 'Войти'}
+          </button>
+        </form>
+
+        <p className={styles.footer}>
+          Нет аккаунта? <Link href="/register" className={styles.link}>Зарегистрироваться</Link>
+        </p>
+      </div>
+    </div>
+  );
+}
