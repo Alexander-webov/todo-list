@@ -1,16 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
-import { useRouter } from 'next/navigation';
+import { createBrowserClient } from '@supabase/ssr';
 import styles from './Header.module.css';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-
 export function HeaderClient({ user, isPremium, isAdmin }) {
-  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -20,9 +13,12 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
   }, []);
 
   async function logout() {
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
     await supabase.auth.signOut();
-    router.push('/');
-    router.refresh();
+    window.location.href = '/';
   }
 
   return (
@@ -30,34 +26,22 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
       <div className={styles.inner}>
         <a href="/" className={styles.logo}>
           <span className={styles.logoIcon}>⚡</span>
-          <span className={styles.logoText}>
-            Freelance<span className={styles.logoAccent}>Hub</span>
-          </span>
+          <span className={styles.logoText}>Freelance<span className={styles.logoAccent}>Hub</span></span>
         </a>
-
         <div className={styles.liveBadge}>
-          <span className={styles.liveDot} />
-          <span>Live</span>
+          <span className={styles.liveDot} /><span>Live</span>
         </div>
-
         <nav className={styles.nav}>
-          <a href="#" className={styles.navLink}>Проекты</a>
+          <a href="/" className={styles.navLink}>Проекты</a>
           <a href="/pricing" className={styles.navLink}>Тарифы</a>
           {isAdmin && <a href="/admin" className={styles.navLink}>Админ</a>}
         </nav>
-
         <div className={styles.actions}>
           {user ? (
             <>
-              {isPremium && (
-                <span className={styles.premiumBadge}>⚡ Премиум</span>
-              )}
-              <a href="/dashboard" className={styles.btnOutline}>
-                {user.email.split('@')[0]}
-              </a>
-              <button className={styles.btnOutline} onClick={logout}>
-                Выйти
-              </button>
+              {isPremium && <span className={styles.premiumBadge}>⚡ Премиум</span>}
+              <a href="/dashboard" className={styles.btnOutline}>{user.email.split('@')[0]}</a>
+              <button className={styles.btnOutline} onClick={logout}>Выйти</button>
             </>
           ) : (
             <>

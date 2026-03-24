@@ -82,3 +82,39 @@
 .paymentStatus { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
 .statusOk { background: rgba(34,197,94,0.12); color: var(--green); }
 .statusPending { background: var(--border); color: var(--text-dim); }
+
+.tgDesc { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6; }
+
+.tgSteps {
+  font-size: 13px; color: var(--text-muted);
+  padding-left: 18px; margin-bottom: 16px;
+  display: flex; flex-direction: column; gap: 6px;
+  line-height: 1.6;
+}
+
+.tgLink { color: var(--accent); text-decoration: none; font-weight: 600; }
+.tgLink:hover { text-decoration: underline; }
+
+.tgForm { display: flex; gap: 8px; }
+
+.tgInput {
+  flex: 1; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: var(--font); font-size: 14px; padding: 9px 12px;
+  outline: none; transition: border-color 0.15s;
+}
+.tgInput:focus { border-color: var(--accent); }
+.tgInput::placeholder { color: var(--text-dim); }
+
+.tgBtn {
+  font-family: var(--font); font-size: 13px; font-weight: 700;
+  color: #fff; background: var(--accent); border: none;
+  border-radius: var(--radius-sm); padding: 9px 16px;
+  cursor: pointer; white-space: nowrap; transition: background 0.15s;
+}
+.tgBtn:hover { background: var(--accent-hover); }
+.tgBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.tgResult { font-size: 13px; margin-top: 10px; padding: 8px 12px; border-radius: var(--radius-sm); }
+.tgOk { color: var(--green); background: rgba(34,197,94,0.08); }
+.tgErr { color: var(--red); background: rgba(239,68,68,0.08); }

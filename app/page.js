@@ -5,7 +5,7 @@ import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { StatsBar } from '@/components/StatsBar';
 
-export const revalidate = 60;
+export const revalidate = 0; // не кэшируем — нужна свежая сессия
 
 async function getInitialProjects() {
   const db = supabaseAdmin();
@@ -44,9 +44,10 @@ export default async function HomePage() {
     getCurrentUser(),
   ]);
 
-  const isPremium = profile?.is_premium &&
-    profile?.premium_until &&
-    new Date(profile.premium_until) > new Date();
+  // Исправленная проверка — NULL premium_until = бессрочный
+  const isPremium = profile?.is_premium === true && (
+    !profile?.premium_until || new Date(profile.premium_until) > new Date()
+  );
 
   return (
     <div className="app-shell">
