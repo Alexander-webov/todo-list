@@ -53,9 +53,11 @@ export default function LoginPage() {
             {loading ? 'Входим...' : 'Войти'}
           </button>
         </form>
-        <p className={styles.footer}>
-          Нет аккаунта? <Link href="/register" className={styles.link}>Зарегистрироваться</Link>
-        </p>
+        <div className={styles.footer}>
+          <Link href="/forgot-password" className={styles.link}>Забыл пароль?</Link>
+          {' · '}
+          <Link href="/register" className={styles.link}>Зарегистрироваться</Link>
+        </div>
       </div>
     </div>
   );
