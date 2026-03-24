@@ -97,6 +97,8 @@ export function DashboardClient({ profile, email, payments, paymentStatus }) {
             <ol className={styles.tgSteps}>
               <li>Открой  <Link href="https://t.me/freelance_hub_premium_bot" className={styles.textLinkBot} >бота</Link> и отправь /start — он пришлёт твой Chat ID</li>
               <li>Вставь Chat ID ниже и нажми «Подключить»</li>
+              <li>Для смены категории вызовите команды /categories </li>
+              <li>Внимание! Мы рекомендуем оставить все категории  </li>
             </ol>
             <form className={styles.tgForm} onSubmit={connectTelegram}>
               <input type="text" className={styles.tgInput}
