@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styles from './dashboard.module.css';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import Link from 'next/link';
 
 export function DashboardClient({ profile, email, payments, paymentStatus }) {
   const [loading, setLoading] = useState(false);
@@ -94,7 +95,7 @@ export function DashboardClient({ profile, email, payments, paymentStatus }) {
           <div className={styles.card} style={{ padding: '18px' }}>
             <p className={styles.tgDesc}>Получай новые проекты прямо в Telegram.</p>
             <ol className={styles.tgSteps}>
-              <li>Открой бота и отправь /start — он пришлёт твой Chat ID</li>
+              <li>Открой  <Link href="https://t.me/freelance_hub_premium_bot" className={styles.textLinkBot} >бота</Link> и отправь /start — он пришлёт твой Chat ID</li>
               <li>Вставь Chat ID ниже и нажми «Подключить»</li>
             </ol>
             <form className={styles.tgForm} onSubmit={connectTelegram}>
@@ -112,35 +113,38 @@ export function DashboardClient({ profile, email, payments, paymentStatus }) {
             )}
           </div>
         </div>
-      )}
+      )
+      }
 
-      {payments.length > 0 && (
-        <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>История платежей</h2>
-          <div className={styles.card}>
-            {payments.map(p => (
-              <div key={p.id} className={styles.paymentRow}>
-                <div>
-                  <p className={styles.paymentName}>
-                    {p.provider === 'yookassa' ? '🇷🇺 ЮKassa' : '🌍 Stripe'} · {p.days_granted} дней
-                  </p>
-                  <p className={styles.paymentDate}>
-                    {format(new Date(p.created_at), 'd MMM yyyy', { locale: ru })}
-                  </p>
+      {
+        payments.length > 0 && (
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>История платежей</h2>
+            <div className={styles.card}>
+              {payments.map(p => (
+                <div key={p.id} className={styles.paymentRow}>
+                  <div>
+                    <p className={styles.paymentName}>
+                      {p.provider === 'yookassa' ? '🇷🇺 ЮKassa' : '🌍 Stripe'} · {p.days_granted} дней
+                    </p>
+                    <p className={styles.paymentDate}>
+                      {format(new Date(p.created_at), 'd MMM yyyy', { locale: ru })}
+                    </p>
+                  </div>
+                  <div className={styles.paymentRight}>
+                    <span className={styles.paymentAmount}>
+                      {p.currency === 'RUB' ? `${p.amount} ₽` : `$${p.amount}`}
+                    </span>
+                    <span className={`${styles.paymentStatus} ${p.status === 'succeeded' ? styles.statusOk : styles.statusPending}`}>
+                      {p.status === 'succeeded' ? 'Оплачен' : 'Ожидает'}
+                    </span>
+                  </div>
                 </div>
-                <div className={styles.paymentRight}>
-                  <span className={styles.paymentAmount}>
-                    {p.currency === 'RUB' ? `${p.amount} ₽` : `$${p.amount}`}
-                  </span>
-                  <span className={`${styles.paymentStatus} ${p.status === 'succeeded' ? styles.statusOk : styles.statusPending}`}>
-                    {p.status === 'succeeded' ? 'Оплачен' : 'Ожидает'}
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 }

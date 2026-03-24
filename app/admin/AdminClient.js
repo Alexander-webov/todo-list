@@ -11,6 +11,11 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
+  const [webhookUrl, setWebhookUrl] = useState('');
+  const [webhookLoading, setWebhookLoading] = useState(false);
+  const [webhookResult, setWebhookResult] = useState(null);
+  const [webhookInfo, setWebhookInfo] = useState(null);
+
   async function giftPremium(e) {
     e.preventDefault();
     setLoading(true);
@@ -28,6 +33,38 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
       setResult({ error: 'Ошибка соединения' });
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function registerWebhook(e) {
+    e.preventDefault();
+    setWebhookLoading(true);
+    setWebhookResult(null);
+    try {
+      const res = await fetch('/api/admin/telegram-webhook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ webhookUrl: webhookUrl.replace(/\/$/, '') }),
+      });
+      const data = await res.json();
+      setWebhookResult(data);
+    } catch {
+      setWebhookResult({ ok: false, description: 'Ошибка соединения' });
+    } finally {
+      setWebhookLoading(false);
+    }
+  }
+
+  async function checkWebhook() {
+    setWebhookLoading(true);
+    try {
+      const res = await fetch('/api/admin/telegram-webhook');
+      const data = await res.json();
+      setWebhookInfo(data.result || data);
+    } catch {
+      setWebhookInfo({ error: 'Ошибка' });
+    } finally {
+      setWebhookLoading(false);
     }
   }
 
@@ -50,34 +87,25 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
         </div>
       </div>
 
-      {/* Форма подарка */}
+      {/* Подарить премиум */}
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Подарить премиум</h2>
         <form className={styles.giftForm} onSubmit={giftPremium}>
           <div className={styles.formRow}>
-            <input
-              type="email" required placeholder="Email пользователя"
+            <input type="email" required placeholder="Email пользователя"
               className={styles.input} value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-            <input
-              type="number" min="1" max="365" required
-              placeholder="Дней"
+              onChange={e => setEmail(e.target.value)} />
+            <input type="number" min="1" max="3650" required placeholder="Дней"
               className={`${styles.input} ${styles.inputDays}`}
-              value={days}
-              onChange={e => setDays(e.target.value)}
-            />
+              value={days} onChange={e => setDays(e.target.value)} />
           </div>
-          <input
-            type="text" placeholder="Заметка (необязательно)"
+          <input type="text" placeholder="Заметка (необязательно)"
             className={styles.input} value={note}
-            onChange={e => setNote(e.target.value)}
-          />
+            onChange={e => setNote(e.target.value)} />
           <button type="submit" className={styles.giftBtn} disabled={loading}>
             {loading ? 'Дарим...' : '🎁 Подарить'}
           </button>
         </form>
-
         {result && (
           <div className={`${styles.result} ${result.success ? styles.resultOk : styles.resultErr}`}>
             {result.message || result.error}
@@ -88,6 +116,53 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
             )}
           </div>
         )}
+      </div>
+
+      {/* Telegram Webhook */}
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>Telegram Bot Webhook</h2>
+        <div className={styles.giftForm}>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 10 }}>
+            Укажи URL сайта чтобы бот получал сообщения от пользователей (/start → Chat ID).
+          </p>
+          <form onSubmit={registerWebhook} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <input
+              type="url" required
+              placeholder="https://твой-домен.vercel.app"
+              className={styles.input}
+              value={webhookUrl}
+              onChange={e => setWebhookUrl(e.target.value)}
+            />
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button type="submit" className={styles.giftBtn} disabled={webhookLoading}
+                style={{ flex: 1 }}>
+                {webhookLoading ? '...' : '🔗 Зарегистрировать webhook'}
+              </button>
+              <button type="button" className={styles.giftBtn} disabled={webhookLoading}
+                onClick={checkWebhook}
+                style={{ flex: 1, background: 'var(--border)', color: 'var(--text-muted)' }}>
+                📋 Проверить статус
+              </button>
+            </div>
+          </form>
+
+          {webhookResult && (
+            <div className={`${styles.result} ${webhookResult.ok ? styles.resultOk : styles.resultErr}`}>
+              {webhookResult.ok
+                ? `✅ Webhook зарегистрирован: ${webhookResult.registeredUrl}`
+                : `❌ ${webhookResult.description || webhookResult.error}`}
+            </div>
+          )}
+
+          {webhookInfo && (
+            <div className={styles.result} style={{ background: 'var(--border)', color: 'var(--text-muted)' }}>
+              <b>Текущий webhook:</b><br />
+              URL: {webhookInfo.url || 'не задан'}<br />
+              Ожидает сообщений: {webhookInfo.pending_update_count ?? '—'}<br />
+              {webhookInfo.last_error_message && `Последняя ошибка: ${webhookInfo.last_error_message}`}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* История подарков */}
