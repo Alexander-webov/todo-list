@@ -84,7 +84,7 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
           setNewCount(c => c + data.projects.length);
         }
       } catch (_) {}
-    }, 30_000);
+    }, 10_000);
     return () => clearInterval(interval);
   }, [source, category, isPremium]);
 
