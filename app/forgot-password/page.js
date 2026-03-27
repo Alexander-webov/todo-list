@@ -15,7 +15,6 @@ export default function ForgotPasswordPage() {
     setLoading(true);
     setError('');
 
-    // Используем implicit flow чтобы токен пришёл в hash а не code
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -24,8 +23,11 @@ export default function ForgotPasswordPage() {
 
     await supabase.auth.signOut();
 
+    // Явно указываем полный URL до /reset-password
+    const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`;
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo,
     });
 
     if (error) {
@@ -44,7 +46,7 @@ export default function ForgotPasswordPage() {
         <h1 className={styles.title}>Письмо отправлено</h1>
         <p className={styles.subtitle}>
           Проверь почту <strong>{email}</strong> и перейди по ссылке.<br />
-          <small style={{color:'var(--text-dim)'}}>Ссылка действует 1 час. Используй только последнее письмо.</small>
+          <small style={{color:'var(--text-dim)'}}>Используй только последнее письмо — ссылка одноразовая.</small>
         </p>
         <Link href="/login" className={styles.btn} style={{ display: 'block', textAlign: 'center', marginTop: 16 }}>
           Вернуться ко входу
