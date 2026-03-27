@@ -6,10 +6,10 @@ import { ru } from 'date-fns/locale';
 
 const SOURCE_META = {
   freelancer: { name: 'Freelancer.com', color: '#29b2fe', flag: '🌐' },
-  fl: { name: 'FL.ru', color: '#ff6600', flag: '🇷🇺' },
-  kwork: { name: 'Kwork', color: '#ff4d00', flag: '🇷🇺' },
-  freelanceru: { name: 'Freelance.ru', color: '#2ecc71', flag: '🇷🇺' },
-  workzilla: { name: 'Workzilla', color: '#1a7ae0', flag: '🇷🇺' },
+  fl:         { name: 'FL.ru',          color: '#ff6600', flag: '🇷🇺' },
+  kwork:      { name: 'Kwork',          color: '#ff4d00', flag: '🇷🇺' },
+  workzilla:  { name: 'Workzilla',      color: '#1a7ae0', flag: '🇷🇺' },
+  freelanceru:{ name: 'Freelance.ru',   color: '#2ecc71', flag: '🇷🇺' },
 };
 
 function formatBudget(min, max, currency) {
@@ -17,8 +17,8 @@ function formatBudget(min, max, currency) {
   const sym = currency === 'USD' ? '$' : currency === 'EUR' ? '€' : '₽';
   const fmt = (n) => n >= 1000 ? `${(n / 1000).toFixed(0)}k` : n;
   if (min && max) return `${sym}${fmt(min)} – ${sym}${fmt(max)}`;
-  if (min) return `от ${sym}${fmt(min)}`;
-  if (max) return `до ${sym}${fmt(max)}`;
+  if (min)        return `от ${sym}${fmt(min)}`;
+  if (max)        return `до ${sym}${fmt(max)}`;
 }
 
 function timeAgo(dateStr) {
@@ -28,18 +28,18 @@ function timeAgo(dateStr) {
 }
 
 export function ProjectCard({ project, style }) {
-  const [modal, setModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [modal, setModal]       = useState(false);
+  const [loading, setLoading]   = useState(false);
   const [response, setResponse] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied]     = useState(false);
 
-  const meta = SOURCE_META[project.source] || { name: project.source, color: '#6b7a99', flag: '🌐' };
+  const meta   = SOURCE_META[project.source] || { name: project.source, color: '#6b7a99', flag: '🌐' };
   const budget = formatBudget(project.budget_min, project.budget_max, project.currency);
-  const url = project.referral_url || project.url;
+  const url    = project.referral_url || project.url;
 
   async function generateResponse() {
     setModal(true);
-    if (response) return; // уже сгенерировали — не повторяем
+    if (response) return;
     setLoading(true);
     try {
       const res = await fetch('/api/generate-response', {
@@ -49,12 +49,12 @@ export function ProjectCard({ project, style }) {
           title: project.title,
           description: project.description,
           source: project.source,
-          budget: budget,
+          budget,
         }),
       });
       const data = await res.json();
       setResponse(data.text || data.error || 'Ошибка генерации');
-    } catch (e) {
+    } catch {
       setResponse('Ошибка соединения');
     } finally {
       setLoading(false);
@@ -83,7 +83,10 @@ export function ProjectCard({ project, style }) {
           <span className={styles.time}>{timeAgo(project.published_at || project.created_at)}</span>
         </div>
 
-        <h2 className={styles.title}>{project.title}</h2>
+        {/* Заголовок — кликабельный, ведёт на SEO-страницу */}
+        <a href={`/projects/${project.id}`} className={styles.titleLink}>
+          <h2 className={styles.title}>{project.title}</h2>
+        </a>
 
         {project.description && <p className={styles.description}>{project.description}</p>}
 
@@ -101,13 +104,9 @@ export function ProjectCard({ project, style }) {
             : <span className={styles.budgetEmpty}>Бюджет не указан</span>
           }
           <div className={styles.actions}>
-            {/*             <button
-              className={styles.aiBtn}
-              onClick={generateResponse}
-              title="Сгенерировать отклик с помощью AI"
-            >
+            <button className={styles.aiBtn} onClick={generateResponse} title="AI отклик">
               ✦ Отклик
-            </button> */}
+            </button>
             <a href={url} target="_blank" rel="noopener noreferrer"
               className={styles.ctaBtn} style={{ '--source-color': meta.color }}>
               Перейти →
@@ -116,8 +115,7 @@ export function ProjectCard({ project, style }) {
         </div>
       </article>
 
-      {/* Модалка */}
-      {/*       {modal && (
+      {modal && (
         <div className={styles.overlay} onClick={closeModal}>
           <div className={styles.modal}>
             <div className={styles.modalHeader}>
@@ -127,14 +125,12 @@ export function ProjectCard({ project, style }) {
               </div>
               <button className={styles.closeBtn} onClick={() => setModal(false)}>✕</button>
             </div>
-
             <div className={styles.modalProject}>
               <span className={styles.sourceBadge} style={{ '--source-color': meta.color }}>
                 {meta.flag} {meta.name}
               </span>
               <p className={styles.modalProjectTitle}>{project.title}</p>
             </div>
-
             <div className={styles.modalBody}>
               {loading ? (
                 <div className={styles.generating}>
@@ -146,18 +142,14 @@ export function ProjectCard({ project, style }) {
                   <p>Генерирую отклик...</p>
                 </div>
               ) : (
-                <textarea
-                  className={styles.responseText}
-                  value={response}
-                  onChange={(e) => setResponse(e.target.value)}
-                  rows={12}
-                />
+                <textarea className={styles.responseText} value={response}
+                  onChange={(e) => setResponse(e.target.value)} rows={12} />
               )}
             </div>
-
             {!loading && response && (
               <div className={styles.modalFooter}>
-                <button className={styles.regenBtn} onClick={() => { setResponse(''); generateResponse(); }}>
+                <button className={styles.regenBtn}
+                  onClick={() => { setResponse(''); generateResponse(); }}>
                   ↺ Перегенерировать
                 </button>
                 <div className={styles.modalActions}>
@@ -166,14 +158,14 @@ export function ProjectCard({ project, style }) {
                   </button>
                   <a href={url} target="_blank" rel="noopener noreferrer"
                     className={styles.ctaBtn} style={{ '--source-color': meta.color }}>
-                    Перейти к проекту →
+                    Перейти →
                   </a>
                 </div>
               </div>
             )}
           </div>
         </div>
-      )} */}
+      )}
     </>
   );
 }

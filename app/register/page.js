@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import Link from 'next/link';
 import styles from '../login/auth.module.css';
@@ -7,8 +7,16 @@ import styles from '../login/auth.module.css';
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [refCode, setRefCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    // Подхватываем реферальный код из URL ?ref=xxxx
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    if (ref) setRefCode(ref);
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -36,6 +44,15 @@ export default function RegisterPage() {
       return;
     }
 
+    // Применяем реферальный код если есть
+    if (refCode) {
+      await fetch('/api/referral', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: refCode }),
+      });
+    }
+
     window.location.href = '/';
   }
 
@@ -44,6 +61,11 @@ export default function RegisterPage() {
       <div className={styles.card}>
         <a href="/" className={styles.logo}>⚡ FreelanceHub</a>
         <h1 className={styles.title}>Регистрация</h1>
+        {refCode && (
+          <div style={{ background: 'rgba(167,139,250,0.1)', border: '1px solid rgba(167,139,250,0.3)', borderRadius: 8, padding: '10px 14px', marginBottom: 8, fontSize: 13, color: '#a78bfa' }}>
+            🎁 Реферальный код применится автоматически — получишь 3 дня бесплатно!
+          </div>
+        )}
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.field}>
             <label className={styles.label}>Email</label>
@@ -57,6 +79,14 @@ export default function RegisterPage() {
               placeholder="Минимум 6 символов" value={password}
               onChange={e => setPassword(e.target.value)} />
           </div>
+          {!refCode && (
+            <div className={styles.field}>
+              <label className={styles.label}>Реферальный код (если есть)</label>
+              <input type="text" className={styles.input}
+                placeholder="Например: abc12345" value={refCode}
+                onChange={e => setRefCode(e.target.value)} />
+            </div>
+          )}
           {error && <p className={styles.error}>{error}</p>}
           <button type="submit" className={styles.btn} disabled={loading}>
             {loading ? 'Создаём...' : 'Зарегистрироваться'}

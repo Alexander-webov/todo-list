@@ -8,7 +8,7 @@ import styles from './ProjectsFeed.module.css';
 
 const FREE_LIMIT = 5;
 
-export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = false }) {
+export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = false, isLoggedIn = false, trialUsed = false }) {
   const params = useSearchParams();
   const [projects, setProjects]   = useState(initialProjects);
   const [newCount, setNewCount]   = useState(0);
@@ -122,7 +122,7 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
       </div>
 
       {/* Премиум-гейт после 5 проектов */}
-      {showGate && <PremiumGate />}
+      {showGate && <PremiumGate isLoggedIn={isLoggedIn} trialUsed={trialUsed} />}
 
       {/* Лоадер */}
       {isPremium && (

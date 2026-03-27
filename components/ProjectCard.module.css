@@ -140,3 +140,12 @@
   background: color-mix(in srgb, var(--source-color, var(--accent)) 20%, transparent);
   box-shadow: 0 0 12px color-mix(in srgb, var(--source-color, var(--accent)) 30%, transparent);
 }
+
+.titleLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.titleLink:hover .title {
+  color: var(--accent);
+}

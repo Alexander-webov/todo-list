@@ -5,7 +5,7 @@ import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { StatsBar } from '@/components/StatsBar';
 
-export const revalidate = 0; // не кэшируем — нужна свежая сессия
+export const revalidate = 0;
 
 async function getInitialProjects() {
   const db = supabaseAdmin();
@@ -20,20 +20,15 @@ async function getInitialProjects() {
 async function getStats() {
   const db = supabaseAdmin();
   const { count: total } = await db
-    .from('projects')
-    .select('*', { count: 'exact', head: true });
+    .from('projects').select('*', { count: 'exact', head: true });
 
   const sources = ['freelancer', 'fl', 'kwork', 'workzilla', 'freelanceru'];
   const stats = {};
-  await Promise.all(
-    sources.map(async (source) => {
-      const { count } = await db
-        .from('projects')
-        .select('*', { count: 'exact', head: true })
-        .eq('source', source);
-      stats[source] = count || 0;
-    })
-  );
+  await Promise.all(sources.map(async (source) => {
+    const { count } = await db
+      .from('projects').select('*', { count: 'exact', head: true }).eq('source', source);
+    stats[source] = count || 0;
+  }));
   return { stats, total: total || 0 };
 }
 
@@ -44,7 +39,6 @@ export default async function HomePage() {
     getCurrentUser(),
   ]);
 
-  // Исправленная проверка — NULL premium_until = бессрочный
   const isPremium = profile?.is_premium === true && (
     !profile?.premium_until || new Date(profile.premium_until) > new Date()
   );
@@ -59,6 +53,8 @@ export default async function HomePage() {
           initialProjects={projects}
           total={feedTotal}
           isPremium={isPremium}
+          isLoggedIn={!!profile}
+          trialUsed={profile?.trial_used || false}
         />
       </main>
     </div>
