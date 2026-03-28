@@ -47,7 +47,7 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
           ) : (
             <>
               <a href="/login" className={styles.btnOutline}>Войти</a>
-              <a href="/pricing" className={styles.btnPrimary}>Получить доступ</a>
+              <a href="/register" className={styles.btnPrimary}>Получить доступ</a>
             </>
           )}
         </div>

@@ -38,7 +38,7 @@ export default function PricingPage() {
         {[
           { icon: '🚀', text: 'Все проекты без ограничений' },
           { icon: '🔔', text: 'Уведомления в Telegram' },
-          { icon: '✦', text: 'AI-генерация откликов' },
+          { icon: '✦', text: 'AI-генерация откликов (СКОРО)' },
           { icon: '🔍', text: 'Поиск и фильтры по биржам' },
         ].map(f => (
           <div key={f.text} className={styles.feature}>

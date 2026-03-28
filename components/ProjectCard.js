@@ -6,10 +6,10 @@ import { ru } from 'date-fns/locale';
 
 const SOURCE_META = {
   freelancer: { name: 'Freelancer.com', color: '#29b2fe', flag: '🌐' },
-  fl:         { name: 'FL.ru',          color: '#ff6600', flag: '🇷🇺' },
-  kwork:      { name: 'Kwork',          color: '#ff4d00', flag: '🇷🇺' },
-  workzilla:  { name: 'Workzilla',      color: '#1a7ae0', flag: '🇷🇺' },
-  freelanceru:{ name: 'Freelance.ru',   color: '#2ecc71', flag: '🇷🇺' },
+  fl: { name: 'FL.ru', color: '#ff6600', flag: '🇷🇺' },
+  kwork: { name: 'Kwork', color: '#ff4d00', flag: '🇷🇺' },
+  workzilla: { name: 'Workzilla', color: '#1a7ae0', flag: '🇷🇺' },
+  freelanceru: { name: 'Freelance.ru', color: '#2ecc71', flag: '🇷🇺' },
 };
 
 function formatBudget(min, max, currency) {
@@ -17,8 +17,8 @@ function formatBudget(min, max, currency) {
   const sym = currency === 'USD' ? '$' : currency === 'EUR' ? '€' : '₽';
   const fmt = (n) => n >= 1000 ? `${(n / 1000).toFixed(0)}k` : n;
   if (min && max) return `${sym}${fmt(min)} – ${sym}${fmt(max)}`;
-  if (min)        return `от ${sym}${fmt(min)}`;
-  if (max)        return `до ${sym}${fmt(max)}`;
+  if (min) return `от ${sym}${fmt(min)}`;
+  if (max) return `до ${sym}${fmt(max)}`;
 }
 
 function timeAgo(dateStr) {
@@ -28,14 +28,14 @@ function timeAgo(dateStr) {
 }
 
 export function ProjectCard({ project, style }) {
-  const [modal, setModal]       = useState(false);
-  const [loading, setLoading]   = useState(false);
+  const [modal, setModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState('');
-  const [copied, setCopied]     = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const meta   = SOURCE_META[project.source] || { name: project.source, color: '#6b7a99', flag: '🌐' };
+  const meta = SOURCE_META[project.source] || { name: project.source, color: '#6b7a99', flag: '🌐' };
   const budget = formatBudget(project.budget_min, project.budget_max, project.currency);
-  const url    = project.referral_url || project.url;
+  const url = project.referral_url || project.url;
 
   async function generateResponse() {
     setModal(true);
@@ -104,9 +104,9 @@ export function ProjectCard({ project, style }) {
             : <span className={styles.budgetEmpty}>Бюджет не указан</span>
           }
           <div className={styles.actions}>
-            <button className={styles.aiBtn} onClick={generateResponse} title="AI отклик">
+            {/*             <button className={styles.aiBtn} onClick={generateResponse} title="AI отклик">
               ✦ Отклик
-            </button>
+            </button> */}
             <a href={url} target="_blank" rel="noopener noreferrer"
               className={styles.ctaBtn} style={{ '--source-color': meta.color }}>
               Перейти →
@@ -135,7 +135,7 @@ export function ProjectCard({ project, style }) {
               {loading ? (
                 <div className={styles.generating}>
                   <div className={styles.genDots}>
-                    {[0,1,2].map(i => (
+                    {[0, 1, 2].map(i => (
                       <span key={i} className={styles.genDot} style={{ animationDelay: `${i * 0.2}s` }} />
                     ))}
                   </div>
