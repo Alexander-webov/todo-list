@@ -16,11 +16,17 @@ export const metadata = {
 };
 
 const YANDEX_METRIKA_ID = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID;
+const YANDEX_VERIFICATION = process.env.NEXT_PUBLIC_YANDEX_VERIFICATION;
 
 export default function RootLayout({ children }) {
   return (
     <html lang="ru">
       <head>
+        {/* Подтверждение Яндекс Вебмастер */}
+        {YANDEX_VERIFICATION && (
+          <meta name="yandex-verification" content={YANDEX_VERIFICATION} />
+        )}
+
         {/* Яндекс Метрика */}
         {YANDEX_METRIKA_ID && (
           <Script id="yandex-metrika" strategy="afterInteractive">
@@ -41,7 +47,6 @@ export default function RootLayout({ children }) {
         )}
       </head>
       <body>
-        {/* Яндекс Метрика noscript */}
         {YANDEX_METRIKA_ID && (
           <noscript>
             <div>
