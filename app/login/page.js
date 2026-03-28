@@ -33,7 +33,7 @@ export default function LoginPage() {
   return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <a href="/" className={styles.logo}>⚡ FreelanceHub</a>
+        <a href="/" className={styles.logo}>⚡ allFreelancersHere</a>
         <h1 className={styles.title}>Вход</h1>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.field}>

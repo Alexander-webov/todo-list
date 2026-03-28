@@ -59,7 +59,7 @@ export default function RegisterPage() {
   return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <a href="/" className={styles.logo}>⚡ FreelanceHub</a>
+        <a href="/" className={styles.logo}>⚡ allFreelancersHere</a>
         <h1 className={styles.title}>Регистрация</h1>
         {refCode && (
           <div style={{ background: 'rgba(167,139,250,0.1)', border: '1px solid rgba(167,139,250,0.3)', borderRadius: 8, padding: '10px 14px', marginBottom: 8, fontSize: 13, color: '#a78bfa' }}>

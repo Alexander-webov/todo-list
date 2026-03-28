@@ -2,14 +2,14 @@ import './globals.css';
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'FreelanceHub — все фриланс-проекты в одном месте',
+  title: 'allFreelancersHere — все фриланс-проекты в одном месте',
   description: 'Агрегатор проектов с FL.ru, Kwork, Freelancer.com, Workzilla и Freelance.ru. Обновляется каждые 5 минут. Уведомления в Telegram.',
   keywords: 'фриланс, фриланс проекты, удалённая работа, FL.ru, Kwork, Freelancer',
   openGraph: {
-    title: 'FreelanceHub — все фриланс-проекты в одном месте',
+    title: 'allFreelancersHere — все фриланс-проекты в одном месте',
     description: 'Агрегатор проектов с 5 бирж. Обновляется каждые 5 минут.',
     url: 'https://allfreelancershere.ru',
-    siteName: 'FreelanceHub',
+    siteName: 'allFreelancersHere',
     locale: 'ru_RU',
     type: 'website',
   },

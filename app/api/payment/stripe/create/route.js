@@ -21,7 +21,7 @@ export async function POST() {
           currency: 'usd',
           unit_amount: 500, // $5.00 в центах
           product_data: {
-            name: 'FreelanceHub Premium',
+            name: 'allFreelancersHere Premium',
             description: 'Доступ ко всем проектам на 30 дней',
           },
         },

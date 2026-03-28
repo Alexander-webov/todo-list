@@ -152,7 +152,7 @@ export async function POST(request) {
       await sendTelegramMessage(
         chatId,
         `👋 Привет, <b>${firstName}</b>!\n\n` +
-        `Я бот <b>FreelanceHub</b> — агрегатора фриланс-проектов.\n\n` +
+        `Я бот <b>allFreelancersHere</b> — агрегатора фриланс-проектов.\n\n` +
         `🔑 Твой <b>Chat ID</b>: <code>${chatId}</code>\n\n` +
         `Скопируй этот ID и вставь в <b>личном кабинете</b> на сайте.\n\n` +
         `После подключения используй /categories чтобы выбрать интересующие категории.`
@@ -185,7 +185,7 @@ export async function POST(request) {
         await sendTelegramMessage(
           chatId,
           '⚡ <b>Эта функция доступна только для Премиум пользователей.</b>\n\n' +
-          'Оформи подписку на сайте FreelanceHub.'
+          'Оформи подписку на сайте allFreelancersHere.'
         );
         return NextResponse.json({ ok: true });
       }

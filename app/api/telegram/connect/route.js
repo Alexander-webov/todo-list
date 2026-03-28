@@ -22,7 +22,7 @@ export async function POST(request) {
 
   await sendTelegramMessage(
     chat_id,
-    '✅ <b>Telegram подключён к FreelanceHub!</b>\n\n' +
+    '✅ <b>Telegram подключён к allFreelancersHere!</b>\n\n' +
     'Теперь я буду присылать тебе новые проекты сразу как они появятся на биржах.\n\n' +
     '🔔 Уведомления активны пока действует Премиум.'
   );

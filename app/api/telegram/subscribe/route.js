@@ -48,7 +48,7 @@ export async function webhook(request) {
     await sendTelegramMessage(
       chatId,
       '👋 <b>Привет!</b>\n\n' +
-      'Я бот FreelanceHub — агрегатора фриланс-проектов.\n\n' +
+      'Я бот allFreelancersHere — агрегатора фриланс-проектов.\n\n' +
       '🔔 Перейди на сайт и подключи уведомления в настройках профиля.\n\n' +
       'Твой Chat ID: <code>' + chatId + '</code>'
     );

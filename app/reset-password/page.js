@@ -87,7 +87,7 @@ export default function ResetPasswordPage() {
   if (checking) return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <a href="/" className={styles.logo}>⚡ FreelanceHub</a>
+        <a href="/" className={styles.logo}>⚡ allFreelancersHere</a>
         <div className={styles.successIcon}>⏳</div>
         <h1 className={styles.title}>Проверяем ссылку...</h1>
       </div>
@@ -97,7 +97,7 @@ export default function ResetPasswordPage() {
   if (!ready) return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <a href="/" className={styles.logo}>⚡ FreelanceHub</a>
+        <a href="/" className={styles.logo}>⚡ allFreelancersHere</a>
         <div className={styles.successIcon}>❌</div>
         <h1 className={styles.title}>Ссылка недействительна</h1>
         <p className={styles.subtitle}>{error}</p>
@@ -112,7 +112,7 @@ export default function ResetPasswordPage() {
   return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <a href="/" className={styles.logo}>⚡ FreelanceHub</a>
+        <a href="/" className={styles.logo}>⚡ allFreelancersHere</a>
         <h1 className={styles.title}>Новый пароль</h1>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.field}>

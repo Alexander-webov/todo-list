@@ -35,7 +35,7 @@ export async function POST() {
           return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard?payment=success`,
         },
         capture: true,
-        description: 'FreelanceHub — Премиум подписка 30 дней',
+        description: 'allFreelancersHere — Премиум подписка 30 дней',
         metadata: { user_id: user.id },
       }),
     });

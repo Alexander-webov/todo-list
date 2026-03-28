@@ -41,12 +41,12 @@ export default function ForgotPasswordPage() {
   if (done) return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <a href="/" className={styles.logo}>⚡ FreelanceHub</a>
+        <a href="/" className={styles.logo}>⚡ allFreelancersHere</a>
         <div className={styles.successIcon}>✉️</div>
         <h1 className={styles.title}>Письмо отправлено</h1>
         <p className={styles.subtitle}>
           Проверь почту <strong>{email}</strong> и перейди по ссылке.<br />
-          <small style={{color:'var(--text-dim)'}}>Используй только последнее письмо — ссылка одноразовая.</small>
+          <small style={{ color: 'var(--text-dim)' }}>Используй только последнее письмо — ссылка одноразовая.</small>
         </p>
         <Link href="/login" className={styles.btn} style={{ display: 'block', textAlign: 'center', marginTop: 16 }}>
           Вернуться ко входу
@@ -58,7 +58,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <a href="/" className={styles.logo}>⚡ FreelanceHub</a>
+        <a href="/" className={styles.logo}>⚡ allFreelancersHere</a>
         <h1 className={styles.title}>Сброс пароля</h1>
         <p className={styles.subtitle}>Введи email — пришлём ссылку для сброса.</p>
         <form className={styles.form} onSubmit={handleSubmit}>

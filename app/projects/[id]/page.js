@@ -9,7 +9,7 @@ export async function generateMetadata({ params }) {
   const { data } = await db.from('projects').select('title, description').eq('id', params.id).single();
   if (!data) return { title: 'Проект не найден' };
   return {
-    title: `${data.title} — FreelanceHub`,
+    title: `${data.title} — allFreelancersHere`,
     description: data.description?.slice(0, 160),
   };
 }

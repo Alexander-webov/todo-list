@@ -2,7 +2,7 @@ import { PARTNER_LINKS } from '@/lib/referrals';
 import styles from './partners.module.css';
 
 export const metadata = {
-  title: 'Зарегистрируйся на фриланс-биржах — FreelanceHub',
+  title: 'Зарегистрируйся на фриланс-биржах — allFreelancersHere',
   description: 'Все популярные фриланс-биржи в одном месте. Регистрируйся и начинай зарабатывать.',
 };
 
@@ -14,7 +14,7 @@ export default function PartnersPage() {
       <div className={styles.hero}>
         <h1 className={styles.title}>Зарегистрируйся на всех биржах</h1>
         <p className={styles.sub}>
-          Больше бирж = больше заказов. Зарегистрируйся один раз — и получай проекты со всех площадок прямо в FreelanceHub.
+          Больше бирж = больше заказов. Зарегистрируйся один раз — и получай проекты со всех площадок прямо в allFreelancersHere.
         </p>
       </div>
 
@@ -37,8 +37,8 @@ export default function PartnersPage() {
 
       <div className={styles.promo}>
         <h2>Уже зарегистрирован на биржах?</h2>
-        <p>Подключи FreelanceHub и получай все проекты в одном месте + уведомления в Telegram.</p>
-        <a href="/pricing" className={styles.promoBtn}>Попробовать FreelanceHub</a>
+        <p>Подключи allFreelancersHere и получай все проекты в одном месте + уведомления в Telegram.</p>
+        <a href="/pricing" className={styles.promoBtn}>Попробовать allFreelancersHere</a>
       </div>
     </div>
   );
