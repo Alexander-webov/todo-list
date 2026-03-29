@@ -149,8 +149,8 @@ export default function FaqPage() {
       </div>
 
       <div className={styles.contact}>
-        <p>Не нашёл ответ на свой вопрос?</p>
-        <a href="mailto:support@allfreelancershere.ru" className={styles.contactBtn}>
+        <p>Не нашёл ответ на свой вопрос? (programm.aleks@gmail.com)</p>
+        <a href="mailto:programm.aleks@gmail.com" className={styles.contactBtn}>
           Написать в поддержку
         </a>
       </div>

@@ -11,7 +11,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.43.5",
-    "axios": "^1.7.2",
+    "axios": "^1.14.0",
     "cheerio": "^1.0.0-rc.12",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
