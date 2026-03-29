@@ -26,7 +26,7 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
       <div className={styles.inner}>
         <a href="/" className={styles.logo}>
           <span className={styles.logoIcon}>⚡</span>
-          <span className={styles.logoText}>AllFreelancers<span className={styles.logoAccent}>Here</span></span>
+          <span className={styles.logoText}>Freelance<span className={styles.logoAccent}>Hub</span></span>
         </a>
         <div className={styles.liveBadge}>
           <span className={styles.liveDot} /><span>Live</span>
@@ -35,6 +35,7 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
           <a href="/" className={styles.navLink}>Проекты</a>
           <a href="/pricing" className={styles.navLink}>Тарифы</a>
           <a href="/partners" className={styles.navLink}>Биржи</a>
+          <a href="/faq" className={styles.navLink}>FAQ</a>
           {isAdmin && <a href="/admin" className={styles.navLink}>Админ</a>}
         </nav>
         <div className={styles.actions}>
@@ -47,7 +48,7 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
           ) : (
             <>
               <a href="/login" className={styles.btnOutline}>Войти</a>
-              <a href="/register" className={styles.btnPrimary}>Получить доступ</a>
+              <a href="/pricing" className={styles.btnPrimary}>Получить доступ</a>
             </>
           )}
         </div>

@@ -26,7 +26,7 @@ export default function PartnersPage() {
               <span className={styles.name}>{p.name}</span>
             </div>
             <p className={styles.desc}>{p.description}</p>
-            <p className={styles.commission}>💰 {p.commission}</p>
+
             <a href={p.registerUrl} target="_blank" rel="noopener noreferrer"
               className={styles.btn} style={{ background: p.color }}>
               Зарегистрироваться на {p.name} →
@@ -37,8 +37,8 @@ export default function PartnersPage() {
 
       <div className={styles.promo}>
         <h2>Уже зарегистрирован на биржах?</h2>
-        <p>Подключи allFreelancersHere и получай все проекты в одном месте + уведомления в Telegram.</p>
-        <a href="/pricing" className={styles.promoBtn}>Попробовать allFreelancersHere</a>
+        <p>Подключи FreelancersHere и получай все проекты в одном месте + уведомления в Telegram.</p>
+        <a href="/pricing" className={styles.promoBtn}>Попробовать FreelancersHere</a>
       </div>
     </div>
   );

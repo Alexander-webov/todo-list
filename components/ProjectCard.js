@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styles from './ProjectCard.module.css';
 import { formatDistanceToNow } from 'date-fns';
 import { ru } from 'date-fns/locale';
+import { scoreProject } from '@/lib/scoring';
 
 const SOURCE_META = {
   freelancer: { name: 'Freelancer.com', color: '#29b2fe', flag: '🌐' },
@@ -16,7 +17,7 @@ function formatBudget(min, max, currency) {
   if (!min && !max) return null;
   const sym = currency === 'USD' ? '$' : currency === 'EUR' ? '€' : '₽';
   const fmt = (n) => n >= 1000 ? `${(n / 1000).toFixed(0)}k` : n;
-  if (min && max) return `${sym}${fmt(min)} – ${sym}${fmt(max)}`;
+  if (min && max) return `${sym}${fmt(min)} — ${sym}${fmt(max)}`;
   if (min) return `от ${sym}${fmt(min)}`;
   if (max) return `до ${sym}${fmt(max)}`;
 }
@@ -36,6 +37,7 @@ export function ProjectCard({ project, style }) {
   const meta = SOURCE_META[project.source] || { name: project.source, color: '#6b7a99', flag: '🌐' };
   const budget = formatBudget(project.budget_min, project.budget_max, project.currency);
   const url = project.referral_url || project.url;
+  const scoring = scoreProject(project);
 
   async function generateResponse() {
     setModal(true);
@@ -79,16 +81,31 @@ export function ProjectCard({ project, style }) {
             <span>{meta.flag}</span>
             <span>{meta.name}</span>
           </span>
-          {project.category && <span className={styles.categoryBadge}>{project.category}</span>}
-          <span className={styles.time}>{timeAgo(project.published_at || project.created_at)}</span>
+          {project.category && (
+            <span className={styles.categoryBadge}>{project.category}</span>
+          )}
+
+          {/* Скоринг-бейдж */}
+          <span className={styles.scoreBadge} style={{
+            color: scoring.color,
+            background: scoring.bg,
+            border: `1px solid ${scoring.color}30`,
+          }}>
+            {scoring.label}
+          </span>
+
+          <span className={styles.time}>
+            {timeAgo(project.published_at || project.created_at)}
+          </span>
         </div>
 
-        {/* Заголовок — кликабельный, ведёт на SEO-страницу */}
         <a href={`/projects/${project.id}`} className={styles.titleLink}>
           <h2 className={styles.title}>{project.title}</h2>
         </a>
 
-        {project.description && <p className={styles.description}>{project.description}</p>}
+        {project.description && (
+          <p className={styles.description}>{project.description}</p>
+        )}
 
         {project.tags?.length > 0 && (
           <div className={styles.tags}>
@@ -104,9 +121,9 @@ export function ProjectCard({ project, style }) {
             : <span className={styles.budgetEmpty}>Бюджет не указан</span>
           }
           <div className={styles.actions}>
-            {/*             <button className={styles.aiBtn} onClick={generateResponse} title="AI отклик">
-              ✦ Отклик
-            </button> */}
+            <button className={styles.aiBtn} onClick={generateResponse} title="AI отклик">
+              ✦ AI Отклик
+            </button>
             <a href={url} target="_blank" rel="noopener noreferrer"
               className={styles.ctaBtn} style={{ '--source-color': meta.color }}>
               Перейти →
@@ -136,14 +153,17 @@ export function ProjectCard({ project, style }) {
                 <div className={styles.generating}>
                   <div className={styles.genDots}>
                     {[0, 1, 2].map(i => (
-                      <span key={i} className={styles.genDot} style={{ animationDelay: `${i * 0.2}s` }} />
+                      <span key={i} className={styles.genDot}
+                        style={{ animationDelay: `${i * 0.2}s` }} />
                     ))}
                   </div>
                   <p>Генерирую отклик...</p>
                 </div>
               ) : (
-                <textarea className={styles.responseText} value={response}
-                  onChange={(e) => setResponse(e.target.value)} rows={12} />
+                <textarea className={styles.responseText}
+                  value={response}
+                  onChange={(e) => setResponse(e.target.value)}
+                  rows={12} />
               )}
             </div>
             {!loading && response && (
