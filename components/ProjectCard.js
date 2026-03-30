@@ -6,11 +6,12 @@ import { ru } from 'date-fns/locale';
 import { scoreProject } from '@/lib/scoring';
 
 const SOURCE_META = {
-  freelancer: { name: 'Freelancer.com', color: '#29b2fe', flag: '🌐' },
-  fl: { name: 'FL.ru', color: '#ff6600', flag: '🇷🇺' },
-  kwork: { name: 'Kwork', color: '#ff4d00', flag: '🇷🇺' },
-  workzilla: { name: 'Workzilla', color: '#1a7ae0', flag: '🇷🇺' },
-  freelanceru: { name: 'Freelance.ru', color: '#2ecc71', flag: '🇷🇺' },
+  freelancer:  { name: 'Freelancer.com', color: '#29b2fe', flag: '🌐' },
+  fl:          { name: 'FL.ru',          color: '#ff6600', flag: '🇷🇺' },
+  kwork:       { name: 'Kwork',          color: '#ff4d00', flag: '🇷🇺' },
+  workzilla:   { name: 'Workzilla',      color: '#1a7ae0', flag: '🇷🇺' },
+  freelanceru: { name: 'Freelance.ru',   color: '#2ecc71', flag: '🇷🇺' },
+  youdo:       { name: 'Youdo',          color: '#f5a623', flag: '🇷🇺' },
 };
 
 function formatBudget(min, max, currency) {
@@ -29,16 +30,16 @@ function timeAgo(dateStr) {
 }
 
 export function ProjectCard({ project, style }) {
-  const [modal, setModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [modal, setModal]       = useState(false);
+  const [loading, setLoading]   = useState(false);
   const [response, setResponse] = useState('');
-  const [copied, setCopied] = useState(false);
-  const [sending, setSending] = useState(false);
+  const [copied, setCopied]     = useState(false);
+  const [sending, setSending]   = useState(false);
   const [sendDone, setSendDone] = useState(false);
 
-  const meta = SOURCE_META[project.source] || { name: project.source, color: '#6b7a99', flag: '🌐' };
-  const budget = formatBudget(project.budget_min, project.budget_max, project.currency);
-  const url = project.referral_url || project.url;
+  const meta    = SOURCE_META[project.source] || { name: project.source, color: '#6b7a99', flag: '🌐' };
+  const budget  = formatBudget(project.budget_min, project.budget_max, project.currency);
+  const url     = project.referral_url || project.url;
   const scoring = scoreProject(project);
 
   async function generateResponse() {
@@ -77,7 +78,7 @@ export function ProjectCard({ project, style }) {
     setSending(true);
     try {
       await navigator.clipboard.writeText(response);
-    } catch (_) { }
+    } catch (_) {}
 
     setSendDone(true);
     setSending(false);
@@ -138,7 +139,7 @@ export function ProjectCard({ project, style }) {
           }
           <div className={styles.actions}>
             <button className={styles.aiBtn} onClick={generateResponse}>
-              ✦ AI Отклик
+              ✦ Отклик
             </button>
             <a href={url} target="_blank" rel="noopener noreferrer"
               className={styles.ctaBtn} style={{ '--source-color': meta.color }}>
@@ -170,7 +171,7 @@ export function ProjectCard({ project, style }) {
               {loading ? (
                 <div className={styles.generating}>
                   <div className={styles.genDots}>
-                    {[0, 1, 2].map(i => (
+                    {[0,1,2].map(i => (
                       <span key={i} className={styles.genDot}
                         style={{ animationDelay: `${i * 0.2}s` }} />
                     ))}
