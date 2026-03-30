@@ -4,7 +4,7 @@ import { ProjectsFeed } from '@/components/ProjectsFeed';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { StatsBar } from '@/components/StatsBar';
-
+import { HeroBlock } from '@/components/HeroBlock';
 export const revalidate = 0;
 
 async function getInitialProjects() {
@@ -47,6 +47,10 @@ export default async function HomePage() {
     <div className="app-shell">
       <Header />
       <StatsBar stats={stats} total={total} />
+
+
+
+      <HeroBlock isLoggedIn={!!profile} />
       <main className="main-layout">
         <Sidebar />
         <ProjectsFeed
