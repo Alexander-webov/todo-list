@@ -39,7 +39,7 @@ export default function RegisterPage() {
 
     const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
     if (loginError) {
-      setError('Аккаунт создан! Войди через форму входа.');
+      setError('Подтверди email — заказы уже ждут тебя.');
       setLoading(false);
       return;
     }
