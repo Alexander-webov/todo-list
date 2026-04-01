@@ -53,7 +53,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${data.title} | ${source}${budget}`,
-    description: `${data.description?.slice(0, 150) || data.title} — заказ на ${source}. Найдено через FreelanceHub — агрегатор фриланс-проектов.`,
+    description: `${data.description?.slice(0, 150) || data.title} — заказ на ${source}. Найдено через FreelanceHere — агрегатор фриланс-проектов.`,
     openGraph: {
       title: data.title,
       description: data.description?.slice(0, 150),

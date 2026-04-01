@@ -65,7 +65,7 @@ export async function generateMetadata({ params }) {
   const cat = CATEGORIES[params.slug];
   if (!cat) return { title: 'Не найдено' };
   return {
-    title: `${cat.name} — фриланс заказы | FreelanceHub`,
+    title: `${cat.name} — фриланс заказы | FreelanceHere`,
     description: cat.description,
     keywords: cat.keywords,
   };

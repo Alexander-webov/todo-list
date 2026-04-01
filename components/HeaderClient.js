@@ -26,7 +26,7 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
       <div className={styles.inner}>
         <a href="/" className={styles.logo}>
           <span className={styles.logoIcon}>⚡</span>
-          <span className={styles.logoText}>Freelance<span className={styles.logoAccent}>Hub</span></span>
+          <span className={styles.logoText}>Freelance<span className={styles.logoAccent}>Here</span></span>
         </a>
         <div className={styles.liveBadge}>
           <span className={styles.liveDot} /><span>Live</span>

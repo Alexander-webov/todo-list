@@ -1,4 +1,4 @@
-# ⚡ FreelanceHub — Агрегатор фриланс-проектов
+# ⚡ FreelanceHere — Агрегатор фриланс-проектов
 
 Агрегирует проекты с **Upwork, Freelancer.com, FL.ru, Habr Freelance и Kwork** в реальном времени. Уведомления в Telegram для премиум-пользователей.
 
@@ -29,16 +29,16 @@ npm install
 cp .env.example .env.local
 ```
 
-| Переменная | Где взять |
-|------------|-----------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Settings → API |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Settings → API |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API |
-| `TELEGRAM_BOT_TOKEN` | [@BotFather](https://t.me/BotFather) в Telegram |
-| `CRON_SECRET` | Любая случайная строка (генератор паролей) |
-| `UPWORK_REFERRAL` | Твой реферальный токен Upwork (опционально) |
-| `FREELANCER_REFERRAL` | Твой реферальный токен Freelancer (опционально) |
-| `KWORK_REFERRAL` | Твой реферальный токен Kwork (опционально) |
+| Переменная                      | Где взять                                       |
+| ------------------------------- | ----------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Supabase → Settings → API                       |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Settings → API                       |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Supabase → Settings → API                       |
+| `TELEGRAM_BOT_TOKEN`            | [@BotFather](https://t.me/BotFather) в Telegram |
+| `CRON_SECRET`                   | Любая случайная строка (генератор паролей)      |
+| `UPWORK_REFERRAL`               | Твой реферальный токен Upwork (опционально)     |
+| `FREELANCER_REFERRAL`           | Твой реферальный токен Freelancer (опционально) |
+| `KWORK_REFERRAL`                | Твой реферальный токен Kwork (опционально)      |
 
 ### 4. Запуск в разработке
 
@@ -71,11 +71,13 @@ Vercel автоматически подхватит `vercel.json` и запус
 ## 🤖 Настройка Telegram-бота
 
 ### Создание бота
+
 1. Открой [@BotFather](https://t.me/BotFather)
 2. `/newbot` → придумай имя → получи токен
 3. Добавь токен в `TELEGRAM_BOT_TOKEN`
 
 ### Регистрация webhook
+
 После деплоя вызови один раз:
 
 ```bash
@@ -83,6 +85,7 @@ curl "https://api.telegram.org/bot<ТВОЙ_ТОКЕН>/setWebhook?url=https://<
 ```
 
 ### Как пользователи подключают уведомления
+
 1. Пользователь открывает бота, отправляет `/start`
 2. Бот присылает **Chat ID**
 3. Пользователь вставляет Chat ID на сайте в настройках профиля
@@ -154,6 +157,7 @@ freelance-aggregator/
 Vercel автоматически добавляет заголовок `Authorization: Bearer <CRON_SECRET>` при вызове cron. Эндпоинт проверяет этот заголовок и отклоняет неавторизованные запросы.
 
 Для ручного запуска:
+
 ```bash
 curl -H "Authorization: Bearer <CRON_SECRET>" https://<ДОМЕН>/api/cron/parse
 ```

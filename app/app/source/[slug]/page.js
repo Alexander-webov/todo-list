@@ -58,7 +58,7 @@ export async function generateMetadata({ params }) {
   const source = SOURCES[params.slug];
   if (!source) return { title: 'Не найдено' };
   return {
-    title: `${source.name} — все заказы | FreelanceHub`,
+    title: `${source.name} — все заказы | FreelanceHere`,
     description: source.description,
     keywords: source.keywords,
   };

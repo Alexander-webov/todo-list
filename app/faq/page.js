@@ -1,8 +1,8 @@
 import styles from './faq.module.css';
 
 export const metadata = {
-  title: 'FAQ — Часто задаваемые вопросы | FreelanceHub',
-  description: 'Ответы на частые вопросы о FreelanceHub — агрегаторе фриланс-проектов',
+  title: 'FAQ — Часто задаваемые вопросы | FreelanceHere',
+  description: 'Ответы на частые вопросы о FreelanceHere — агрегаторе фриланс-проектов',
 };
 
 const faqs = [
@@ -125,7 +125,7 @@ export default function FaqPage() {
 
       <div className={styles.hero}>
         <h1 className={styles.title}>Часто задаваемые вопросы</h1>
-        <p className={styles.sub}>Всё что нужно знать о FreelanceHub</p>
+        <p className={styles.sub}>Всё что нужно знать о FreelanceHere</p>
       </div>
 
       <div className={styles.content}>

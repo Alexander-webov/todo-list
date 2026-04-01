@@ -6,8 +6,8 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'FreelanceHub — все фриланс-заказы в одном месте',
-    template: '%s | FreelanceHub',
+    default: 'FreelanceHere — все фриланс-заказы в одном месте',
+    template: '%s | FreelanceHere',
   },
   description: 'Агрегатор фриланс-проектов с FL.ru, Kwork, Freelancer.com, Workzilla и Freelance.ru. Обновляется каждую минуту. Уведомления в Telegram. Первые 3 дня бесплатно.',
   keywords: [
@@ -15,9 +15,9 @@ export const metadata = {
     'FL.ru заказы', 'Kwork заказы', 'удалённая работа', 'фриланс биржа',
     'заказы для фрилансеров', 'фриланс проекты', 'найти клиентов фриланс',
   ],
-  authors: [{ name: 'FreelanceHub' }],
-  creator: 'FreelanceHub',
-  publisher: 'FreelanceHub',
+  authors: [{ name: 'FreelanceHere' }],
+  creator: 'FreelanceHere',
+  publisher: 'FreelanceHere',
   robots: {
     index: true,
     follow: true,
@@ -27,14 +27,14 @@ export const metadata = {
     type: 'website',
     locale: 'ru_RU',
     url: SITE_URL,
-    siteName: 'FreelanceHub',
-    title: 'FreelanceHub — все фриланс-заказы в одном месте',
+    siteName: 'FreelanceHere',
+    title: 'FreelanceHere — все фриланс-заказы в одном месте',
     description: 'FL.ru + Kwork + Freelancer.com + Workzilla + Freelance.ru + Youdo. Обновляется каждые минуту.',
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'FreelanceHub' }],
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'FreelanceHere' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FreelanceHub — все фриланс-заказы в одном месте',
+    title: 'FreelanceHere — все фриланс-заказы в одном месте',
     description: 'FL.ru + Kwork + Freelancer.com + Workzilla + Freelance.ru + Youdo',
     images: [`${SITE_URL}/og-image.png`],
   },
@@ -53,7 +53,7 @@ const YANDEX_METRIKA_ID = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID;
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'FreelanceHub',
+  name: 'FreelanceHere',
   url: SITE_URL,
   description: 'Агрегатор фриланс-проектов с FL.ru, Kwork, Freelancer.com, Workzilla и Freelance.ru',
   potentialAction: {
@@ -66,7 +66,7 @@ const websiteSchema = {
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'FreelanceHub',
+  name: 'FreelanceHere',
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   sameAs: [],

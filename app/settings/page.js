@@ -4,7 +4,7 @@ import { Header } from '@/components/Header';
 import { redirect } from 'next/navigation';
 
 export const metadata = {
-  title: 'Настройка профиля | FreelanceHub',
+  title: 'Настройка профиля | FreelanceHere',
 };
 
 export default async function SettingsPage() {

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 
 export const metadata = {
-  title: 'Блог о фрилансе — советы и статьи | FreelanceHub',
+  title: 'Блог о фрилансе — советы и статьи | FreelanceHere',
   description: 'Полезные статьи о фрилансе: как найти заказы, как писать отклики, как зарабатывать больше. Советы для начинающих и опытных фрилансеров.',
   keywords: 'блог о фрилансе, советы фрилансеру, статьи о фрилансе',
 };
