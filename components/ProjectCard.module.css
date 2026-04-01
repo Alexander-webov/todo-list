@@ -14,7 +14,9 @@
 .card::before {
   content: '';
   position: absolute;
-  left: 0; top: 0; bottom: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
   width: 3px;
   background: var(--border);
   transition: background 0.18s;
@@ -23,7 +25,7 @@
 .card:hover {
   border-color: var(--border-bright);
   background: var(--bg-card-hover);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .card:hover::before {
@@ -98,7 +100,7 @@
 .tag {
   font-size: 11px;
   color: var(--text-dim);
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border);
   padding: 2px 8px;
   border-radius: 4px;
@@ -146,6 +148,7 @@
   color: inherit;
   display: block;
 }
+
 .titleLink:hover .title {
   color: var(--accent);
 }
@@ -163,6 +166,7 @@
   color: inherit;
   display: block;
 }
+
 .titleLink:hover .title {
   color: var(--accent);
 }
@@ -172,6 +176,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
+
+}
+
+.actions button.translateBtn {
+  color: aliceblue;
 }
 
 .aiBtn {
@@ -179,24 +188,25 @@
   font-size: 12px;
   font-weight: 700;
   color: #a78bfa;
-  background: rgba(167,139,250,0.1);
-  border: 1px solid rgba(167,139,250,0.25);
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.25);
   padding: 7px 14px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background 0.15s, box-shadow 0.15s;
   letter-spacing: 0.2px;
 }
+
 .aiBtn:hover {
-  background: rgba(167,139,250,0.18);
-  box-shadow: 0 0 14px rgba(167,139,250,0.2);
+  background: rgba(167, 139, 250, 0.18);
+  box-shadow: 0 0 14px rgba(167, 139, 250, 0.2);
 }
 
 /* Модалка */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(6px);
   z-index: 1000;
   display: flex;
@@ -207,8 +217,13 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .modal {
@@ -217,14 +232,21 @@
   border-radius: 16px;
   width: 100%;
   max-width: 560px;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   animation: slideUp 0.2s ease;
 }
 
 @keyframes slideUp {
-  from { transform: translateY(16px); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modalHeader {
@@ -263,12 +285,16 @@
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
-.closeBtn:hover { background: var(--border-bright); color: var(--text); }
+
+.closeBtn:hover {
+  background: var(--border-bright);
+  color: var(--text);
+}
 
 .modalProject {
   padding: 14px 20px;
   border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.02);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -288,7 +314,7 @@
 
 .responseText {
   width: 100%;
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border);
   border-radius: 10px;
   color: var(--text);
@@ -301,7 +327,10 @@
   transition: border-color 0.15s;
   min-height: 180px;
 }
-.responseText:focus { border-color: rgba(167,139,250,0.4); }
+
+.responseText:focus {
+  border-color: rgba(167, 139, 250, 0.4);
+}
 
 .generating {
   display: flex;
@@ -327,8 +356,17 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50%       { opacity: 1;   transform: scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .modalFooter {
@@ -360,15 +398,19 @@
   align-items: center;
   gap: 5px;
 }
-.regenBtn:hover { border-color: var(--border-bright); color: var(--text); }
+
+.regenBtn:hover {
+  border-color: var(--border-bright);
+  color: var(--text);
+}
 
 .copyBtn {
   font-family: var(--font);
   font-size: 12px;
   font-weight: 700;
   color: #a78bfa;
-  background: rgba(167,139,250,0.1);
-  border: 1px solid rgba(167,139,250,0.25);
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.25);
   border-radius: var(--radius-sm);
   padding: 8px 16px;
   cursor: pointer;
@@ -377,9 +419,10 @@
   align-items: center;
   gap: 5px;
 }
+
 .copyBtn:hover {
-  background: rgba(167,139,250,0.18);
-  box-shadow: 0 0 12px rgba(167,139,250,0.2);
+  background: rgba(167, 139, 250, 0.18);
+  box-shadow: 0 0 12px rgba(167, 139, 250, 0.2);
 }
 
 /* Главная кнопка — Откликнуться */
@@ -396,14 +439,29 @@
   transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
   white-space: nowrap;
 }
+
 .sendBtn:hover {
   opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(124,58,237,0.4);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
 }
-.sendBtn:disabled { cursor: not-allowed; transform: none; }
+
+.sendBtn:disabled {
+  cursor: not-allowed;
+  transform: none;
+}
 
 .sendBtnDone {
   background: linear-gradient(135deg, #16a34a, #22c55e) !important;
-  box-shadow: 0 4px 16px rgba(34,197,94,0.3) !important;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3) !important;
+}
+
+
+
+.matchBadge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
 }

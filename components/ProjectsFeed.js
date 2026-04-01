@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ProjectCard } from './ProjectCard';
 import { SearchBar } from './SearchBar';
@@ -8,15 +8,15 @@ import styles from './ProjectsFeed.module.css';
 
 const FREE_LIMIT = 5;
 
-export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = false, isLoggedIn = false, trialUsed = false }) {
+export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = false, isLoggedIn = false, trialUsed = false, profile = null }) {
   const params = useSearchParams();
-  const [projects, setProjects]   = useState(initialProjects);
-  const [newCount, setNewCount]   = useState(0);
-  const [loading, setLoading]     = useState(false);
-  const [page, setPage]           = useState(1);
-  const [hasMore, setHasMore]     = useState(initialProjects.length < total);
+  const [projects, setProjects] = useState(initialProjects);
+  const [newCount, setNewCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(initialProjects.length < total);
   const lastChecked = useRef(new Date().toISOString());
-  const loaderRef   = useRef(null);
+  const loaderRef = useRef(null);
 
   const source   = params.get('source')   || '';
   const category = params.get('category') || '';
@@ -50,7 +50,6 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
     }
   }
 
-  // Infinite scroll — только для премиума
   useEffect(() => {
     if (!isPremium) return;
     const observer = new IntersectionObserver(
@@ -67,7 +66,6 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
     return () => observer.disconnect();
   }, [hasMore, loading, page, isPremium]);
 
-  // Polling каждые 30 секунд
   useEffect(() => {
     if (!isPremium) return;
     const interval = setInterval(async () => {
@@ -96,7 +94,6 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Что показываем
   const visibleProjects = isPremium ? projects : projects.slice(0, FREE_LIMIT);
   const showGate = !isPremium && projects.length > 0;
 
@@ -116,15 +113,14 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
           <ProjectCard
             key={p.id}
             project={p}
+            profile={profile}
             style={{ animationDelay: `${Math.min(i % 20, 10) * 40}ms` }}
           />
         ))}
       </div>
 
-      {/* Премиум-гейт после 5 проектов */}
       {showGate && <PremiumGate isLoggedIn={isLoggedIn} trialUsed={trialUsed} />}
 
-      {/* Лоадер */}
       {isPremium && (
         <div ref={loaderRef} className={styles.loader}>
           {loading && (

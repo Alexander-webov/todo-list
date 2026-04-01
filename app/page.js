@@ -56,6 +56,7 @@ export default async function HomePage() {
           isPremium={isPremium}
           isLoggedIn={!!profile}
           trialUsed={profile?.trial_used || false}
+          profile={profile}
         />
       </main>
     </div>

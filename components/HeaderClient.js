@@ -42,6 +42,7 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
           {user ? (
             <>
               {isPremium && <span className={styles.premiumBadge}>⚡ Премиум</span>}
+              <a href="/settings" className={styles.navLink} title="Настройка совпадений">🎯</a>
               <a href="/dashboard" className={styles.btnOutline}>{user.email.split('@')[0]}</a>
               <button className={styles.btnOutline} onClick={logout}>Выйти</button>
             </>
