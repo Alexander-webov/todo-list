@@ -9,7 +9,7 @@ export const metadata = {
     default: 'FreelanceHub — все фриланс-заказы в одном месте',
     template: '%s | FreelanceHub',
   },
-  description: 'Агрегатор фриланс-проектов с FL.ru, Kwork, Freelancer.com, Workzilla и Freelance.ru. Обновляется каждые 5 минут. Уведомления в Telegram. Первые 7 дней бесплатно.',
+  description: 'Агрегатор фриланс-проектов с FL.ru, Kwork, Freelancer.com, Workzilla и Freelance.ru. Обновляется каждую минуту. Уведомления в Telegram. Первые 3 дня бесплатно.',
   keywords: [
     'фриланс заказы', 'агрегатор фриланс', 'найти заказы фриланс',
     'FL.ru заказы', 'Kwork заказы', 'удалённая работа', 'фриланс биржа',

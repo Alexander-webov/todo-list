@@ -104,7 +104,7 @@ export default async function CategoryPage({ params }) {
           <p className={styles.desc}>{cat.description}</p>
           <div className={styles.stats}>
             <span>📋 {count || 0} актуальных заказов</span>
-            <span>⚡ Обновляется каждые 5 минут</span>
+            <span>⚡ Обновляется каждую минуту</span>
           </div>
         </div>
 
