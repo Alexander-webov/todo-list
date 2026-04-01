@@ -8,6 +8,10 @@ const nextConfig = {
       { protocol: 'https', hostname: '**' },
     ],
   },
+  trailingSlash: true,
+
 };
+
+
 
 export default nextConfig;

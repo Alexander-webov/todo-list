@@ -3,16 +3,16 @@ import { useState, useEffect } from 'react';
 import styles from './HeroBlock.module.css';
 
 const STATS = [
-  { label: 'проектов в базе', value: '3 000+' },
-  { label: 'бирж в одном месте', value: '5' },
+  { label: 'проектов за 24 часа', value: '3 000+' },
+  { label: 'бирж в одном месте', value: '6' },
   { label: 'обновление', value: 'каждую минуту' },
 ];
 
 const FEATURES = [
-  { icon: '⚡', text: 'FL.ru + Kwork + Freelancer.com + Workzilla в одной ленте' },
-  { icon: '🔔', text: 'Уведомления в Telegram — новые заказы сразу на телефон' },
-  { icon: '✦', text: 'AI пишет отклик за тебя — одна кнопка' },
-  { icon: '🔥', text: 'Скоринг заказов — сразу видно на что откликаться' },
+  { icon: '🔥', text: '4400+ ПРОЕКТОВ каждый день. Все ТОП сервисы тут!' },
+  { icon: '🔔', text: 'Уведомления в Telegram. Легко подключить - всегда есть доступ!' },
+  { icon: '✦', text: 'AI генерирует отклик за тебя — просто нажми кнопку!' },
+  { icon: '⚡', text: 'Сервис дает возможность быть ПЕРВЫМ! У конкурентов нет шанса' },
 ];
 
 export function HeroBlock({ isLoggedIn }) {
@@ -40,8 +40,8 @@ export function HeroBlock({ isLoggedIn }) {
       </h1>
 
       <p className={styles.sub}>
-        Перестань тратить час в день на мониторинг бирж.<br />
-        Находи заказы <strong>раньше конкурентов</strong> — и откликайся первым.
+        Удобный интерфейс позволяет видит заказы с ТОПОВЫХ фриланс бирж в реальном времени. Пока кто-то нажимаю кнопку обновить и бегают по вкладкам, ты видишь заказ здесь и сейчас, ТЫ ПЕРВЫЙ!   <br />
+        AI отклик дает тебе супер скорость. <strong>Тебя заметят.</strong>
       </p>
 
       <div className={styles.features}>
@@ -65,11 +65,11 @@ export function HeroBlock({ isLoggedIn }) {
       <div className={styles.stats}>
         <div className={styles.stat}>
           <span className={styles.statValue}>{count.toLocaleString('ru')}</span>
-          <span className={styles.statLabel}>проектов в базе</span>
+          <span className={styles.statLabel}>проектов за 24 часа</span>
         </div>
         <div className={styles.statDivider} />
         <div className={styles.stat}>
-          <span className={styles.statValue}>5</span>
+          <span className={styles.statValue}>6 топовых</span>
           <span className={styles.statLabel}>бирж одновременно</span>
         </div>
         <div className={styles.statDivider} />

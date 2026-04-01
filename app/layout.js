@@ -29,13 +29,13 @@ export const metadata = {
     url: SITE_URL,
     siteName: 'FreelanceHub',
     title: 'FreelanceHub — все фриланс-заказы в одном месте',
-    description: 'FL.ru + Kwork + Freelancer.com + Workzilla в одной ленте. Обновляется каждые 5 минут.',
+    description: 'FL.ru + Kwork + Freelancer.com + Workzilla + Freelance.ru + Youdo. Обновляется каждые минуту.',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'FreelanceHub' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FreelanceHub — все фриланс-заказы в одном месте',
-    description: 'FL.ru + Kwork + Freelancer.com + Workzilla в одной ленте.',
+    description: 'FL.ru + Kwork + Freelancer.com + Workzilla + Freelance.ru + Youdo',
     images: [`${SITE_URL}/og-image.png`],
   },
   alternates: {
