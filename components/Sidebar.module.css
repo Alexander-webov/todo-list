@@ -79,3 +79,26 @@
     display: none;
   }
 }
+
+
+
+
+.sectionSubTitle {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.sectionsmallText {
+  font-size: 12px;
+  color: var(--text-dim);
+
+}
+
+.sectionsmallItem {
+  padding: 5px;
+}
+
+.sectionsmallItem:hover {
+  color: var(--text);
+  background: var(--bg-card);
+}

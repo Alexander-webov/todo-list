@@ -3,12 +3,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './Sidebar.module.css';
 
 const SOURCES = [
-  { key: 'freelancer',  label: 'Freelancer.com', color: '#29b2fe' },
-  { key: 'fl',          label: 'FL.ru',          color: '#ff6600' },
-  { key: 'kwork',       label: 'Kwork',          color: '#ff4d00' },
-  { key: 'freelanceru', label: 'Freelance.ru',   color: '#2ecc71' },
-  { key: 'workzilla',   label: 'Workzilla',      color: '#1a7ae0' },
-  { key: 'youdo',       label: 'Youdo',          color: '#f5a623' },
+  { key: 'freelancer', label: 'Freelancer.com', color: '#29b2fe' },
+  { key: 'fl', label: 'FL.ru', color: '#ff6600' },
+  { key: 'kwork', label: 'Kwork', color: '#ff4d00' },
+  { key: 'freelanceru', label: 'Freelance.ru', color: '#2ecc71' },
+  { key: 'workzilla', label: 'Workzilla', color: '#1a7ae0' },
+  { key: 'youdo', label: 'Youdo', color: '#f5a623' },
 ];
 
 const CATEGORIES = [
@@ -19,7 +19,7 @@ const CATEGORIES = [
 export function Sidebar() {
   const router = useRouter();
   const params = useSearchParams();
-  const activeSource   = params.get('source')   || '';
+  const activeSource = params.get('source') || '';
   const activeCategory = params.get('category') || '';
 
   function setFilter(key, value) {
@@ -64,6 +64,20 @@ export function Sidebar() {
       {hasFilters && (
         <button className={styles.resetBtn} onClick={resetAll}>✕ Сбросить фильтры</button>
       )}
+      <div className={styles.section}>
+        <p className={styles.sectionTitle}>Новое на сайте:</p>
+        <div className={styles.sectionSubTitle}>
+          <ul className={styles.sectionsmallText}>
+            <li className={styles.sectionsmallItem}>
+              🔥 Горячий — заказ появился меньше часа назад + высокий бюджет. Откликайся немедленно — конкурентов ещё мало.</li>
+            <li className={styles.sectionsmallItem}> ✅ Хороший — нормальный бюджет, заказ не старше 6 часов. Стоит потратить время на отклик.</li>
+            <li className={styles.sectionsmallItem}> 👍 Нормальный — средний вариант. Попробуй, но не приоритет.</li>
+            <li className={styles.sectionsmallItem}> ❄️ Холодный — заказ старый или бюджет низкий. Скорее всего исполнитель уже найден или бюджет не стоит усилий.</li>
+
+          </ul>
+        </div>
+      </div>
+
     </aside>
   );
 }
