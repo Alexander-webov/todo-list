@@ -1,7 +1,6 @@
 import styles from './StatsBar.module.css';
 
 const SOURCES = {
-  freelancer:  { name: 'Freelancer.com', color: '#29b2fe' },
   fl:          { name: 'FL.ru',          color: '#ff6600' },
   kwork:       { name: 'Kwork',          color: '#ff4d00' },
   freelanceru: { name: 'Freelance.ru',   color: '#2ecc71' },

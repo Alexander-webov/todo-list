@@ -4,7 +4,7 @@ import { ProjectsFeed } from '@/components/ProjectsFeed';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { StatsBar } from '@/components/StatsBar';
-import { HeroBlock } from '@/components/HeroBlock';
+
 export const revalidate = 0;
 
 async function getInitialProjects() {
@@ -22,7 +22,7 @@ async function getStats() {
   const { count: total } = await db
     .from('projects').select('*', { count: 'exact', head: true });
 
-  const sources = ['freelancer', 'fl', 'kwork', 'workzilla', 'freelanceru', 'youdo'];
+  const sources = ['fl', 'kwork', 'workzilla', 'freelanceru', 'youdo'];
   const stats = {};
   await Promise.all(sources.map(async (source) => {
     const { count } = await db
@@ -47,7 +47,6 @@ export default async function HomePage() {
     <div className="app-shell">
       <Header />
       <StatsBar stats={stats} total={total} />
-      <HeroBlock isLoggedIn={!!profile} />
       <main className="main-layout">
         <Sidebar />
         <ProjectsFeed
@@ -56,7 +55,6 @@ export default async function HomePage() {
           isPremium={isPremium}
           isLoggedIn={!!profile}
           trialUsed={profile?.trial_used || false}
-          profile={profile}
         />
       </main>
     </div>

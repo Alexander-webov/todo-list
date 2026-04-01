@@ -5,9 +5,9 @@ import { formatDistanceToNow } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { scoreProject } from '@/lib/scoring';
 import { calcMatch, getMatchLabel } from '@/lib/match';
+import { CustomerBadge } from '@/components/CustomerBadge';
 
 const SOURCE_META = {
-  freelancer: { name: 'Freelancer.com', color: '#29b2fe', flag: '🌐' },
   fl: { name: 'FL.ru', color: '#ff6600', flag: '🇷🇺' },
   kwork: { name: 'Kwork', color: '#ff4d00', flag: '🇷🇺' },
   workzilla: { name: 'Workzilla', color: '#1a7ae0', flag: '🇷🇺' },
@@ -48,7 +48,7 @@ export function ProjectCard({ project, profile, style }) {
   const matchPct = profile ? calcMatch(project, profile) : null;
   const matchInfo = matchPct !== null ? getMatchLabel(matchPct) : null;
 
-  const isEnglish = project.source === 'freelancer';
+  const isEnglish = false;
   const displayTitle = translated?.title || project.title;
   const displayDesc = translated?.description || project.description;
 
@@ -158,6 +158,10 @@ export function ProjectCard({ project, profile, style }) {
               <span key={tag} className={styles.tag}>{tag}</span>
             ))}
           </div>
+        )}
+
+        {project.customer_external_id && (
+          <CustomerBadge customerId={project.customer_external_id} source={project.source} />
         )}
 
         <div className={styles.footer}>
