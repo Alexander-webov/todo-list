@@ -1,8 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /admin/
 Disallow: /dashboard/
 Disallow: /settings/
-Disallow: /admin/
 
 Sitemap: https://www.allfreelancershere.ru/sitemap.xml
