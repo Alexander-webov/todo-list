@@ -59,7 +59,7 @@ export default function PricingPage() {
             </div>
           </div>
           <div className={styles.planPrice}>
-            <span className={styles.price}>299</span>
+            <span className={styles.price}>149</span>
             <span className={styles.currency}>₽/мес</span>
           </div>
           <button

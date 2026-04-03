@@ -88,7 +88,7 @@ export function PremiumGate({ isLoggedIn = false, trialUsed = false }) {
             )}
 
             <a href="/pricing" className={styles.btnPrimary}>
-              Смотреть все проекты — от 299 ₽/мес
+              Смотреть все проекты — от 149 ₽/мес
             </a>
 
             {!isLoggedIn && (

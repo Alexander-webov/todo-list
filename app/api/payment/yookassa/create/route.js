@@ -7,7 +7,7 @@ export const runtime = 'nodejs';
 
 const SHOP_ID = process.env.YOOKASSA_SHOP_ID;
 const SECRET_KEY = process.env.YOOKASSA_SECRET_KEY;
-const AMOUNT = '299.00';
+const AMOUNT = '149.00';
 const CURRENCY = 'RUB';
 
 export async function POST() {
@@ -59,7 +59,8 @@ export async function POST() {
       days_granted: 30,
     });
 
-    return NextResponse.json({ url: payment.confirmation.confirmation_url });
+    console.log('[YooKassa] Ответ:', JSON.stringify(payment));
+    return NextResponse.json({ url: payment.confirmation?.confirmation_url });
   } catch (err) {
     console.error('[YooKassa] Критическая ошибка:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });

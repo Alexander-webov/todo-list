@@ -1,6 +1,7 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './Sidebar.module.css';
+import { ArticleOfDay } from './ArticleOfDay';
 
 const SOURCES = [
   { key: 'fl',          label: 'FL.ru',          color: '#ff6600' },
@@ -63,6 +64,7 @@ export function Sidebar() {
       {hasFilters && (
         <button className={styles.resetBtn} onClick={resetAll}>✕ Сбросить фильтры</button>
       )}
+      <ArticleOfDay />
     </aside>
   );
 }

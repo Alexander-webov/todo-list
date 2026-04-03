@@ -85,7 +85,7 @@ export function DashboardClient({ profile, email, payments, paymentStatus }) {
 
       {!isPremium && (
         <div className={styles.section}>
-          <a href="/pricing" className={styles.upgradeBtn}>⚡ Получить Премиум — от 299 ₽/мес</a>
+          <a href="/pricing" className={styles.upgradeBtn}>⚡ Получить Премиум — от 149 ₽/мес</a>
         </div>
       )}
 

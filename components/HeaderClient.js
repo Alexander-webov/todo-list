@@ -35,6 +35,7 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
           <a href="/" className={styles.navLink}>Проекты</a>
           <a href="/pricing" className={styles.navLink}>Тарифы</a>
           <a href="/partners" className={styles.navLink}>Биржи</a>
+          <a href="/blog" className={styles.navLink}>Блог</a>
           <a href="/faq" className={styles.navLink}>FAQ</a>
           {isAdmin && <a href="/admin" className={styles.navLink}>Админ</a>}
         </nav>

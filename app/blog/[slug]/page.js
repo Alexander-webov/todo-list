@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/Header';
 import styles from './article.module.css';
+import { NEW_ARTICLES } from '../new-articles.js';
 
-const ARTICLES = {
+const OLD_ARTICLES = {
   'kak-najti-zakazy-na-freelanse': {
     title: 'Как находить заказы на фрилансе быстрее конкурентов',
     desc: 'Главный секрет успешного фрилансера — скорость отклика. Рассказываем как видеть новые заказы раньше всех.',
@@ -579,6 +580,9 @@ Forest — блокировщик телефона. Помогает не отв
 RescueTime — анализ как ты тратишь время на компьютере.`,
   },
 };
+
+
+const ARTICLES = { ...NEW_ARTICLES, ...OLD_ARTICLES };
 
 export async function generateMetadata({ params }) {
   const article = ARTICLES[params.slug];
