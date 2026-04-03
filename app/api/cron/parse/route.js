@@ -5,13 +5,12 @@ import { supabaseAdmin } from '@/lib/supabase';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
-const MAX_PROJECTS = 4500; // при достижении — чистим
-const KEEP_PROJECTS = 2500; // сколько оставляем после чистки
+const MAX_PROJECTS = 4500;
+const KEEP_PROJECTS = 2500;
 
 async function cleanupIfNeeded() {
   const db = supabaseAdmin();
 
-  // Считаем сколько записей
   const { count } = await db
     .from('projects')
     .select('*', { count: 'exact', head: true });
@@ -22,21 +21,20 @@ async function cleanupIfNeeded() {
 
   console.log(`[Cleanup] Достигнут лимит ${MAX_PROJECTS}, чистим до ${KEEP_PROJECTS}...`);
 
-  // Находим дату N-й записи с конца (самые новые сохраняем)
+  // Удаляем по published_at — самые старые по дате публикации на бирже
   const { data: cutoffRow } = await db
     .from('projects')
-    .select('created_at')
-    .order('created_at', { ascending: false })
+    .select('published_at')
+    .order('published_at', { ascending: false })
     .range(KEEP_PROJECTS - 1, KEEP_PROJECTS - 1)
     .single();
 
   if (!cutoffRow) return 0;
 
-  // Удаляем всё что старше этой даты
   const { error, count: deleted } = await db
     .from('projects')
     .delete({ count: 'exact' })
-    .lt('created_at', cutoffRow.created_at);
+    .lt('published_at', cutoffRow.published_at);
 
   if (error) {
     console.error('[Cleanup] Ошибка:', error.message);
