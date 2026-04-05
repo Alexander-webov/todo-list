@@ -151,7 +151,7 @@ export default async function CategoryPage({ params }) {
           <h2>Хочешь видеть все заказы первым?</h2>
           <p>Подключи уведомления в Telegram — новые проекты по {cat.name.toLowerCase()} приходят сразу как появляются</p>
           <a href="/register" className={styles.ctaBtn}>
-            Попробовать 7 дней бесплатно
+            Попробовать 3 дня бесплатно
           </a>
         </div>
       </div>
