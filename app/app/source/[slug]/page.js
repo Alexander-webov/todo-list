@@ -145,7 +145,7 @@ export default async function SourcePage({ params }) {
         <div className={styles.cta}>
           <h2>Получай новые заказы с {source.name} первым</h2>
           <p>Подключи уведомления в Telegram — новые проекты приходят сразу как появляются на {source.name}</p>
-          <a href="/register" className={styles.ctaBtn}>Попробовать 7 дней бесплатно</a>
+          <a href="/register" className={styles.ctaBtn}>Попробовать 3 дня бесплатно</a>
         </div>
       </div>
     </div>

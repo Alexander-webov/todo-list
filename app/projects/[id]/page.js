@@ -177,7 +177,7 @@ export default async function ProjectPage({ params }) {
         {/* Блок для незарегиненных */}
         <div className={styles.promo}>
           <p>📬 Хочешь получать такие проекты первым в Telegram?</p>
-          <a href="/register" className={styles.promoBtn}>Попробовать 7 дней бесплатно</a>
+          <a href="/register" className={styles.promoBtn}>Попробовать 3 дня бесплатно</a>
         </div>
 
         {/* Внутренняя перелинковка */}
