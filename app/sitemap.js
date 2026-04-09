@@ -2,19 +2,15 @@ import { supabaseAdmin } from '@/lib/supabase';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
 
-const CATEGORY_SLUGS = ['web-development', 'design', 'mobile', 'writing', 'marketing', 'backend', 'data'];
-const SOURCE_SLUGS = ['fl-ru', 'kwork', 'freelancer', 'workzilla', 'freelanceru'];
+const CATEGORY_SLUGS = ['web-development','design','mobile','writing','marketing','backend','data'];
+const SOURCE_SLUGS = ['fl-ru','kwork','freelancer','workzilla','freelanceru'];
 const BLOG_SLUGS = [
-  'kak-najti-zakazy-na-freelanse', 'kak-napisat-otklik-na-freelanse',
-  'luchshie-frilansy-birzhi-rossii', 'skolko-zarabatyvaet-frilanser',
-  'kak-nachat-frilansat-s-nulya', 'pochemu-frilanser-ne-nahodit-zakazov',
-  'frilanser-vs-ofis', 'kak-ustanovit-tsenu-na-frilanse',
-  'frilanser-portfolio', 'kak-rabotat-s-trudnymi-zakazchikami',
-  'udalennaya-rabota-sovety', 'frilanser-nalogi',
-  'kak-nayti-postoyannyh-klientov', 'frilanser-bez-opyta',
-  'kak-obshchatsya-s-zakazchikom', 'frilanser-vygoranie',
-  'frilanser-sravnenie-birzh', 'zarabotok-na-freelancer-com',
-  'kak-vesti-peregovory-o-tsene', 'frilanser-instrumenty',
+  'kak-najti-zakazy-na-freelanse',
+  'kak-napisat-otklik-na-freelanse',
+  'luchshie-frilansy-birzhi-rossii',
+  'skolko-zarabatyvaet-frilanser',
+  'kak-nachat-frilansat-s-nulya',
+  'pochemu-frilanser-ne-nahodit-zakazov',
 ];
 
 export default async function sitemap() {
