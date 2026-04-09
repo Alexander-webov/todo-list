@@ -2,16 +2,16 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10, 12, 18, 0.8);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .header.scrolled {
   border-color: var(--border);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
 }
 
 .inner {
@@ -36,14 +36,8 @@
   flex-shrink: 0;
 }
 
-.logoIcon {
-  font-size: 22px;
-  line-height: 1;
-}
-
-.logoAccent {
-  color: var(--accent);
-}
+.logoIcon { font-size: 22px; line-height: 1; }
+.logoAccent { color: var(--accent); }
 
 .liveBadge {
   display: flex;
@@ -131,30 +125,6 @@
   box-shadow: 0 0 16px var(--accent-glow);
 }
 
-@media (max-width: 768px) {
-  .nav {
-    display: none;
-  }
-
-  /* 
-  .btnOutline {
-    display: none;
-  } */
-
-  .btnPrimary {
-    font-size: 12px;
-    padding: 7px 12px;
-  }
-
-  .liveBadge {
-    display: none;
-  }
-
-  .logoText {
-    display: none;
-  }
-}
-
 .premiumBadge {
   font-size: 11px;
   font-weight: 700;
@@ -163,4 +133,11 @@
   border: 1px solid rgba(167, 139, 250, 0.3);
   padding: 4px 10px;
   border-radius: 100px;
+}
+
+@media (max-width: 768px) {
+  .nav { display: none; }
+  .btnPrimary { font-size: 12px; padding: 7px 12px; }
+  .liveBadge { display: none; }
+  .logoText { display: none; }
 }

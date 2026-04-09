@@ -2,6 +2,9 @@
 import { useState, useEffect } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import styles from './Header.module.css';
+import { ThemeToggle } from './ThemeToggle';
+
+
 
 export function HeaderClient({ user, isPremium, isAdmin }) {
   const [scrolled, setScrolled] = useState(false);
@@ -38,6 +41,7 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
           <a href="/blog" className={styles.navLink}>Блог</a>
           <a href="/faq" className={styles.navLink}>FAQ</a>
           {isAdmin && <a href="/admin" className={styles.navLink}>Админ</a>}
+          <ThemeToggle />
         </nav>
         <div className={styles.actions}>
           {user ? (

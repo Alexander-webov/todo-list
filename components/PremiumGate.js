@@ -83,12 +83,12 @@ export function PremiumGate({ isLoggedIn = false, trialUsed = false }) {
             {/* Триал */}
             {!trialUsed && (
               <button className={styles.btnTrial} onClick={activateTrial} disabled={trialLoading}>
-                {trialLoading ? '...' : isLoggedIn ? '🎁 Попробовать 3 дня бесплатно' : '🎁 Зарегистрироваться и получить 3 дня бесплатно'}
+                {trialLoading ? '...' : isLoggedIn ? '🎁 Попробовать 3 дня бесплатно' : '🎁 Зарегистрироваться и получить подарок'}
               </button>
             )}
 
             <a href="/pricing" className={styles.btnPrimary}>
-              Смотреть все проекты — от 149 ₽/мес
+              Смотреть все проекты
             </a>
 
             {!isLoggedIn && (

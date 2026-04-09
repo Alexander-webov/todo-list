@@ -1,6 +1,6 @@
 .bar {
   border-bottom: 1px solid var(--border);
-  background: rgba(17, 21, 32, 0.6);
+  background: color-mix(in srgb, var(--bg-card) 60%, transparent);
 }
 
 .inner {
