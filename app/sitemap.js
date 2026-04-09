@@ -27,13 +27,6 @@ const BLOG_SLUGS = [
 export default async function sitemap() {
   const db = supabaseAdmin();
 
-  // Проекты
-  const { data: projects } = await db
-    .from('projects')
-    .select('id, created_at')
-    .order('created_at', { ascending: false })
-    .limit(1000);
-
   // Статьи из БД
   const { data: dbArticles } = await db
     .from('blog_articles')
@@ -55,7 +48,6 @@ export default async function sitemap() {
     ...BLOG_SLUGS.map(slug => ({ url: `${SITE_URL}/blog/${slug}`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 })),
     // Статьи из БД (только новые, которых нет в статических)
     ...newDbSlugs.map(a => ({ url: `${SITE_URL}/blog/${a.slug}`, lastModified: new Date(a.updated_at), changeFrequency: 'monthly', priority: 0.8 })),
-    // Проекты
-    ...(projects || []).map(p => ({ url: `${SITE_URL}/projects/${p.id}`, lastModified: new Date(p.created_at), changeFrequency: 'daily', priority: 0.6 })),
+
   ];
 }
