@@ -4,6 +4,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere
 
 const CATEGORY_SLUGS = ['web-development','design','mobile','writing','marketing','backend','data'];
 const SOURCE_SLUGS = ['fl-ru','kwork','freelancer','workzilla','freelanceru'];
+
 const BLOG_SLUGS = [
   'kak-najti-zakazy-na-freelanse',
   'kak-napisat-otklik-na-freelanse',
@@ -11,13 +12,36 @@ const BLOG_SLUGS = [
   'skolko-zarabatyvaet-frilanser',
   'kak-nachat-frilansat-s-nulya',
   'pochemu-frilanser-ne-nahodit-zakazov',
+  'kak-uvelichit-chek-frilanser',
+  'avtomatizaciya-frilanser',
+  'frilanser-brendirovanie',
+  'niche-frilanser',
+  'frilanser-passive-income',
+  'frilanser-dogovor',
+  'frilanser-klienty-telegram',
+  'frilanser-rate-hour',
+  'frilanser-repeat-clients',
+  'frilanser-scope-creep',
 ];
 
 export default async function sitemap() {
   const db = supabaseAdmin();
+
+  // Проекты
   const { data: projects } = await db
-    .from('projects').select('id, created_at')
-    .order('created_at', { ascending: false }).limit(1000);
+    .from('projects')
+    .select('id, created_at')
+    .order('created_at', { ascending: false })
+    .limit(1000);
+
+  // Статьи из БД
+  const { data: dbArticles } = await db
+    .from('blog_articles')
+    .select('slug, updated_at')
+    .eq('published', true);
+
+  const dbSlugs = new Set(BLOG_SLUGS);
+  const newDbSlugs = (dbArticles || []).filter(a => !dbSlugs.has(a.slug));
 
   return [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: 'hourly', priority: 1 },
@@ -27,7 +51,11 @@ export default async function sitemap() {
     { url: `${SITE_URL}/faq`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     ...CATEGORY_SLUGS.map(slug => ({ url: `${SITE_URL}/category/${slug}`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 })),
     ...SOURCE_SLUGS.map(slug => ({ url: `${SITE_URL}/source/${slug}`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 })),
+    // Статические статьи блога
     ...BLOG_SLUGS.map(slug => ({ url: `${SITE_URL}/blog/${slug}`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 })),
+    // Статьи из БД (только новые, которых нет в статических)
+    ...newDbSlugs.map(a => ({ url: `${SITE_URL}/blog/${a.slug}`, lastModified: new Date(a.updated_at), changeFrequency: 'monthly', priority: 0.8 })),
+    // Проекты
     ...(projects || []).map(p => ({ url: `${SITE_URL}/projects/${p.id}`, lastModified: new Date(p.created_at), changeFrequency: 'daily', priority: 0.6 })),
   ];
 }

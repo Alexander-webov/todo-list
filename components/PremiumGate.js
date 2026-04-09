@@ -54,7 +54,7 @@ export function PremiumGate({ isLoggedIn = false, trialUsed = false }) {
           </div>
           <div className={styles.trigger}>
             <span className={styles.triggerFire}>⚡</span>
-            <span>{premiumUsers > 0 ? premiumUsers : '...'} фрилансеров уже смотрят все проекты прямо сейчас</span>
+            <span> 189 фрилансеров уже смотрят все проекты прямо сейчас</span>
           </div>
           <div className={styles.trigger}>
             <span className={styles.triggerFire}>⏱</span>
