@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/Header';
 import styles from './article.module.css';
+import { supabaseAdmin } from '@/lib/supabase';
+export const dynamic = 'force-dynamic';
 
 const ARTICLES = {
   'kak-najti-zakazy-na-freelanse': {
@@ -264,7 +266,14 @@ FreelanceHere собирает заказы со всех этих бирж в �
 };
 
 export async function generateMetadata({ params }) {
-  const article = ARTICLES[params.slug];
+  const db = supabaseAdmin();
+  const { data: dbArticle } = await db
+    .from('blog_articles')
+    .select('*')
+    .eq('slug', params.slug)
+    .single();
+  const article = dbArticle || ARTICLES[params.slug];
+
   if (!article) return { title: 'Не найдено' };
   return {
     title: `${article.title} | FreelanceHere`,
@@ -274,7 +283,7 @@ export async function generateMetadata({ params }) {
 }
 
 export async function generateStaticParams() {
-  return Object.keys(ARTICLES).map(slug => ({ slug }));
+  return [];
 }
 
 function renderContent(content) {
@@ -288,8 +297,15 @@ function renderContent(content) {
   });
 }
 
-export default function ArticlePage({ params }) {
-  const article = ARTICLES[params.slug];
+export default async function ArticlePage({ params }) {
+  const db = supabaseAdmin();
+  const { data: dbArticle } = await db
+    .from('blog_articles')
+    .select('*')
+    .eq('slug', params.slug)
+    .single();
+  const article = dbArticle || ARTICLES[params.slug];
+
   if (!article) notFound();
 
   const allSlugs = Object.keys(ARTICLES);

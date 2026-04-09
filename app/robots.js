@@ -1,15 +1,12 @@
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
-
 export default function robots() {
   return {
     rules: [
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/', '/dashboard/', '/debug-auth'],
+        disallow: ['/api/', '/admin/', '/dashboard/', '/settings/', '/projects/'],
       },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
+    sitemap: 'https://www.allfreelancershere.ru/sitemap.xml',
   };
 }
