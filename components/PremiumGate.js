@@ -71,7 +71,7 @@ export function PremiumGate({ isLoggedIn = false, trialUsed = false }) {
         <div className={styles.perks}>
           <span className={styles.perk}>✓ Все биржи в одном месте</span>
           <span className={styles.perk}>✓ Уведомления в Telegram</span>
-          <span className={styles.perk}>✓ AI-генерация откликов (СКОРО)</span>
+          <span className={styles.perk}>✓ AI-генерация откликов</span>
         </div>
 
         {trialDone ? (

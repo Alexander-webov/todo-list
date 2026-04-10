@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
+const SITE_URL = 'https://www.allfreelancershere.ru';
 
 const CATEGORY_SLUGS = ['web-development','design','mobile','writing','marketing','backend','data'];
 const SOURCE_SLUGS = ['fl-ru','kwork','freelancer','workzilla','freelanceru'];
