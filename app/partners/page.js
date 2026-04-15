@@ -37,9 +37,11 @@ export default function PartnersPage() {
 
       <div className={styles.promo}>
         <h2>Уже зарегистрирован на биржах?</h2>
-        <p>Подключи FreelancersHere и получай все проекты в одном месте + уведомления в Telegram.</p>
-        <a href="/register" className={styles.promoBtn}>Зарегистрироваться бесплатно</a>
+        <p>FreelancersHere поможет тебе получать проекты и быть первым.</p>
+        <a href="/" className={styles.promoBtn}>Вперёд</a>
       </div>
+
+
     </div>
   );
 }

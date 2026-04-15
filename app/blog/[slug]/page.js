@@ -378,9 +378,9 @@ export default async function ArticlePage({ params }) {
         </article>
 
         <div className={styles.cta}>
-          <h2>Попробуй FreelanceHere бесплатно</h2>
-          <p>Находи заказы со всех бирж в одной ленте. Уведомления в Telegram. 7 дней бесплатно.</p>
-          <a href="/register" className={styles.ctaBtn}>Зарегистрироваться бесплатно</a>
+          <h2>FreelanceHere - это бесплатно</h2>
+          <p>Находи заказы со всех бирж в одной ленте +  Уведомления в Telegram.</p>
+          <a href="/" className={styles.ctaBtn}>ХОЧУ</a>
         </div>
 
         {related.length > 0 && (
