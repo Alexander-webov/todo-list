@@ -10,27 +10,33 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere
 const SOURCE_NAMES = {
   freelancer: 'Freelancer.com', fl: 'FL.ru',
   kwork: 'Kwork', workzilla: 'Workzilla', freelanceru: 'Freelance.ru',
+  upwork: 'Upwork', peopleperhour: 'PeoplePerHour',
+  guru: 'Guru.com',
 };
 
 const CATEGORY_RU = {
-  'Web Development': 'Веб-разработка',
-  'Design': 'Дизайн',
-  'Mobile': 'Мобильная разработка',
-  'Writing': 'Копирайтинг',
-  'Marketing': 'Маркетинг',
-  'Backend': 'Backend разработка',
-  'Data': 'Данные и аналитика',
+  'WordPress / Tilda / CMS': 'WordPress / Tilda / CMS',
+  'Видеомонтаж': 'Видеомонтаж',
+  'Графический дизайн': 'Графический дизайн',
+  'Web дизайн': 'Web дизайн',
+  'SMM': 'SMM',
+  'Парсинг': 'Парсинг',
+  'Вёрстка': 'Вёрстка',
+  'FrontEnd': 'FrontEnd',
+  'BackEnd': 'BackEnd',
   'Другое': 'Другое',
 };
 
 const CATEGORY_SLUGS = {
-  'Web Development': 'web-development',
-  'Design': 'design',
-  'Mobile': 'mobile',
-  'Writing': 'writing',
-  'Marketing': 'marketing',
-  'Backend': 'backend',
-  'Data': 'data',
+  'WordPress / Tilda / CMS': 'wordpress-tilda-cms',
+  'Видеомонтаж': 'videomontazh',
+  'Графический дизайн': 'graficheskij-dizajn',
+  'Web дизайн': 'web-dizajn',
+  'SMM': 'smm',
+  'Парсинг': 'parsing',
+  'Вёрстка': 'verstka',
+  'FrontEnd': 'frontend',
+  'BackEnd': 'backend',
 };
 
 const SOURCE_SLUGS = {
@@ -39,6 +45,9 @@ const SOURCE_SLUGS = {
   kwork: 'kwork',
   workzilla: 'workzilla',
   freelanceru: 'freelanceru',
+  upwork: 'upwork',
+  peopleperhour: 'peopleperhour',
+  guru: 'guru',
 };
 
 export async function generateMetadata({ params }) {
@@ -177,7 +186,7 @@ export default async function ProjectPage({ params }) {
         {/* Блок для незарегиненных */}
         <div className={styles.promo}>
           <p>📬 Хочешь получать такие проекты первым в Telegram?</p>
-          <a href="/register" className={styles.promoBtn}>Попробовать 3 дня бесплатно</a>
+          <a href="/register" className={styles.promoBtn}>Зарегистрироваться бесплатно</a>
         </div>
 
         {/* Внутренняя перелинковка */}

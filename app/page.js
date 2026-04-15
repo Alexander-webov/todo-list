@@ -4,6 +4,7 @@ import { ProjectsFeed } from '@/components/ProjectsFeed';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { StatsBar } from '@/components/StatsBar';
+import { RU_SOURCES } from '@/lib/parsers/index';
 
 export const revalidate = 0;
 
@@ -12,6 +13,7 @@ async function getInitialProjects() {
   const { data, count } = await db
     .from('projects')
     .select('*', { count: 'exact' })
+    .in('source', RU_SOURCES)
     .order('created_at', { ascending: false })
     .limit(20);
   return { projects: data || [], total: count || 0 };
@@ -22,7 +24,7 @@ async function getStats() {
   const { count: total } = await db
     .from('projects').select('*', { count: 'exact', head: true });
 
-  const sources = ['fl', 'kwork', 'workzilla', 'freelanceru', 'youdo'];
+  const sources = ['fl', 'kwork', 'workzilla', 'freelanceru', 'youdo', 'upwork', 'freelancer', 'peopleperhour', 'guru'];
   const stats = {};
   await Promise.all(sources.map(async (source) => {
     const { count } = await db
@@ -39,10 +41,6 @@ export default async function HomePage() {
     getCurrentUser(),
   ]);
 
-  const isPremium = profile?.is_premium === true && (
-    !profile?.premium_until || new Date(profile.premium_until) > new Date()
-  );
-
   return (
     <div className="app-shell">
       <Header />
@@ -52,9 +50,7 @@ export default async function HomePage() {
         <ProjectsFeed
           initialProjects={projects}
           total={feedTotal}
-          isPremium={isPremium}
           isLoggedIn={!!profile}
-          trialUsed={profile?.trial_used || false}
           profile={profile}
         />
       </main>

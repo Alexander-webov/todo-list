@@ -85,14 +85,16 @@ function httpPost(path, body) {
 }
 
 function detectCategory(text) {
-  text = text || '';
-  if (/сайт|верстк|react|vue|html|css|javascript|php|wordpress/i.test(text)) return 'Web Development';
-  if (/мобильн|ios|android|flutter/i.test(text)) return 'Mobile';
-  if (/дизайн|логотип|баннер|ui|ux|figma/i.test(text)) return 'Design';
-  if (/текст|копирайт|статья|перевод/i.test(text)) return 'Writing';
-  if (/маркетинг|seo|реклам|smm/i.test(text)) return 'Marketing';
-  if (/данные|python|аналитик|1с|excel/i.test(text)) return 'Data';
-  if (/backend|api|сервер|sql/i.test(text)) return 'Backend';
+  text = (text || '').toLowerCase();
+  if (/видеомонтаж|монтаж.*видео|видео.*монтаж|видеоролик|premiere|davinci|after\s*effects|моушн|motion\s*design/.test(text)) return 'Видеомонтаж';
+  if (/\bsmm\b|постинг|оформлен.*соц|ведени.*соц|ведение.*инст|ведение.*групп|контент.*план|соцсет|продвижен.*соц|таргетолог/.test(text)) return 'SMM';
+  if (/парсинг|парсер|сбор.*данн|web.*scrap|selenium|telegram.*бот|чат.*бот|бот.*telegram|скрипт.*автоматиз|бот.*для/.test(text)) return 'Парсинг';
+  if (/wordpress|тильда|tilda|wix|bitrix|битрикс|joomla|opencart|modx|drupal|cms|конструктор.*сайт/.test(text)) return 'WordPress / Tilda / CMS';
+  if (/веб.*дизайн|web.*дизайн|дизайн.*сайт|дизайн.*лендинг|\bui\b|\bux\b|ui\/ux|figma.*сайт|figma.*интерфейс/.test(text)) return 'Web дизайн';
+  if (/дизайн|баннер|карточк|логотип|иллюстра|полиграф|брендинг|визитк|обложк|презентац|фотошоп|photoshop|figma/.test(text)) return 'Графический дизайн';
+  if (/react|vue|angular|next\.?js|nuxt|typescript|frontend|front[\-\s]?end|фронтенд|svelte|redux|javascript.*разработ/.test(text)) return 'FrontEnd';
+  if (/вёрстк|верстк|html|css|адаптивн|кроссбраузер|pixel.*perfect|натяжк|psd.*to/.test(text)) return 'Вёрстка';
+  if (/backend|back[\-\s]?end|бэкенд|php|python|node\.?js|django|laravel|api|сервер|база.*данных|sql|docker|1с/.test(text)) return 'BackEnd';
   return 'Другое';
 }
 

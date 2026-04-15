@@ -2,8 +2,14 @@ import { supabaseAdmin } from '@/lib/supabase';
 
 const SITE_URL = 'https://www.allfreelancershere.ru';
 
-const CATEGORY_SLUGS = ['web-development','design','mobile','writing','marketing','backend','data'];
-const SOURCE_SLUGS = ['fl-ru','kwork','freelancer','workzilla','freelanceru'];
+const CATEGORY_SLUGS = [
+  'wordpress-tilda-cms','videomontazh','graficheskij-dizajn','web-dizajn',
+  'smm','parsing','verstka','frontend','backend',
+];
+const SOURCE_SLUGS = [
+  'fl-ru','kwork','freelancer','workzilla','freelanceru',
+  'upwork','peopleperhour','guru',
+];
 
 const BLOG_SLUGS = [
   'kak-najti-zakazy-na-freelanse',

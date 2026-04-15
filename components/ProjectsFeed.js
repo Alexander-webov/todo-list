@@ -1,15 +1,15 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { ProjectCard } from './ProjectCard';
 import { SearchBar } from './SearchBar';
-import { PremiumGate } from './PremiumGate';
 import styles from './ProjectsFeed.module.css';
 
-const FREE_LIMIT = 5;
+const GUEST_LIMIT = 5;
 
-export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = false, isLoggedIn = false, trialUsed = false, profile = null }) {
+export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = false, profile = null }) {
   const params = useSearchParams();
+  const router = useRouter();
   const [projects, setProjects] = useState(initialProjects);
   const [newCount, setNewCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -21,6 +21,15 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
   const source   = params.get('source')   || '';
   const category = params.get('category') || '';
   const search   = params.get('search')   || '';
+  const region   = params.get('region')   || 'ru'; // default: Russian
+
+  function setRegion(r) {
+    const next = new URLSearchParams(params.toString());
+    next.set('region', r);
+    next.delete('source'); // reset source filter when switching region
+    next.delete('page');
+    router.push(`/?${next.toString()}`);
+  }
 
   useEffect(() => {
     setProjects([]);
@@ -28,7 +37,7 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
     setHasMore(true);
     setNewCount(0);
     fetchPage(1, true);
-  }, [source, category, search]);
+  }, [source, category, search, region]);
 
   async function fetchPage(pageNum, replace = false) {
     setLoading(true);
@@ -37,7 +46,8 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
       if (source)   qs.set('source', source);
       if (category) qs.set('category', category);
       if (search)   qs.set('search', search);
-
+      if (!source)  qs.set('region', region); // region only when no specific source
+      
       const res  = await fetch(`/api/projects?${qs}`);
       const data = await res.json();
 
@@ -50,8 +60,9 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
     }
   }
 
+  // Infinite scroll — logged in only
   useEffect(() => {
-    if (!isPremium) return;
+    if (!isLoggedIn) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading) {
@@ -64,15 +75,17 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
     );
     if (loaderRef.current) observer.observe(loaderRef.current);
     return () => observer.disconnect();
-  }, [hasMore, loading, page, isPremium]);
+  }, [hasMore, loading, page, isLoggedIn]);
 
+  // Live updates — logged in only
   useEffect(() => {
-    if (!isPremium) return;
+    if (!isLoggedIn) return;
     const interval = setInterval(async () => {
       try {
         const qs = new URLSearchParams({ since: lastChecked.current, limit: 50 });
         if (source)   qs.set('source', source);
         if (category) qs.set('category', category);
+        if (!source)  qs.set('region', region);
 
         const res  = await fetch(`/api/projects?${qs}`);
         const data = await res.json();
@@ -84,7 +97,7 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
       } catch (_) {}
     }, 10_000);
     return () => clearInterval(interval);
-  }, [source, category, isPremium]);
+  }, [source, category, region, isLoggedIn]);
 
   function loadNewProjects() {
     setPage(1);
@@ -94,14 +107,30 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  const visibleProjects = isPremium ? projects : projects.slice(0, FREE_LIMIT);
-  const showGate = !isPremium && projects.length > 0;
+  const visibleProjects = isLoggedIn ? projects : projects.slice(0, GUEST_LIMIT);
+  const showRegisterGate = !isLoggedIn && projects.length > GUEST_LIMIT;
 
   return (
     <div className={styles.feed}>
+      {/* Region tabs */}
+      <div className={styles.regionTabs}>
+        <button
+          className={`${styles.regionTab} ${region === 'ru' ? styles.regionTabActive : ''}`}
+          onClick={() => setRegion('ru')}
+        >
+          🇷🇺 Российские биржи
+        </button>
+        <button
+          className={`${styles.regionTab} ${region === 'int' ? styles.regionTabActive : ''}`}
+          onClick={() => setRegion('int')}
+        >
+          🌐 Зарубежные биржи
+        </button>
+      </div>
+
       <SearchBar />
 
-      {isPremium && newCount > 0 && (
+      {isLoggedIn && newCount > 0 && (
         <button className={styles.newBadge} onClick={loadNewProjects}>
           <span className={styles.newDot} />
           {newCount} новых проектов — нажми, чтобы обновить
@@ -119,9 +148,32 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isPremium = fals
         ))}
       </div>
 
-      {showGate && <PremiumGate isLoggedIn={isLoggedIn} trialUsed={trialUsed} />}
+      {showRegisterGate && (
+        <div className={styles.registerGate}>
+          <div className={styles.registerGateBlur} />
+          <div className={styles.registerGateBox}>
+            <span className={styles.registerGateIcon}>🚀</span>
+            <h2 className={styles.registerGateTitle}>
+              Ещё {total - GUEST_LIMIT > 0 ? (total - GUEST_LIMIT).toLocaleString('ru') : '...'} проектов ждут тебя
+            </h2>
+            <p className={styles.registerGateSub}>
+              Зарегистрируйся бесплатно — и получи полный доступ ко всем проектам, уведомлениям и фильтрам.
+            </p>
+            <div className={styles.registerGatePerks}>
+              <span>✓ Все проекты без ограничений</span>
+              <span>✓ Уведомления в Telegram</span>
+              <span>✓ Фильтры и поиск</span>
+              <span>✓ Навсегда бесплатно</span>
+            </div>
+            <div className={styles.registerGateBtns}>
+              <a href="/register" className={styles.registerGatePrimary}>Зарегистрироваться бесплатно</a>
+              <a href="/login" className={styles.registerGateSecondary}>Уже есть аккаунт? Войти</a>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {isPremium && (
+      {isLoggedIn && (
         <div ref={loaderRef} className={styles.loader}>
           {loading && (
             <div className={styles.spinner}>

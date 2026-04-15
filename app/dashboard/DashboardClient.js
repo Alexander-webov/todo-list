@@ -39,15 +39,6 @@ export function DashboardClient({ profile, email, payments, paymentStatus }) {
     }
   }
 
-  // Исправленная проверка — premium_until может быть NULL (вечный премиум)
-  const isPremium = profile?.is_premium === true && (
-    !profile?.premium_until || new Date(profile.premium_until) > new Date()
-  );
-
-  const premiumUntil = profile?.premium_until
-    ? format(new Date(profile.premium_until), 'd MMMM yyyy', { locale: ru })
-    : 'Бессрочно';
-
   return (
     <div className={styles.page}>
       <div className={styles.header}>
@@ -56,10 +47,6 @@ export function DashboardClient({ profile, email, payments, paymentStatus }) {
           {loading ? '...' : 'Выйти'}
         </button>
       </div>
-
-      {paymentStatus === 'success' && (
-        <div className={styles.successBanner}>🎉 Оплата прошла! Премиум активирован.</div>
-      )}
 
       <div className={styles.section}>
         <h1 className={styles.sectionTitle}>Мой аккаунт</h1>
@@ -70,53 +57,38 @@ export function DashboardClient({ profile, email, payments, paymentStatus }) {
           </div>
           <div className={styles.row}>
             <span className={styles.rowLabel}>Статус</span>
-            <span className={`${styles.rowValue} ${isPremium ? styles.premium : styles.free}`}>
-              {isPremium ? '⚡ Премиум' : '🔒 Бесплатный'}
+            <span className={`${styles.rowValue} ${styles.premium}`}>
+              ✅ Полный доступ (бесплатно)
             </span>
           </div>
-          {isPremium && (
-            <div className={styles.row}>
-              <span className={styles.rowLabel}>Активен до</span>
-              <span className={styles.rowValue}>{premiumUntil}</span>
-            </div>
-          )}
         </div>
       </div>
 
-      {!isPremium && (
-        <div className={styles.section}>
-          <a href="/pricing" className={styles.upgradeBtn}>⚡ Получить Премиум — от 149 ₽/мес</a>
+      <div className={styles.section}>
+        <h2 className={styles.sectionTitle}>Telegram уведомления</h2>
+        <div className={styles.card} style={{ padding: '18px' }}>
+          <p className={styles.tgDesc}>Получай новые проекты прямо в Telegram.</p>
+          <ol className={styles.tgSteps}>
+            <li>Открой  <Link href="https://t.me/freelance_hub_premium_bot" className={styles.textLinkBot} >бота</Link> и отправь /start — он пришлёт твой Chat ID</li>
+            <li>Вставь Chat ID ниже и нажми «Подключить»</li>
+            <li>Для смены категории вызовите команды /categories </li>
+            <li>Внимание! Мы рекомендуем оставить все категории  </li>
+          </ol>
+          <form className={styles.tgForm} onSubmit={connectTelegram}>
+            <input type="text" className={styles.tgInput}
+              placeholder="Твой Chat ID (например: 123456789)"
+              value={chatId} onChange={e => setChatId(e.target.value)} required />
+            <button type="submit" className={styles.tgBtn} disabled={tgLoading}>
+              {tgLoading ? '...' : profile?.telegram_chat_id ? 'Обновить' : 'Подключить'}
+            </button>
+          </form>
+          {tgResult && (
+            <p className={`${styles.tgResult} ${tgResult.ok ? styles.tgOk : styles.tgErr}`}>
+              {tgResult.msg}
+            </p>
+          )}
         </div>
-      )}
-
-      {isPremium && (
-        <div className={styles.section}>
-          <h2 className={styles.sectionTitle}>Telegram уведомления</h2>
-          <div className={styles.card} style={{ padding: '18px' }}>
-            <p className={styles.tgDesc}>Получай новые проекты прямо в Telegram.</p>
-            <ol className={styles.tgSteps}>
-              <li>Открой  <Link href="https://t.me/freelance_hub_premium_bot" className={styles.textLinkBot} >бота</Link> и отправь /start — он пришлёт твой Chat ID</li>
-              <li>Вставь Chat ID ниже и нажми «Подключить»</li>
-              <li>Для смены категории вызовите команды /categories </li>
-              <li>Внимание! Мы рекомендуем оставить все категории  </li>
-            </ol>
-            <form className={styles.tgForm} onSubmit={connectTelegram}>
-              <input type="text" className={styles.tgInput}
-                placeholder="Твой Chat ID (например: 123456789)"
-                value={chatId} onChange={e => setChatId(e.target.value)} required />
-              <button type="submit" className={styles.tgBtn} disabled={tgLoading}>
-                {tgLoading ? '...' : profile?.telegram_chat_id ? 'Обновить' : 'Подключить'}
-              </button>
-            </form>
-            {tgResult && (
-              <p className={`${styles.tgResult} ${tgResult.ok ? styles.tgOk : styles.tgErr}`}>
-                {tgResult.msg}
-              </p>
-            )}
-          </div>
-        </div>
-      )
-      }
+      </div>
 
       {
         payments.length > 0 && (

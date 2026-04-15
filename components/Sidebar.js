@@ -1,9 +1,10 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './Sidebar.module.css';
 import { ArticleOfDay } from './ArticleOfDay';
 
-const SOURCES = [
+const RU_SOURCES = [
   { key: 'fl',          label: 'FL.ru',          color: '#ff6600' },
   { key: 'kwork',       label: 'Kwork',          color: '#ff4d00' },
   { key: 'freelanceru', label: 'Freelance.ru',   color: '#2ecc71' },
@@ -11,9 +12,17 @@ const SOURCES = [
   { key: 'youdo',       label: 'Youdo',          color: '#f5a623' },
 ];
 
+const INT_SOURCES = [
+  { key: 'upwork',        label: 'Upwork',          color: '#14a800' },
+  { key: 'freelancer',    label: 'Freelancer.com',  color: '#29b2fe' },
+  { key: 'peopleperhour', label: 'PeoplePerHour',   color: '#f7931a' },
+  { key: 'guru',          label: 'Guru.com',        color: '#5b3cc4' },
+];
+
 const CATEGORIES = [
-  'Web Development', 'Mobile', 'Design', 'Writing',
-  'Marketing', 'Data', 'Backend', 'Другое',
+  'WordPress / Tilda / CMS', 'Видеомонтаж', 'Графический дизайн',
+  'Web дизайн', 'SMM', 'Парсинг', 'Вёрстка',
+  'FrontEnd', 'BackEnd', 'Другое',
 ];
 
 export function Sidebar() {
@@ -21,6 +30,15 @@ export function Sidebar() {
   const params = useSearchParams();
   const activeSource   = params.get('source')   || '';
   const activeCategory = params.get('category') || '';
+  const region         = params.get('region')   || 'ru';
+  const [counts, setCounts] = useState({});
+
+  useEffect(() => {
+    fetch('/api/stats/categories')
+      .then(r => r.json())
+      .then(setCounts)
+      .catch(() => {});
+  }, []);
 
   function setFilter(key, value) {
     const next = new URLSearchParams(params.toString());
@@ -30,16 +48,23 @@ export function Sidebar() {
     router.push(`/?${next.toString()}`);
   }
 
-  function resetAll() { router.push('/'); }
+  function resetAll() {
+    const next = new URLSearchParams();
+    next.set('region', region);
+    router.push(`/?${next.toString()}`);
+  }
 
   const hasFilters = activeSource || activeCategory;
+  const sources = region === 'int' ? INT_SOURCES : RU_SOURCES;
 
   return (
     <aside className={styles.sidebar}>
       <div className={styles.section}>
-        <p className={styles.sectionTitle}>Биржи</p>
+        <p className={styles.sectionTitle}>
+          {region === 'int' ? '🌐 Зарубежные биржи' : '🇷🇺 Российские биржи'}
+        </p>
         <div className={styles.filterList}>
-          {SOURCES.map((s) => (
+          {sources.map((s) => (
             <button key={s.key}
               className={`${styles.filterBtn} ${activeSource === s.key ? styles.active : ''}`}
               onClick={() => setFilter('source', s.key)}>
@@ -56,7 +81,10 @@ export function Sidebar() {
             <button key={cat}
               className={`${styles.filterBtn} ${activeCategory === cat ? styles.active : ''}`}
               onClick={() => setFilter('category', cat)}>
-              {cat}
+              <span className={styles.catName}>{cat}</span>
+              {counts[cat] !== undefined && (
+                <span className={styles.catCount}>{counts[cat]}</span>
+              )}
             </button>
           ))}
         </div>

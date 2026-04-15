@@ -52,6 +52,33 @@ const SOURCES = {
     about: 'Freelance.ru — российская фриланс-биржа с широким выбором проектов по всем направлениям.',
     keywords: 'Freelance.ru заказы, фриланс биржа, проекты Freelance.ru',
   },
+  'upwork': {
+    name: 'Upwork',
+    key: 'upwork',
+    emoji: '🌐',
+    color: '#14a800',
+    description: 'Все актуальные заказы с Upwork в одном месте. Крупнейшая мировая фриланс-платформа.',
+    about: 'Upwork — крупнейшая мировая платформа для фрилансеров. Миллионы проектов по разработке, дизайну, маркетингу и другим направлениям.',
+    keywords: 'Upwork заказы, фриланс Upwork, международная биржа, удалённая работа',
+  },
+  'peopleperhour': {
+    name: 'PeoplePerHour',
+    key: 'peopleperhour',
+    emoji: '🌐',
+    color: '#f7931a',
+    description: 'Все актуальные заказы с PeoplePerHour. Британская фриланс-биржа с проектами по всему миру.',
+    about: 'PeoplePerHour — британская платформа для фрилансеров, популярная в Европе и по всему миру. Удобная система предложений и проектов.',
+    keywords: 'PeoplePerHour заказы, фриланс PPH, британская биржа, удалённая работа',
+  },
+  'guru': {
+    name: 'Guru.com',
+    key: 'guru',
+    emoji: '🌐',
+    color: '#5b3cc4',
+    description: 'Все актуальные заказы с Guru.com. Международная фриланс-биржа с проектами для профессионалов.',
+    about: 'Guru.com — международная фриланс-платформа, ориентированная на профессиональных исполнителей. Проекты по разработке, дизайну, бизнес-консультированию и другим областям.',
+    keywords: 'Guru.com заказы, фриланс Guru, международная биржа, профессиональный фриланс',
+  },
 };
 
 export async function generateMetadata({ params }) {
@@ -81,13 +108,15 @@ export default async function SourcePage({ params }) {
     .limit(50);
 
   const CATEGORY_NAMES = {
-    'Web Development': 'Веб-разработка',
-    'Design': 'Дизайн',
-    'Mobile': 'Мобильная разработка',
-    'Writing': 'Копирайтинг',
-    'Marketing': 'Маркетинг',
-    'Backend': 'Backend',
-    'Data': 'Данные',
+    'WordPress / Tilda / CMS': 'WordPress / Tilda / CMS',
+    'Видеомонтаж': 'Видеомонтаж',
+    'Графический дизайн': 'Графический дизайн',
+    'Web дизайн': 'Web дизайн',
+    'SMM': 'SMM',
+    'Парсинг': 'Парсинг',
+    'Вёрстка': 'Вёрстка',
+    'FrontEnd': 'FrontEnd',
+    'BackEnd': 'BackEnd',
     'Другое': 'Другое',
   };
 
@@ -145,7 +174,7 @@ export default async function SourcePage({ params }) {
         <div className={styles.cta}>
           <h2>Получай новые заказы с {source.name} первым</h2>
           <p>Подключи уведомления в Telegram — новые проекты приходят сразу как появляются на {source.name}</p>
-          <a href="/register" className={styles.ctaBtn}>Попробовать 3 дня бесплатно</a>
+          <a href="/register" className={styles.ctaBtn}>Зарегистрироваться бесплатно</a>
         </div>
       </div>
     </div>

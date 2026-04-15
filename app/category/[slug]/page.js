@@ -1,4 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase';
+import { CATEGORY_SEO } from '@/lib/categories';
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/Header';
 import styles from './category.module.css';
@@ -6,63 +7,8 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
-const CATEGORIES = {
-  'web-development': {
-    name: 'Веб-разработка',
-    emoji: '🌐',
-    description: 'Заказы на разработку сайтов, лендингов, интернет-магазинов, веб-приложений. Актуальные проекты с FL.ru, Kwork, Freelancer.com и других бирж.',
-    keywords: 'веб разработка фриланс, заказы сайт, удалённая работа программист',
-  },
-  'design': {
-    name: 'Дизайн',
-    emoji: '🎨',
-    description: 'Заказы на дизайн логотипов, баннеров, UI/UX, брендинг. Все актуальные проекты для дизайнеров в одном месте.',
-    keywords: 'дизайн фриланс заказы, логотип удалённо, UI UX дизайнер',
-  },
-  'mobile': {
-    name: 'Мобильная разработка',
-    emoji: '📱',
-    description: 'Заказы на разработку мобильных приложений iOS и Android, Flutter, React Native. Актуальные проекты для мобильных разработчиков.',
-    keywords: 'мобильная разработка заказы, iOS Android фриланс, приложение удалённо',
-  },
-  'writing': {
-    name: 'Копирайтинг и тексты',
-    emoji: '✍️',
-    description: 'Заказы на написание текстов, статей, копирайтинг, переводы. Все проекты для копирайтеров и авторов.',
-    keywords: 'копирайтинг заказы, написание текстов удалённо, статьи фриланс',
-  },
-  'marketing': {
-    name: 'Маркетинг и реклама',
-    emoji: '📣',
-    description: 'Заказы на SEO, SMM, контекстную рекламу, таргет. Актуальные проекты для маркетологов.',
-    keywords: 'маркетинг фриланс заказы, SMM удалённо, SEO реклама',
-  },
-  'backend': {
-    name: 'Backend разработка',
-    emoji: '⚙️',
-    description: 'Заказы на серверную разработку, API, базы данных, Python, PHP, Node.js. Проекты для backend-разработчиков.',
-    keywords: 'backend разработка заказы, API фриланс, Python PHP удалённо',
-  },
-  'data': {
-    name: 'Данные и аналитика',
-    emoji: '📊',
-    description: 'Заказы на анализ данных, парсинг, Excel, 1С, Python. Актуальные проекты для аналитиков.',
-    keywords: 'аналитика данные фриланс, парсинг заказы, Excel 1С удалённо',
-  },
-};
-
-const SLUG_TO_CATEGORY = {
-  'web-development': 'Web Development',
-  'design': 'Design',
-  'mobile': 'Mobile',
-  'writing': 'Writing',
-  'marketing': 'Marketing',
-  'backend': 'Backend',
-  'data': 'Data',
-};
-
 export async function generateMetadata({ params }) {
-  const cat = CATEGORIES[params.slug];
+  const cat = CATEGORY_SEO[params.slug];
   if (!cat) return { title: 'Не найдено' };
   return {
     title: `${cat.name} — фриланс заказы | FreelanceHere`,
@@ -72,26 +18,27 @@ export async function generateMetadata({ params }) {
 }
 
 export async function generateStaticParams() {
-  return Object.keys(CATEGORIES).map(slug => ({ slug }));
+  return Object.keys(CATEGORY_SEO).map(slug => ({ slug }));
 }
 
 export default async function CategoryPage({ params }) {
-  const cat = CATEGORIES[params.slug];
+  const cat = CATEGORY_SEO[params.slug];
   if (!cat) notFound();
 
-  const dbCategory = SLUG_TO_CATEGORY[params.slug];
   const db = supabaseAdmin();
 
   const { data: projects, count } = await db
     .from('projects')
     .select('*', { count: 'exact' })
-    .eq('category', dbCategory)
+    .eq('category', cat.dbCategory)
     .order('created_at', { ascending: false })
     .limit(50);
 
   const SOURCE_NAMES = {
     freelancer: 'Freelancer.com', fl: 'FL.ru',
     kwork: 'Kwork', workzilla: 'Workzilla', freelanceru: 'Freelance.ru',
+    upwork: 'Upwork', peopleperhour: 'PeoplePerHour',
+    guru: 'Guru.com',
   };
 
   return (
@@ -110,7 +57,7 @@ export default async function CategoryPage({ params }) {
 
         {/* Навигация по категориям */}
         <div className={styles.catNav}>
-          {Object.entries(CATEGORIES).map(([slug, c]) => (
+          {Object.entries(CATEGORY_SEO).map(([slug, c]) => (
             <Link
               key={slug}
               href={`/category/${slug}`}
@@ -151,7 +98,7 @@ export default async function CategoryPage({ params }) {
           <h2>Хочешь видеть все заказы первым?</h2>
           <p>Подключи уведомления в Telegram — новые проекты по {cat.name.toLowerCase()} приходят сразу как появляются</p>
           <a href="/register" className={styles.ctaBtn}>
-            Попробовать 3 дня бесплатно
+            Зарегистрироваться бесплатно
           </a>
         </div>
       </div>

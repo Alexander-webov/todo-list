@@ -1,37 +1,15 @@
 'use client';
-import { useState } from 'react';
 import styles from './pricing.module.css';
 
 export default function PricingPage() {
-  const [loading, setLoading] = useState(null);
-  const [error, setError] = useState('');
-
-  async function pay(provider) {
-    setLoading(provider);
-    setError('');
-    try {
-      const res = await fetch(`/api/payment/${provider}/create`, { method: 'POST' });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setError(data.error || 'Ошибка создания платежа');
-        setLoading(null);
-      }
-    } catch {
-      setError('Ошибка соединения');
-      setLoading(null);
-    }
-  }
-
   return (
     <div className={styles.page}>
       <a href="/" className={styles.back}>← Назад</a>
 
       <div className={styles.hero}>
-        <span className={styles.badge}>⚡ Премиум</span>
-        <h1 className={styles.title}>Доступ ко всем проектам</h1>
-        <p className={styles.sub}>Тысячи новых проектов каждый день с 5 фриланс-бирж в одном месте</p>
+        <span className={styles.badge}>🎉 Бесплатно</span>
+        <h1 className={styles.title}>Полный доступ — бесплатно!</h1>
+        <p className={styles.sub}>Все функции доступны каждому. Без ограничений, без подписок.</p>
       </div>
 
       <div className={styles.features}>
@@ -40,6 +18,8 @@ export default function PricingPage() {
           { icon: '🔔', text: 'Уведомления в Telegram' },
           { icon: '✦', text: 'AI-генерация откликов (СКОРО)' },
           { icon: '🔍', text: 'Поиск и фильтры по биржам' },
+          { icon: '📊', text: 'Категории и процент совпадения' },
+          { icon: '⚡', text: 'Обновление каждую минуту' },
         ].map(f => (
           <div key={f.text} className={styles.feature}>
             <span className={styles.featureIcon}>{f.icon}</span>
@@ -49,55 +29,26 @@ export default function PricingPage() {
       </div>
 
       <div className={styles.plans}>
-        {/* YooKassa — для РФ */}
-        <div className={styles.plan}>
-          <div className={styles.planHeader}>
-            <span className={styles.planFlag}>🇷🇺</span>
-            <div>
-              <p className={styles.planName}>Российская карта</p>
-              <p className={styles.planDesc}>Visa, Mastercard, Мир · ЮKassa</p>
-            </div>
-          </div>
-          <div className={styles.planPrice}>
-            <span className={styles.price}>149</span>
-            <span className={styles.currency}>₽/мес</span>
-          </div>
-          <button
-            className={styles.payBtn}
-            onClick={() => pay('yookassa')}
-            disabled={!!loading}
-          >
-            {loading === 'yookassa' ? 'Переход...' : 'Оплатить через ЮKassa'}
-          </button>
-        </div>
-
-        {/* Stripe — международные */}
         <div className={`${styles.plan} ${styles.planHighlight}`}>
           <div className={styles.planHeader}>
-            <span className={styles.planFlag}>🌍</span>
+            <span className={styles.planFlag}>✅</span>
             <div>
-              <p className={styles.planName}>Международная карта</p>
-              <p className={styles.planDesc}>Visa, Mastercard · Stripe</p>
+              <p className={styles.planName}>Полный доступ</p>
+              <p className={styles.planDesc}>Все функции · Без ограничений</p>
             </div>
           </div>
           <div className={styles.planPrice}>
-            <span className={styles.price}>$5</span>
-            <span className={styles.currency}>/мес</span>
+            <span className={styles.price}>0</span>
+            <span className={styles.currency}>₽</span>
           </div>
-          <button
-            className={`${styles.payBtn} ${styles.payBtnStripe}`}
-            onClick={() => pay('stripe')}
-            disabled={!!loading}
-          >
-            {loading === 'stripe' ? 'Переход...' : 'Pay with Stripe'}
-          </button>
+          <a href="/register" className={styles.payBtn} style={{ textAlign: 'center', textDecoration: 'none' }}>
+            Зарегистрироваться бесплатно
+          </a>
         </div>
       </div>
 
-      {error && <p className={styles.error}>{error}</p>}
-
       <p className={styles.note}>
-        Подписка активируется сразу после оплаты. Отмена — в любое время.
+        Регистрация занимает 30 секунд. Подключи Telegram — и получай заказы моментально.
       </p>
     </div>
   );

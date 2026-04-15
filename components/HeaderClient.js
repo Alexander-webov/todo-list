@@ -6,7 +6,7 @@ import { ThemeToggle } from './ThemeToggle';
 
 
 
-export function HeaderClient({ user, isPremium, isAdmin }) {
+export function HeaderClient({ user, isAdmin }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -36,7 +36,6 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
         </div>
         <nav className={styles.nav}>
           <a href="/" className={styles.navLink}>Проекты</a>
-          <a href="/pricing" className={styles.navLink}>Тарифы</a>
           <a href="/partners" className={styles.navLink}>Биржи</a>
           <a href="/blog" className={styles.navLink}>Блог</a>
           <a href="/faq" className={styles.navLink}>FAQ</a>
@@ -46,7 +45,6 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
         <div className={styles.actions}>
           {user ? (
             <>
-              {isPremium && <span className={styles.premiumBadge}>⚡ Премиум</span>}
               <a href="/settings" className={styles.navLink} title="Настройка совпадений">🎯</a>
               <a href="/dashboard" className={styles.btnOutline}>{user.email.split('@')[0]}</a>
               <button className={styles.btnOutline} onClick={logout}>Выйти</button>
@@ -54,7 +52,7 @@ export function HeaderClient({ user, isPremium, isAdmin }) {
           ) : (
             <>
               <a href="/login" className={styles.btnOutline}>Войти</a>
-              <a href="/register" className={styles.btnPrimary}>Получить доступ</a>
+              <a href="/register" className={styles.btnPrimary}>Регистрация</a>
             </>
           )}
         </div>

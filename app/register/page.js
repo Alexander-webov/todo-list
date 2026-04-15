@@ -63,7 +63,7 @@ export default function RegisterPage() {
         <h1 className={styles.title}>Регистрация</h1>
         {refCode && (
           <div style={{ background: 'rgba(167,139,250,0.1)', border: '1px solid rgba(167,139,250,0.3)', borderRadius: 8, padding: '10px 14px', marginBottom: 8, fontSize: 13, color: '#a78bfa' }}>
-            🎁 Реферальный код применится автоматически — получишь 3 дня бесплатно!
+            🎁 Реферальный код применится автоматически!
           </div>
         )}
         <form className={styles.form} onSubmit={handleSubmit}>

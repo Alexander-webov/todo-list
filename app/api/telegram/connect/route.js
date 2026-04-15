@@ -24,7 +24,7 @@ export async function POST(request) {
     chat_id,
     '✅ <b>Telegram подключён к allFreelancersHere!</b>\n\n' +
     'Теперь я буду присылать тебе новые проекты сразу как они появятся на биржах.\n\n' +
-    '🔔 Уведомления активны пока действует Премиум.'
+    '🔔 Уведомления активированы!'
   );
 
   return NextResponse.json({ success: true });

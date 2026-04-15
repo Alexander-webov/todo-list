@@ -1,24 +1,9 @@
 import { NextResponse } from 'next/server';
 import { sendTelegramMessage } from '@/lib/telegram';
 import { supabaseAdmin } from '@/lib/supabase';
+import { CATEGORIES, CATEGORY_EMOJI } from '@/lib/categories';
 
 export const runtime = 'nodejs';
-
-const CATEGORIES = [
-  'Web Development', 'Mobile', 'Design', 'Writing',
-  'Marketing', 'Data', 'Backend', 'Другое'
-];
-
-const CATEGORY_EMOJI = {
-  'Web Development': '🌐',
-  'Mobile': '📱',
-  'Design': '🎨',
-  'Writing': '✍️',
-  'Marketing': '📣',
-  'Data': '📊',
-  'Backend': '⚙️',
-  'Другое': '📌',
-};
 
 // Клавиатура выбора категорий
 function buildCategoryKeyboard(selectedCategories = []) {
@@ -164,7 +149,7 @@ export async function POST(request) {
       const db = supabaseAdmin();
       const { data: profile } = await db
         .from('profiles')
-        .select('is_premium, premium_until, telegram_chat_id')
+        .select('telegram_chat_id')
         .eq('telegram_chat_id', String(chatId))
         .single();
 
@@ -173,19 +158,6 @@ export async function POST(request) {
           chatId,
           '❌ <b>Сначала подключи Telegram в личном кабинете на сайте.</b>\n\n' +
           `Твой Chat ID: <code>${chatId}</code>`
-        );
-        return NextResponse.json({ ok: true });
-      }
-
-      const isPremium = profile.is_premium && (
-        !profile.premium_until || new Date(profile.premium_until) > new Date()
-      );
-
-      if (!isPremium) {
-        await sendTelegramMessage(
-          chatId,
-          '⚡ <b>Эта функция доступна только для Премиум пользователей.</b>\n\n' +
-          'Оформи подписку на сайте allFreelancersHere.'
         );
         return NextResponse.json({ ok: true });
       }

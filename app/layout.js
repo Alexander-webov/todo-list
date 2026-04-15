@@ -9,11 +9,12 @@ export const metadata = {
     default: 'FreelanceHere — все фриланс-заказы в одном месте',
     template: '%s | FreelanceHere',
   },
-  description: 'Агрегатор фриланс-проектов с FL.ru, Kwork, Freelancer.com, Workzilla и Freelance.ru. Обновляется каждую минуту. Уведомления в Telegram. Первые 3 дня бесплатно.',
+  description: 'Агрегатор фриланс-проектов с 9 бирж: FL.ru, Kwork, Workzilla, Freelance.ru, Youdo, Upwork, Freelancer.com, PeoplePerHour, Guru, Обновляется каждую минуту. Полностью бесплатно.',
   keywords: [
     'фриланс заказы', 'агрегатор фриланс', 'найти заказы фриланс',
-    'FL.ru заказы', 'Kwork заказы', 'удалённая работа', 'фриланс биржа',
+    'FL.ru заказы', 'Kwork заказы', 'Upwork заказы', 'удалённая работа', 'фриланс биржа',
     'заказы для фрилансеров', 'фриланс проекты', 'найти клиентов фриланс',
+    'международный фриланс', 'Freelancer.com', 'PeoplePerHour', 'Guru.com',
   ],
   authors: [{ name: 'FreelanceHere' }],
   creator: 'FreelanceHere',
@@ -55,7 +56,7 @@ const websiteSchema = {
   '@type': 'WebSite',
   name: 'FreelanceHere',
   url: SITE_URL,
-  description: 'Агрегатор фриланс-проектов с FL.ru, Kwork, Freelancer.com, Workzilla и Freelance.ru',
+  description: 'Агрегатор фриланс-проектов с 9 бирж: российские и международные площадки в одном месте',
   potentialAction: {
     '@type': 'SearchAction',
     target: `${SITE_URL}/?search={search_term_string}`,

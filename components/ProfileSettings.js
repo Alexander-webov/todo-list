@@ -3,14 +3,20 @@ import { useState, useEffect } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import styles from './ProfileSettings.module.css';
 
-const CATEGORIES = ['Web Development', 'Mobile', 'Design', 'Writing', 'Marketing', 'Data', 'Backend'];
+const CATEGORIES = [
+  'WordPress / Tilda / CMS', 'Видеомонтаж', 'Графический дизайн',
+  'Web дизайн', 'SMM', 'Парсинг', 'Вёрстка', 'FrontEnd', 'BackEnd',
+];
 const SOURCES = [
-  { key: 'fl', label: 'FL.ru' },
-  { key: 'kwork', label: 'Kwork' },
-  { key: 'freelancer', label: 'Freelancer.com' },
-  { key: 'workzilla', label: 'Workzilla' },
-  { key: 'freelanceru', label: 'Freelance.ru' },
-  { key: 'youdo', label: 'Youdo' },
+  { key: 'fl', label: '🇷🇺 FL.ru' },
+  { key: 'kwork', label: '🇷🇺 Kwork' },
+  { key: 'freelanceru', label: '🇷🇺 Freelance.ru' },
+  { key: 'workzilla', label: '🇷🇺 Workzilla' },
+  { key: 'youdo', label: '🇷🇺 Youdo' },
+  { key: 'upwork', label: '🌐 Upwork' },
+  { key: 'freelancer', label: '🌐 Freelancer.com' },
+  { key: 'peopleperhour', label: '🌐 PeoplePerHour' },
+  { key: 'guru', label: '🌐 Guru.com' },
 ];
 
 function TagInput({ value = [], onChange, placeholder }) {

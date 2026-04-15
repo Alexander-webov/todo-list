@@ -4,15 +4,15 @@ import styles from './HeroBlock.module.css';
 
 const STATS = [
   { label: 'проектов за 24 часа', value: '3 000+' },
-  { label: 'бирж в одном месте', value: '6' },
+  { label: 'бирж в одном месте', value: '9' },
   { label: 'обновление', value: 'каждую минуту' },
 ];
 
 const FEATURES = [
   { icon: '🔥', text: '4400+ ПРОЕКТОВ каждый день. Все ТОП сервисы тут!' },
-  { icon: '🔔', text: 'Уведомления в Telegram. Легко подключить - всегда есть доступ!' },
+  { icon: '🔔', text: 'Уведомления в Telegram. Легко подключить — всегда на связи!' },
   { icon: '✦', text: 'AI генерирует отклик за тебя — просто нажми кнопку!' },
-  { icon: '⚡', text: 'Сервис дает возможность быть ПЕРВЫМ! У конкурентов нет шанса' },
+  { icon: '⚡', text: 'Полностью бесплатно. Без ограничений. Без подписок.' },
 ];
 
 export function HeroBlock({ isLoggedIn }) {
@@ -40,8 +40,8 @@ export function HeroBlock({ isLoggedIn }) {
       </h1>
 
       <p className={styles.sub}>
-        Удобный интерфейс позволяет видит заказы с ТОПОВЫХ фриланс бирж в реальном времени. Пока кто-то нажимаю кнопку обновить и бегают по вкладкам, ты видишь заказ здесь и сейчас, ТЫ ПЕРВЫЙ!   <br />
-        AI отклик дает тебе супер скорость. <strong>Тебя заметят.</strong>
+        Удобный интерфейс позволяет видеть заказы с ТОПОВЫХ фриланс бирж в реальном времени. Пока кто-то нажимает кнопку обновить и бегает по вкладкам, ты видишь заказ здесь и сейчас, ТЫ ПЕРВЫЙ!   <br />
+        AI отклик даёт тебе супер скорость. <strong>Тебя заметят.</strong>
       </p>
 
       <div className={styles.features}>
@@ -55,10 +55,7 @@ export function HeroBlock({ isLoggedIn }) {
 
       <div className={styles.ctas}>
         <a href="/register" className={styles.ctaPrimary}>
-          🎁 Попробовать 3 дня бесплатно
-        </a>
-        <a href="/pricing" className={styles.ctaSecondary}>
-          Смотреть тарифы →
+          🚀 Зарегистрироваться бесплатно
         </a>
       </div>
 
@@ -69,7 +66,7 @@ export function HeroBlock({ isLoggedIn }) {
         </div>
         <div className={styles.statDivider} />
         <div className={styles.stat}>
-          <span className={styles.statValue}>6 топовых</span>
+          <span className={styles.statValue}>9 топовых</span>
           <span className={styles.statLabel}>бирж одновременно</span>
         </div>
         <div className={styles.statDivider} />
@@ -80,7 +77,7 @@ export function HeroBlock({ isLoggedIn }) {
       </div>
 
       <p className={styles.proof}>
-        Уже используют фрилансеры из России и СНГ · Без карты · Отмена в любой момент
+        Уже используют фрилансеры из России и СНГ · 100% бесплатно · Все функции доступны
       </p>
     </div>
   );

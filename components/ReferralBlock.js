@@ -59,7 +59,7 @@ export function ReferralBlock() {
       </div>
 
       <p className={styles.desc}>
-        За каждого приглашённого друга вы оба получаете <strong>+7 дней Премиума</strong> — ты и твой друг.
+        За каждого приглашённого друга вы оба получаете бонус — помоги друзьям найти заказы быстрее!
       </p>
 
       <div className={styles.linkBox}>
