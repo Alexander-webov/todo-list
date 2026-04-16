@@ -2,7 +2,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './Sidebar.module.css';
+import adStyles from './AdSlot.module.css';
 import { ArticleOfDay } from './ArticleOfDay';
+import { DonationBanner } from './DonationBanner';
 
 const RU_SOURCES = [
   { key: 'fl',          label: 'FL.ru',          color: '#ff6600' },
@@ -32,11 +34,16 @@ export function Sidebar() {
   const activeCategory = params.get('category') || '';
   const region         = params.get('region')   || 'ru';
   const [counts, setCounts] = useState({});
+  const [sidebarAd, setSidebarAd] = useState(null);
 
   useEffect(() => {
     fetch('/api/stats/categories')
       .then(r => r.json())
       .then(setCounts)
+      .catch(() => {});
+    fetch('/api/admin/ads?position=sidebar&active=1')
+      .then(r => r.json())
+      .then(d => { if (d.ads?.length) setSidebarAd(d.ads[0]); })
       .catch(() => {});
   }, []);
 
@@ -92,6 +99,30 @@ export function Sidebar() {
       {hasFilters && (
         <button className={styles.resetBtn} onClick={resetAll}>✕ Сбросить фильтры</button>
       )}
+      {/* Рекламный блок в сайдбаре */}
+      {sidebarAd && (
+        <a
+          href={sidebarAd.link}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          className={adStyles.sidebarAd}
+          onClick={() => {
+            fetch('/api/ads/click', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: sidebarAd.id }),
+            }).catch(() => {});
+          }}
+        >
+          <span className={adStyles.sidebarBadge}>Реклама</span>
+          <p className={adStyles.sidebarTitle}>{sidebarAd.title}</p>
+          {sidebarAd.description && (
+            <p className={adStyles.sidebarDesc}>{sidebarAd.description}</p>
+          )}
+          <span className={adStyles.sidebarCta}>Подробнее →</span>
+        </a>
+      )}
+      <DonationBanner />
       <ArticleOfDay />
     </aside>
   );

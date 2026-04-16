@@ -109,6 +109,20 @@ export default function RootLayout({ children }) {
               ym(${YANDEX_METRIKA_ID}, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });`}
           </Script>
         )}
+
+        {/* Яндекс РСЯ (рекламная сеть) */}
+        {process.env.NEXT_PUBLIC_YANDEX_RTB_ID && (
+          <Script id="yandex-rtb" strategy="afterInteractive">
+            {`window.yaContextCb = window.yaContextCb || [];`}
+          </Script>
+        )}
+        {process.env.NEXT_PUBLIC_YANDEX_RTB_ID && (
+          <Script
+            src="https://yandex.ru/ads/system/context.js"
+            strategy="afterInteractive"
+            async
+          />
+        )}
       </head>
       <body>
         {YANDEX_METRIKA_ID && (

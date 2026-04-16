@@ -32,9 +32,59 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
   });
   const [artResult, setArtResult] = useState(null);
 
+  // Ads state
+  const [ads, setAds] = useState([]);
+  const [adsLoading, setAdsLoading] = useState(false);
+  const [editingAd, setEditingAd] = useState(null);
+  const [adForm, setAdForm] = useState({
+    title: '', description: '', image_url: '', link: '',
+    position: 'feed', is_active: true, priority: 0,
+  });
+  const [adResult, setAdResult] = useState(null);
+
   useEffect(() => {
     if (tab === 'articles') loadArticles();
+    if (tab === 'ads') loadAds();
   }, [tab]);
+
+  async function loadAds() {
+    setAdsLoading(true);
+    try {
+      const res = await fetch('/api/admin/ads');
+      const data = await res.json();
+      setAds(data.ads || []);
+    } catch { }
+    finally { setAdsLoading(false); }
+  }
+
+  async function saveAd(e) {
+    e.preventDefault();
+    setAdsLoading(true); setAdResult(null);
+    try {
+      const method = editingAd?.id ? 'PUT' : 'POST';
+      const body = editingAd?.id ? { ...adForm, id: editingAd.id } : adForm;
+      const res = await fetch('/api/admin/ads', {
+        method, headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (data.ad) {
+        setAdResult({ ok: true, msg: editingAd?.id ? 'Обновлено' : 'Создано' });
+        setEditingAd(null);
+        setAdForm({ title: '', description: '', image_url: '', link: '', position: 'feed', is_active: true, priority: 0 });
+        loadAds();
+      } else {
+        setAdResult({ ok: false, msg: data.error });
+      }
+    } catch { setAdResult({ ok: false, msg: 'Ошибка' }); }
+    finally { setAdsLoading(false); }
+  }
+
+  async function deleteAd(id) {
+    if (!confirm('Удалить?')) return;
+    await fetch(`/api/admin/ads?id=${id}`, { method: 'DELETE' });
+    loadAds();
+  }
 
   async function loadArticles() {
     setArtLoading(true);
@@ -134,7 +184,7 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
 
       {/* Вкладки */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
-        {[['stats','📊 Статистика'],['articles','📝 Статьи'],['premium','🎁 Премиум'],['telegram','🤖 Telegram']].map(([key, label]) => (
+        {[['stats','📊 Статистика'],['articles','📝 Статьи'],['ads','📣 Реклама'],['premium','🎁 Премиум'],['telegram','🤖 Telegram']].map(([key, label]) => (
           <button key={key} onClick={() => setTab(key)} style={{
             padding: '8px 16px', borderRadius: 8, border: '1px solid var(--border)',
             background: tab === key ? 'var(--accent)' : 'var(--bg-card)',
@@ -359,6 +409,84 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
               </div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Реклама */}
+      {tab === 'ads' && (
+        <div>
+          {!editingAd ? (
+            <div>
+              <button onClick={() => { setEditingAd({}); setAdForm({ title: '', description: '', image_url: '', link: '', position: 'feed', is_active: true, priority: 0 }); }}
+                style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600, marginBottom: 16 }}>
+                + Добавить рекламу
+              </button>
+              {adsLoading ? <p>Загрузка...</p> : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {ads.map(ad => (
+                    <div key={ad.id} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 10, padding: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <p style={{ fontWeight: 700, fontSize: 14 }}>
+                          {ad.is_active ? '🟢' : '🔴'} {ad.title}
+                        </p>
+                        <p style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+                          {ad.position} · приоритет: {ad.priority} · 👁 {ad.views || 0} · 👆 {ad.clicks || 0}
+                        </p>
+                      </div>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <button onClick={() => { setEditingAd(ad); setAdForm({ title: ad.title, description: ad.description || '', image_url: ad.image_url || '', link: ad.link, position: ad.position, is_active: ad.is_active, priority: ad.priority || 0 }); }}
+                          style={{ padding: '6px 12px', background: 'var(--border)', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12 }}>✏️</button>
+                        <button onClick={() => deleteAd(ad.id)}
+                          style={{ padding: '6px 12px', background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12, color: '#ef4444' }}>🗑</button>
+                      </div>
+                    </div>
+                  ))}
+                  {ads.length === 0 && <p style={{ color: 'var(--text-dim)' }}>Нет объявлений</p>}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <button onClick={() => setEditingAd(null)} style={{ marginBottom: 12, background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>← Назад к списку</button>
+              <h2 style={{ marginBottom: 16 }}>{editingAd.id ? 'Редактировать' : 'Новое объявление'}</h2>
+              <form onSubmit={saveAd} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <input placeholder="Заголовок *" value={adForm.title} onChange={e => setAdForm({...adForm, title: e.target.value})} required
+                  className={styles.input} />
+                <textarea placeholder="Описание" value={adForm.description} onChange={e => setAdForm({...adForm, description: e.target.value})} rows={3}
+                  className={styles.input} style={{ resize: 'vertical' }} />
+                <input placeholder="Ссылка *" value={adForm.link} onChange={e => setAdForm({...adForm, link: e.target.value})} required
+                  className={styles.input} />
+                <input placeholder="URL картинки (опционально)" value={adForm.image_url} onChange={e => setAdForm({...adForm, image_url: e.target.value})}
+                  className={styles.input} />
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                  <label style={{ fontSize: 13 }}>Позиция:</label>
+                  <select value={adForm.position} onChange={e => setAdForm({...adForm, position: e.target.value})}
+                    className={styles.input} style={{ width: 'auto' }}>
+                    <option value="feed">В ленте</option>
+                    <option value="sidebar">В сайдбаре</option>
+                    <option value="telegram">В Telegram</option>
+                    <option value="all">Везде</option>
+                  </select>
+                  <label style={{ fontSize: 13 }}>Приоритет:</label>
+                  <input type="number" value={adForm.priority} onChange={e => setAdForm({...adForm, priority: parseInt(e.target.value)||0})}
+                    className={styles.input} style={{ width: 70 }} />
+                </div>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, cursor: 'pointer' }}>
+                  <input type="checkbox" checked={adForm.is_active} onChange={e => setAdForm({...adForm, is_active: e.target.checked})} />
+                  Активно
+                </label>
+                <button type="submit" disabled={adsLoading}
+                  style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600 }}>
+                  {adsLoading ? '...' : (editingAd.id ? 'Сохранить' : 'Создать')}
+                </button>
+              </form>
+              {adResult && (
+                <p style={{ marginTop: 10, color: adResult.ok ? 'var(--green)' : 'var(--red)', fontSize: 13 }}>
+                  {adResult.ok ? `✅ ${adResult.msg}` : `❌ ${adResult.msg}`}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

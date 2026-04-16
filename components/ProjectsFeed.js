@@ -1,11 +1,13 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ProjectCard } from './ProjectCard';
 import { SearchBar } from './SearchBar';
+import { AdSlot } from './AdSlot';
 import styles from './ProjectsFeed.module.css';
 
 const GUEST_LIMIT = 5;
+const AD_EVERY = 5; // рекламный блок каждые N карточек
 
 export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = false, profile = null }) {
   const params = useSearchParams();
@@ -17,6 +19,15 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
   const [hasMore, setHasMore] = useState(initialProjects.length < total);
   const lastChecked = useRef(new Date().toISOString());
   const loaderRef = useRef(null);
+  const [feedAds, setFeedAds] = useState([]);
+
+  // Загружаем рекламу для ленты
+  useEffect(() => {
+    fetch('/api/admin/ads?position=feed&active=1')
+      .then(r => r.json())
+      .then(d => setFeedAds(d.ads || []))
+      .catch(() => {});
+  }, []);
 
   const source   = params.get('source')   || '';
   const category = params.get('category') || '';
@@ -139,12 +150,17 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
 
       <div className={styles.grid}>
         {visibleProjects.map((p, i) => (
-          <ProjectCard
-            key={p.id}
-            project={p}
-            profile={profile}
-            style={{ animationDelay: `${Math.min(i % 20, 10) * 40}ms` }}
-          />
+          <React.Fragment key={p.id}>
+            <ProjectCard
+              project={p}
+              profile={profile}
+              style={{ animationDelay: `${Math.min(i % 20, 10) * 40}ms` }}
+            />
+            {/* Рекламный блок каждые AD_EVERY карточек */}
+            {(i + 1) % AD_EVERY === 0 && feedAds.length > 0 && (
+              <AdSlot ad={feedAds[Math.floor(i / AD_EVERY) % feedAds.length]} />
+            )}
+          </React.Fragment>
         ))}
       </div>
 
