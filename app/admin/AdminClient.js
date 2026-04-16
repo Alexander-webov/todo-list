@@ -417,27 +417,50 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
         <div>
           {!editingAd ? (
             <div>
-              <button onClick={() => { setEditingAd({}); setAdForm({ title: '', description: '', image_url: '', link: '', position: 'feed', is_active: true, priority: 0 }); }}
+              <button onClick={() => { setEditingAd({}); setAdForm({ title: '', description: '', image_url: '', link: '', position: 'telegram', is_active: true, priority: 0, tg_pin_hours: 2, tg_keep_hours: 48 }); }}
                 style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer', fontWeight: 600, marginBottom: 16 }}>
                 + Добавить рекламу
               </button>
               {adsLoading ? <p>Загрузка...</p> : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {ads.map(ad => (
-                    <div key={ad.id} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 10, padding: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div>
-                        <p style={{ fontWeight: 700, fontSize: 14 }}>
-                          {ad.is_active ? '🟢' : '🔴'} {ad.title}
-                        </p>
-                        <p style={{ fontSize: 12, color: 'var(--text-dim)' }}>
-                          {ad.position} · приоритет: {ad.priority} · 👁 {ad.views || 0} · 👆 {ad.clicks || 0}
-                        </p>
-                      </div>
-                      <div style={{ display: 'flex', gap: 6 }}>
-                        <button onClick={() => { setEditingAd(ad); setAdForm({ title: ad.title, description: ad.description || '', image_url: ad.image_url || '', link: ad.link, position: ad.position, is_active: ad.is_active, priority: ad.priority || 0 }); }}
-                          style={{ padding: '6px 12px', background: 'var(--border)', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12 }}>✏️</button>
-                        <button onClick={() => deleteAd(ad.id)}
-                          style={{ padding: '6px 12px', background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12, color: '#ef4444' }}>🗑</button>
+                    <div key={ad.id} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 10, padding: 14 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div>
+                          <p style={{ fontWeight: 700, fontSize: 14 }}>
+                            {ad.is_active ? '🟢' : '🔴'} {ad.title}
+                          </p>
+                          <p style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+                            {ad.position} · приоритет: {ad.priority} · 👁 {ad.views || 0} · 👆 {ad.clicks || 0}
+                            {ad.tg_posted_at && ` · 📢 ${new Date(ad.tg_posted_at).toLocaleString('ru')}`}
+                          </p>
+                          {ad.tg_posted_at && (
+                            <p style={{ fontSize: 11, color: '#f59e0b', marginTop: 4 }}>
+                              ⏸ Тишина {ad.tg_pin_hours || 2}ч · Удаление через {ad.tg_keep_hours || 48}ч
+                            </p>
+                          )}
+                        </div>
+                        <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                          {(ad.position === 'telegram' || ad.position === 'all') && !ad.tg_posted_at && (
+                            <button onClick={async () => {
+                              if (!confirm(`Опубликовать "${ad.title}" в канал?\nТишина ${ad.tg_pin_hours || 2}ч, удаление через ${ad.tg_keep_hours || 48}ч`)) return;
+                              setAdsLoading(true);
+                              const res = await fetch('/api/admin/ads/publish', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ id: ad.id }),
+                              });
+                              const data = await res.json();
+                              alert(data.ok ? '✅ Опубликовано!' : `❌ ${data.error}`);
+                              loadAds();
+                            }}
+                              style={{ padding: '6px 12px', background: 'rgba(34,197,94,0.15)', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12, color: '#22c55e', fontWeight: 600 }}>📢 В канал</button>
+                          )}
+                          <button onClick={() => { setEditingAd(ad); setAdForm({ title: ad.title, description: ad.description || '', image_url: ad.image_url || '', link: ad.link, position: ad.position, is_active: ad.is_active, priority: ad.priority || 0, tg_pin_hours: ad.tg_pin_hours || 2, tg_keep_hours: ad.tg_keep_hours || 48 }); }}
+                            style={{ padding: '6px 12px', background: 'var(--border)', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12 }}>✏️</button>
+                          <button onClick={() => deleteAd(ad.id)}
+                            style={{ padding: '6px 12px', background: 'rgba(239,68,68,0.1)', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 12, color: '#ef4444' }}>🗑</button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -458,7 +481,7 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
                   className={styles.input} />
                 <input placeholder="URL картинки (опционально)" value={adForm.image_url} onChange={e => setAdForm({...adForm, image_url: e.target.value})}
                   className={styles.input} />
-                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
                   <label style={{ fontSize: 13 }}>Позиция:</label>
                   <select value={adForm.position} onChange={e => setAdForm({...adForm, position: e.target.value})}
                     className={styles.input} style={{ width: 'auto' }}>
@@ -471,6 +494,16 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
                   <input type="number" value={adForm.priority} onChange={e => setAdForm({...adForm, priority: parseInt(e.target.value)||0})}
                     className={styles.input} style={{ width: 70 }} />
                 </div>
+                {(adForm.position === 'telegram' || adForm.position === 'all') && (
+                  <div style={{ display: 'flex', gap: 12, alignItems: 'center', background: 'rgba(59,130,246,0.08)', padding: 12, borderRadius: 8 }}>
+                    <label style={{ fontSize: 13 }}>⏸ Тишина (часы):</label>
+                    <input type="number" value={adForm.tg_pin_hours} onChange={e => setAdForm({...adForm, tg_pin_hours: parseInt(e.target.value)||2})}
+                      className={styles.input} style={{ width: 60 }} min="0" />
+                    <label style={{ fontSize: 13 }}>🗑 Удалить через (часы):</label>
+                    <input type="number" value={adForm.tg_keep_hours} onChange={e => setAdForm({...adForm, tg_keep_hours: parseInt(e.target.value)||48})}
+                      className={styles.input} style={{ width: 60 }} min="0" />
+                  </div>
+                )}
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, cursor: 'pointer' }}>
                   <input type="checkbox" checked={adForm.is_active} onChange={e => setAdForm({...adForm, is_active: e.target.checked})} />
                   Активно

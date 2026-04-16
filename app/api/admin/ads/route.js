@@ -38,6 +38,8 @@ export async function POST(request) {
     position: body.position || 'feed',
     is_active: body.is_active ?? true,
     priority: body.priority || 0,
+    tg_pin_hours: body.tg_pin_hours ?? 2,
+    tg_keep_hours: body.tg_keep_hours ?? 48,
   }).select().single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -61,6 +63,8 @@ export async function PUT(request) {
     position: body.position,
     is_active: body.is_active,
     priority: body.priority,
+    tg_pin_hours: body.tg_pin_hours,
+    tg_keep_hours: body.tg_keep_hours,
   }).eq('id', body.id).select().single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
