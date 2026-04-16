@@ -3,6 +3,9 @@ import styles from './faq.module.css';
 export const metadata = {
   title: 'FAQ — Часто задаваемые вопросы | FreelanceHere',
   description: 'Ответы на частые вопросы о FreelanceHere — агрегаторе фриланс-проектов',
+  alternates: {
+    canonical: 'https://allfreelancershere.ru/faq',
+  },
 };
 
 const faqs = [

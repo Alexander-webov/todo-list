@@ -8,6 +8,9 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Блог о фрилансе — советы и статьи | FreelanceHere',
   description: 'Полезные статьи о фрилансе: как найти заказы, как писать отклики, как зарабатывать больше.',
+  alternates: {
+    canonical: 'https://allfreelancershere.ru/blog',
+  },
 };
 
 const STATIC_ARTICLES = [

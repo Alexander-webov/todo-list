@@ -39,9 +39,6 @@ export const metadata = {
     description: 'FL.ru + Kwork + Freelancer.com + Workzilla + Freelance.ru + Youdo',
     images: [`${SITE_URL}/og-image.png`],
   },
-  alternates: {
-    canonical: SITE_URL,
-  },
   verification: {
     yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
@@ -75,7 +72,7 @@ const organizationSchema = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ru">
+    <html lang="ru" suppressHydrationWarning>
       <head>
         {/* Яндекс верификация */}
         {process.env.NEXT_PUBLIC_YANDEX_VERIFICATION && (

@@ -4,6 +4,9 @@ import styles from './partners.module.css';
 export const metadata = {
   title: 'Зарегистрируйся на фриланс-биржах — allFreelancersHere',
   description: 'Все популярные фриланс-биржи в одном месте. Регистрируйся и начинай зарабатывать.',
+  alternates: {
+    canonical: 'https://allfreelancershere.ru/partners',
+  },
 };
 
 export default function PartnersPage() {
@@ -37,11 +40,9 @@ export default function PartnersPage() {
 
       <div className={styles.promo}>
         <h2>Уже зарегистрирован на биржах?</h2>
-        <p>FreelancersHere поможет тебе получать проекты и быть первым.</p>
-        <a href="/" className={styles.promoBtn}>Вперёд</a>
+        <p>Подключи FreelancersHere и получай все проекты в одном месте + уведомления в Telegram.</p>
+        <a href="/register" className={styles.promoBtn}>Зарегистрироваться бесплатно</a>
       </div>
-
-
     </div>
   );
 }

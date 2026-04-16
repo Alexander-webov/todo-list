@@ -326,10 +326,22 @@ export async function generateMetadata({ params }) {
   const article = dbArticle || ARTICLES[params.slug];
 
   if (!article) return { title: 'Не найдено' };
+
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
+
   return {
     title: `${article.title} | FreelanceHere`,
     description: article.desc || article.description,
     keywords: article.keywords,
+    alternates: {
+      canonical: `${SITE_URL}/blog/${params.slug}`,
+    },
+    openGraph: {
+      title: article.title,
+      description: article.desc || article.description,
+      url: `${SITE_URL}/blog/${params.slug}`,
+      type: 'article',
+    },
   };
 }
 
@@ -378,9 +390,9 @@ export default async function ArticlePage({ params }) {
         </article>
 
         <div className={styles.cta}>
-          <h2>FreelanceHere - это бесплатно</h2>
-          <p>Находи заказы со всех бирж в одной ленте +  Уведомления в Telegram.</p>
-          <a href="/" className={styles.ctaBtn}>ХОЧУ</a>
+          <h2>Попробуй FreelanceHere бесплатно</h2>
+          <p>Находи заказы со всех бирж в одной ленте. Уведомления в Telegram. 7 дней бесплатно.</p>
+          <a href="/register" className={styles.ctaBtn}>Зарегистрироваться бесплатно</a>
         </div>
 
         {related.length > 0 && (

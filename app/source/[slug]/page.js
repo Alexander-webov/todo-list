@@ -84,10 +84,14 @@ const SOURCES = {
 export async function generateMetadata({ params }) {
   const source = SOURCES[params.slug];
   if (!source) return { title: 'Не найдено' };
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
   return {
     title: `${source.name} — все заказы | FreelanceHere`,
     description: source.description,
     keywords: source.keywords,
+    alternates: {
+      canonical: `${SITE_URL}/source/${params.slug}`,
+    },
   };
 }
 
