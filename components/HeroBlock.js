@@ -4,7 +4,7 @@ import styles from './HeroBlock.module.css';
 
 const STATS = [
   { label: 'проектов за 24 часа', value: '3 000+' },
-  { label: 'бирж в одном месте', value: '9' },
+  { label: 'бирж в одном месте', value: '8' },
   { label: 'обновление', value: 'каждую минуту' },
 ];
 
@@ -66,7 +66,7 @@ export function HeroBlock({ isLoggedIn }) {
         </div>
         <div className={styles.statDivider} />
         <div className={styles.stat}>
-          <span className={styles.statValue}>9 топовых</span>
+          <span className={styles.statValue}>8 топовых</span>
           <span className={styles.statLabel}>бирж одновременно</span>
         </div>
         <div className={styles.statDivider} />

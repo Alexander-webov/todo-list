@@ -4,7 +4,6 @@ const RU_SOURCES = {
   fl:          { name: 'FL.ru',          color: '#ff6600' },
   kwork:       { name: 'Kwork',          color: '#ff4d00' },
   freelanceru: { name: 'Freelance.ru',   color: '#2ecc71' },
-  workzilla:   { name: 'Workzilla',      color: '#1a7ae0' },
   youdo:       { name: 'Youdo',          color: '#f5a623' },
 };
 

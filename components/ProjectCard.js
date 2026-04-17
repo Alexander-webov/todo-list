@@ -10,7 +10,6 @@ import { CustomerBadge } from '@/components/CustomerBadge';
 const SOURCE_META = {
   fl: { name: 'FL.ru', color: '#ff6600', flag: '🇷🇺' },
   kwork: { name: 'Kwork', color: '#ff4d00', flag: '🇷🇺' },
-  workzilla: { name: 'Workzilla', color: '#1a7ae0', flag: '🇷🇺' },
   freelanceru: { name: 'Freelance.ru', color: '#2ecc71', flag: '🇷🇺' },
   youdo: { name: 'Youdo', color: '#f5a623', flag: '🇷🇺' },
 };

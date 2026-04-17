@@ -40,7 +40,6 @@ export default async function CategoryPage({ params }) {
 
   const SOURCE_NAMES = {
     freelancer: 'Freelancer.com', fl: 'FL.ru',
-    kwork: 'Kwork', workzilla: 'Workzilla', freelanceru: 'Freelance.ru',
     upwork: 'Upwork', peopleperhour: 'PeoplePerHour',
     guru: 'Guru.com',
   };

@@ -9,7 +9,7 @@ export const metadata = {
     default: 'FreelanceHere — все фриланс-заказы в одном месте',
     template: '%s | FreelanceHere',
   },
-  description: 'Агрегатор фриланс-проектов с 9 бирж: FL.ru, Kwork, Workzilla, Freelance.ru, Youdo, Upwork, Freelancer.com, PeoplePerHour, Guru, Обновляется каждую минуту. Полностью бесплатно.',
+  description: 'Агрегатор фриланс-проектов с 8 бирж: FL.ru, Kwork, Freelance.ru, Youdo, Upwork, Freelancer.com, PeoplePerHour, Guru, Обновляется каждую минуту. Полностью бесплатно.',
   keywords: [
     'фриланс заказы', 'агрегатор фриланс', 'найти заказы фриланс',
     'FL.ru заказы', 'Kwork заказы', 'Upwork заказы', 'удалённая работа', 'фриланс биржа',
@@ -30,13 +30,13 @@ export const metadata = {
     url: SITE_URL,
     siteName: 'FreelanceHere',
     title: 'FreelanceHere — все фриланс-заказы в одном месте',
-    description: 'FL.ru + Kwork + Freelancer.com + Workzilla + Freelance.ru + Youdo. Обновляется каждые минуту.',
+    description: 'FL.ru + Kwork + Freelance.ru + Youdo + Upwork + Freelancer.com. Обновляется каждые минуту.',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'FreelanceHere' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FreelanceHere — все фриланс-заказы в одном месте',
-    description: 'FL.ru + Kwork + Freelancer.com + Workzilla + Freelance.ru + Youdo',
+    description: 'FL.ru + Kwork + Freelance.ru + Youdo + Upwork + Freelancer.com',
     images: [`${SITE_URL}/og-image.png`],
   },
   verification: {
@@ -53,7 +53,7 @@ const websiteSchema = {
   '@type': 'WebSite',
   name: 'FreelanceHere',
   url: SITE_URL,
-  description: 'Агрегатор фриланс-проектов с 9 бирж: российские и международные площадки в одном месте',
+  description: 'Агрегатор фриланс-проектов с 8 бирж: российские и международные площадки в одном месте',
   potentialAction: {
     '@type': 'SearchAction',
     target: `${SITE_URL}/?search={search_term_string}`,

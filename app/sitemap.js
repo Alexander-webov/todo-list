@@ -7,7 +7,6 @@ const CATEGORY_SLUGS = [
   'smm','parsing','verstka','frontend','backend',
 ];
 const SOURCE_SLUGS = [
-  'fl-ru','kwork','freelancer','workzilla','freelanceru',
   'upwork','peopleperhour','guru',
 ];
 

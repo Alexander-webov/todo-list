@@ -11,7 +11,6 @@ const SOURCES = [
   { key: 'fl', label: '🇷🇺 FL.ru' },
   { key: 'kwork', label: '🇷🇺 Kwork' },
   { key: 'freelanceru', label: '🇷🇺 Freelance.ru' },
-  { key: 'workzilla', label: '🇷🇺 Workzilla' },
   { key: 'youdo', label: '🇷🇺 Youdo' },
   { key: 'upwork', label: '🌐 Upwork' },
   { key: 'freelancer', label: '🌐 Freelancer.com' },

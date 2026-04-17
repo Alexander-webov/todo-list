@@ -10,7 +10,6 @@ const RU_SOURCES = [
   { key: 'fl',          label: 'FL.ru',          color: '#ff6600' },
   { key: 'kwork',       label: 'Kwork',          color: '#ff4d00' },
   { key: 'freelanceru', label: 'Freelance.ru',   color: '#2ecc71' },
-  { key: 'workzilla',   label: 'Workzilla',      color: '#1a7ae0' },
   { key: 'youdo',       label: 'Youdo',          color: '#f5a623' },
 ];
 

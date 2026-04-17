@@ -30,7 +30,7 @@ async function getStats() {
   const { count: total } = await db
     .from('projects').select('*', { count: 'exact', head: true });
 
-  const sources = ['fl', 'kwork', 'workzilla', 'freelanceru', 'youdo', 'upwork', 'freelancer', 'peopleperhour', 'guru'];
+  const sources = ['fl', 'kwork', 'freelanceru', 'youdo', 'upwork', 'freelancer', 'peopleperhour', 'guru'];
   const stats = {};
   await Promise.all(sources.map(async (source) => {
     const { count } = await db

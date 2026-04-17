@@ -82,7 +82,7 @@ const faqs = [
     items: [
       {
         q: 'Какие биржи подключены?',
-        a: 'FL.ru, Kwork, Freelancer.com, Workzilla, Freelance.ru. Все биржи обновляются каждую минуту.',
+        a: 'FL.ru, Kwork, Freelancer.com, Freelance.ru. Все биржи обновляются каждую минуту.',
       },
       {
         q: 'Как часто обновляется лента?',

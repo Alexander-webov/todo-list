@@ -9,7 +9,6 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere
 
 const SOURCE_NAMES = {
   freelancer: 'Freelancer.com', fl: 'FL.ru',
-  kwork: 'Kwork', workzilla: 'Workzilla', freelanceru: 'Freelance.ru',
   upwork: 'Upwork', peopleperhour: 'PeoplePerHour',
   guru: 'Guru.com',
 };
@@ -43,7 +42,6 @@ const SOURCE_SLUGS = {
   freelancer: 'freelancer',
   fl: 'fl-ru',
   kwork: 'kwork',
-  workzilla: 'workzilla',
   freelanceru: 'freelanceru',
   upwork: 'upwork',
   peopleperhour: 'peopleperhour',

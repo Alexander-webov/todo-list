@@ -34,15 +34,6 @@ const SOURCES = {
     about: 'Freelancer.com — крупнейшая международная биржа фриланса. Здесь публикуются проекты со всего мира на английском и других языках.',
     keywords: 'Freelancer.com заказы, международный фриланс, проекты Freelancer',
   },
-  'workzilla': {
-    name: 'Workzilla',
-    key: 'workzilla',
-    emoji: '🇷🇺',
-    color: '#1a7ae0',
-    description: 'Все актуальные заказы с Workzilla в одном месте. Обновляется каждую минуту.',
-    about: 'Workzilla — российская биржа микрозаданий. Здесь публикуются небольшие задачи которые можно выполнить быстро и получить оплату сразу.',
-    keywords: 'Workzilla заказы, микрозадания, фриланс Workzilla',
-  },
   'freelanceru': {
     name: 'Freelance.ru',
     key: 'freelanceru',

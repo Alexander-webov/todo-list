@@ -26,7 +26,7 @@ const STATIC_ARTICLES = [
   { slug: 'frilanser-scope-creep', title: 'Scope creep: как остановить расширение проекта без конфликта', desc: 'Заказчик добавляет задачи? Как говорить нет профессионально.', emoji: '🛑' },
   { slug: 'kak-najti-zakazy-na-freelanse', title: 'Как находить заказы на фрилансе быстрее конкурентов', desc: 'Главный секрет успешного фрилансера — скорость отклика.', emoji: '🚀' },
   { slug: 'kak-napisat-otklik-na-freelanse', title: 'Как написать отклик который точно прочитают', desc: 'Структура идеального отклика на фриланс-проект.', emoji: '✍️' },
-  { slug: 'luchshie-frilansy-birzhi-rossii', title: 'Лучшие фриланс-биржи России в 2024 году', desc: 'Сравнение FL.ru, Kwork, Workzilla и Freelance.ru.', emoji: '📊' },
+  { slug: 'luchshie-frilansy-birzhi-rossii', title: 'Лучшие фриланс-биржи России в 2024 году', desc: 'Сравнение FL.ru, Kwork и Freelance.ru.', emoji: '📊' },
   { slug: 'skolko-zarabatyvaet-frilanser', title: 'Сколько зарабатывает фрилансер в России', desc: 'Реальные цифры по категориям.', emoji: '💰' },
   { slug: 'kak-nachat-frilansat-s-nulya', title: 'Как начать фрилансить с нуля — пошаговый план', desc: 'Пошаговый план для начинающих.', emoji: '🎯' },
   { slug: 'pochemu-frilanser-ne-nahodit-zakazov', title: 'Почему фрилансер не находит заказы — 7 причин', desc: 'Типичные ошибки и как их исправить.', emoji: '🔍' },
@@ -37,19 +37,26 @@ export default async function BlogPage() {
   let dbArticles = [];
   try {
     const db = supabaseAdmin();
-    const { data } = await db
+    const { data, error } = await db
       .from('blog_articles')
-      .select('slug, title, description, emoji')
+      .select('slug, title, description, emoji, created_at')
       .eq('published', true)
       .order('created_at', { ascending: false });
-    dbArticles = data || [];
-  } catch (_) { }
+    if (error) {
+      console.error('[Blog] Ошибка загрузки статей из БД:', error.message);
+    } else {
+      dbArticles = data || [];
+      console.log(`[Blog] Загружено из БД: ${dbArticles.length} статей`);
+    }
+  } catch (err) {
+    console.error('[Blog] Exception:', err.message);
+  }
 
   // Объединяем: сначала из БД, потом статические (без дублей)
   const dbSlugs = new Set(dbArticles.map(a => a.slug));
   const staticFiltered = STATIC_ARTICLES.filter(a => !dbSlugs.has(a.slug));
   const allArticles = [
-    ...dbArticles.map(a => ({ ...a, desc: a.description, fromDB: true })),
+    ...dbArticles.map(a => ({ ...a, desc: a.description || a.desc || '', fromDB: true })),
     ...staticFiltered,
   ];
 
