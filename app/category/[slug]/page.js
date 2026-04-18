@@ -10,7 +10,7 @@ import { ru } from 'date-fns/locale';
 export async function generateMetadata({ params }) {
   const cat = CATEGORY_SEO[params.slug];
   if (!cat) return { title: 'Не найдено' };
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allfreelancershere.ru';
   return {
     title: `${cat.name} — фриланс заказы | FreelanceHere`,
     description: cat.description,

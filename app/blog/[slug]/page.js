@@ -327,7 +327,7 @@ export async function generateMetadata({ params }) {
 
   if (!article) return { title: 'Не найдено' };
 
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allfreelancershere.ru';
 
   return {
     title: `${article.title} | FreelanceHere`,

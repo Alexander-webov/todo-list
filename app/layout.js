@@ -1,7 +1,7 @@
 import './globals.css';
 import Script from 'next/script';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allfreelancershere.ru';
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),

@@ -5,7 +5,7 @@ export const metadata = {
   title: 'Зарегистрируйся на фриланс-биржах — allFreelancersHere',
   description: 'Все популярные фриланс-биржи в одном месте. Регистрируйся и начинай зарабатывать.',
   alternates: {
-    canonical: 'https://allfreelancershere.ru/partners',
+    canonical: 'https://www.allfreelancershere.ru/partners',
   },
 };
 
