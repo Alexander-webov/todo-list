@@ -99,6 +99,24 @@ export function Sidebar() {
       {hasFilters && (
         <button className={styles.resetBtn} onClick={resetAll}>✕ Сбросить фильтры</button>
       )}
+      {/* Telegram каналы */}
+      <div className={styles.section}>
+        <p className={styles.sectionTitle}>📢 Telegram-каналы</p>
+        <div className={styles.filterList}>
+          <a href="https://t.me/allfreelancershere_feed" target="_blank" rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 8, textDecoration: 'none', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}>
+            <span>🇷🇺</span>
+            <span>Лучшие заказы РФ</span>
+            <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--text-dim)' }}>→</span>
+          </a>
+          <a href="https://t.me/allfreelancershere_feed_int" target="_blank" rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 8, textDecoration: 'none', color: 'var(--text)', fontSize: 13, fontWeight: 600, marginTop: 6 }}>
+            <span>🌐</span>
+            <span>Лучшие заказы INT</span>
+            <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--text-dim)' }}>→</span>
+          </a>
+        </div>
+      </div>
       {/* Рекламный блок в сайдбаре */}
       {sidebarAd && (
         <a

@@ -1,17 +1,17 @@
 import styles from './StatsBar.module.css';
 
 const RU_SOURCES = {
-  fl: { name: 'FL.ru', color: '#ff6600' },
-  kwork: { name: 'Kwork', color: '#ff4d00' },
-  freelanceru: { name: 'Freelance.ru', color: '#2ecc71' },
-  youdo: { name: 'Youdo', color: '#f5a623' },
+  fl:          { name: 'FL.ru',          color: '#ff6600' },
+  kwork:       { name: 'Kwork',          color: '#ff4d00' },
+  freelanceru: { name: 'Freelance.ru',   color: '#2ecc71' },
+  youdo:       { name: 'Youdo',          color: '#f5a623' },
 };
 
 const INT_SOURCES = {
-  /*   upwork:        { name: 'Upwork',         color: '#14a800' }, */
-  freelancer: { name: 'Freelancer', color: '#29b2fe' },
-  peopleperhour: { name: 'PPH', color: '#f7931a' },
-  guru: { name: 'Guru', color: '#5b3cc4' },
+  upwork:        { name: 'Upwork',         color: '#14a800' },
+  freelancer:    { name: 'Freelancer',     color: '#29b2fe' },
+  peopleperhour: { name: 'PPH',            color: '#f7931a' },
+  guru:          { name: 'Guru',           color: '#5b3cc4' },
 };
 
 function SourceList({ sources, stats }) {
