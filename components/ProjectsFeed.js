@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ProjectCard } from './ProjectCard';
 import { SearchBar } from './SearchBar';
-import { AdSlot } from './AdSlot';
+import { AdSlot, YandexAdSlot } from './AdSlot';
 import styles from './ProjectsFeed.module.css';
 
 const GUEST_LIMIT = 5;
@@ -157,8 +157,10 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
               style={{ animationDelay: `${Math.min(i % 20, 10) * 40}ms` }}
             />
             {/* Рекламный блок каждые AD_EVERY карточек */}
-            {(i + 1) % AD_EVERY === 0 && feedAds.length > 0 && (
-              <AdSlot ad={feedAds[Math.floor(i / AD_EVERY) % feedAds.length]} />
+            {(i + 1) % AD_EVERY === 0 && (
+              feedAds.length > 0
+                ? <AdSlot ad={feedAds[Math.floor(i / AD_EVERY) % feedAds.length]} />
+                : <YandexAdSlot blockId={process.env.NEXT_PUBLIC_YANDEX_RTB_FEED} />
             )}
           </React.Fragment>
         ))}

@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import styles from './AdSlot.module.css';
 
 export function AdSlot({ ad }) {
@@ -40,23 +41,37 @@ export function AdSlot({ ad }) {
 export function YandexAdSlot({ blockId }) {
   if (!blockId) return null;
 
+  const containerId = `yandex_rtb_${blockId}`;
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // Ждём загрузки скрипта context.js
+    const tryRender = () => {
+      if (window.Ya?.Context?.AdvManager) {
+        window.Ya.Context.AdvManager.render({
+          blockId,
+          renderTo: containerId,
+        });
+      } else if (window.yaContextCb) {
+        window.yaContextCb.push(() => {
+          window.Ya.Context.AdvManager.render({
+            blockId,
+            renderTo: containerId,
+          });
+        });
+      }
+    };
+
+    // Даём скрипту время загрузиться
+    const timer = setTimeout(tryRender, 1000);
+    return () => clearTimeout(timer);
+  }, [blockId, containerId]);
+
   return (
     <div className={styles.ad}>
       <div className={styles.badge}>Реклама</div>
-      <div
-        id={`yandex_rtb_${blockId}`}
-        className={styles.yandex}
-        ref={(el) => {
-          if (el && typeof window !== 'undefined' && window.yaContextCb) {
-            window.yaContextCb.push(() => {
-              window.Ya.Context.AdvManager.render({
-                blockId,
-                renderTo: `yandex_rtb_${blockId}`,
-              });
-            });
-          }
-        }}
-      />
+      <div id={containerId} className={styles.yandex} />
     </div>
   );
 }

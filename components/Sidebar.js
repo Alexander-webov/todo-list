@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styles from './Sidebar.module.css';
 import adStyles from './AdSlot.module.css';
+import { YandexAdSlot } from './AdSlot';
 import { ArticleOfDay } from './ArticleOfDay';
 import { DonationBanner } from './DonationBanner';
 
@@ -120,6 +121,10 @@ export function Sidebar() {
           )}
           <span className={adStyles.sidebarCta}>Подробнее →</span>
         </a>
+      )}
+      {/* Яндекс РСЯ в сайдбаре */}
+      {!sidebarAd && (
+        <YandexAdSlot blockId={process.env.NEXT_PUBLIC_YANDEX_RTB_SIDEBAR} />
       )}
       <DonationBanner />
       <ArticleOfDay />

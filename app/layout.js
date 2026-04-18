@@ -111,12 +111,12 @@ export default function RootLayout({ children }) {
         )}
 
         {/* Яндекс РСЯ (рекламная сеть) */}
-        {process.env.NEXT_PUBLIC_YANDEX_RTB_ID && (
+        {(process.env.NEXT_PUBLIC_YANDEX_RTB_FEED || process.env.NEXT_PUBLIC_YANDEX_RTB_SIDEBAR) && (
           <Script id="yandex-rtb" strategy="afterInteractive">
             {`window.yaContextCb = window.yaContextCb || [];`}
           </Script>
         )}
-        {process.env.NEXT_PUBLIC_YANDEX_RTB_ID && (
+        {(process.env.NEXT_PUBLIC_YANDEX_RTB_FEED || process.env.NEXT_PUBLIC_YANDEX_RTB_SIDEBAR) && (
           <Script
             src="https://yandex.ru/ads/system/context.js"
             strategy="afterInteractive"
