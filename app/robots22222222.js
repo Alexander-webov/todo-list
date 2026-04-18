@@ -7,6 +7,6 @@ export default function robots() {
         disallow: ['/api/', '/admin/', '/dashboard/', '/settings/', '/projects/'],
       },
     ],
-    sitemap: 'https://www.allfreelancershere.ru/sitemap.xml',
+    sitemap: 'https://allfreelancershere.ru/sitemap.xml',
   };
 }

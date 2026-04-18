@@ -4,7 +4,7 @@ export const metadata = {
   title: 'FAQ — Часто задаваемые вопросы | FreelanceHere',
   description: 'Ответы на частые вопросы о FreelanceHere — агрегаторе фриланс-проектов',
   alternates: {
-    canonical: 'https://www.allfreelancershere.ru/faq',
+    canonical: 'https://allfreelancershere.ru/faq',
   },
 };
 

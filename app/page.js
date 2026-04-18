@@ -10,7 +10,7 @@ export const revalidate = 0;
 
 export const metadata = {
   alternates: {
-    canonical: 'https://www.allfreelancershere.ru',
+    canonical: 'https://allfreelancershere.ru',
   },
 };
 

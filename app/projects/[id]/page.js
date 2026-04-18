@@ -5,7 +5,7 @@ import styles from './project.module.css';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allfreelancershere.ru';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
 
 const SOURCE_NAMES = {
   freelancer: 'Freelancer.com', fl: 'FL.ru',

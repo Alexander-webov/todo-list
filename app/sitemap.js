@@ -1,6 +1,6 @@
 import { supabaseAdmin } from '@/lib/supabase';
 
-const SITE_URL = 'https://www.allfreelancershere.ru';
+const SITE_URL = 'https://allfreelancershere.ru';
 
 const CATEGORY_SLUGS = [
   'wordpress-tilda-cms','videomontazh','graficheskij-dizajn','web-dizajn',
