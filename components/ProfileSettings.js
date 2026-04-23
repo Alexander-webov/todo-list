@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { createBrowserClient } from '@supabase/ssr';
 import styles from './ProfileSettings.module.css';
+import { ROLES } from '@/lib/roles';
 
 const CATEGORIES = [
   'WordPress / Tilda / CMS', 'Видеомонтаж', 'Графический дизайн',
@@ -56,6 +57,7 @@ function TagInput({ value = [], onChange, placeholder }) {
 }
 
 export function ProfileSettings({ profile, onSave }) {
+  const [userRole, setUserRole] = useState(profile?.user_role || '');
   const [skills, setSkills] = useState(profile?.skills || []);
   const [keywords, setKeywords] = useState(profile?.keywords || []);
   const [excluded, setExcluded] = useState(profile?.excluded_keywords || []);
@@ -87,6 +89,7 @@ export function ProfileSettings({ profile, onSave }) {
     if (!user) return;
 
     await supabase.from('profiles').update({
+      user_role: userRole || null,
       skills,
       keywords,
       excluded_keywords: excluded,
@@ -95,16 +98,36 @@ export function ProfileSettings({ profile, onSave }) {
       preferred_sources: sources,
     }).eq('id', user.id);
 
+    // Сбрасываем dismissed чтобы новая роль применилась при следующем заходе
+    try { sessionStorage.removeItem('role_dismissed'); } catch {}
+
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
-    if (onSave) onSave({ skills, keywords, excluded_keywords: excluded, min_budget: minBudget, filter_categories: categories, preferred_sources: sources });
+    if (onSave) onSave({ user_role: userRole, skills, keywords, excluded_keywords: excluded, min_budget: minBudget, filter_categories: categories, preferred_sources: sources });
   }
 
   return (
     <div className={styles.card}>
       <h2 className={styles.title}>⚡ Настройка совпадений</h2>
       <p className={styles.sub}>Заполни профиль — и рядом с каждым проектом появится % совпадения с тобой</p>
+
+      <div className={styles.section}>
+        <label className={styles.label}>Кто ты?</label>
+        <p className={styles.hint}>Главное направление — по нему дефолтно фильтруем ленту</p>
+        <div className={styles.chips}>
+          {ROLES.map(r => (
+            <button
+              key={r.key}
+              className={`${styles.chip} ${userRole === r.key ? styles.chipActive : ''}`}
+              onClick={() => setUserRole(userRole === r.key ? '' : r.key)}
+              type="button"
+            >
+              {r.emoji} {r.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className={styles.section}>
         <label className={styles.label}>Мои специализации</label>

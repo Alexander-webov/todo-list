@@ -373,6 +373,20 @@ export function AdminClient({ gifts, totalUsers, premiumUsers }) {
       {/* Telegram */}
       {tab === 'telegram' && (
         <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Управление публикациями</h2>
+          <a href="/admin/telegram-queue" style={{
+            display: 'block', padding: '14px 18px', marginBottom: 24,
+            background: 'var(--bg-card)', border: '1px solid var(--border)',
+            borderRadius: 'var(--radius)', textDecoration: 'none',
+            color: 'var(--text)', fontSize: 14, fontWeight: 600,
+            transition: 'border-color 0.15s',
+          }}>
+            ⚙️ Очередь постинга · лимиты · СТАРТ/СТОП →
+            <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 400, marginTop: 4 }}>
+              Регулировка количества постов в сутки, фильтр качества, статистика
+            </div>
+          </a>
+
           <h2 className={styles.sectionTitle}>Telegram Bot Webhook</h2>
           <div className={styles.giftForm}>
             <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 10 }}>

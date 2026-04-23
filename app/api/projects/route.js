@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { RU_SOURCES, INT_SOURCES } from '@/lib/parsers/index';
+import { categoriesForRole } from '@/lib/roles';
 
 export const runtime = 'nodejs';
 
@@ -11,6 +12,7 @@ export async function GET(request) {
   const limit    = Math.min(parseInt(searchParams.get('limit') || '20', 10), 50);
   const source   = searchParams.get('source');
   const category = searchParams.get('category');
+  const role     = searchParams.get('role');
   const search   = searchParams.get('search');
   const since    = searchParams.get('since');
   const region   = searchParams.get('region'); // 'ru' | 'int'
@@ -34,8 +36,19 @@ export async function GET(request) {
     query = query.in('source', INT_SOURCES);
   }
 
-  if (category) query = query.eq('category', category);
-  if (search)   query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+  // category имеет приоритет над role, если указаны оба
+  if (category) {
+    query = query.eq('category', category);
+  } else if (role) {
+    const cats = categoriesForRole(role);
+    if (cats.length > 0) query = query.in('category', cats);
+  }
+
+  // Поиск — по названию И описанию (ilike на оба поля)
+  if (search) {
+    const s = search.replace(/[%_]/g, ' ').trim();
+    if (s) query = query.or(`title.ilike.%${s}%,description.ilike.%${s}%`);
+  }
   if (since)    query = query.gt('created_at', since);
 
   const { data, error, count } = await query;

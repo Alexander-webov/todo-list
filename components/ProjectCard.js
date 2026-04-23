@@ -6,6 +6,7 @@ import { ru } from 'date-fns/locale';
 import { scoreProject } from '@/lib/scoring';
 import { calcMatch, getMatchLabel } from '@/lib/match';
 import { CustomerBadge } from '@/components/CustomerBadge';
+import { trackApplication } from './ApplicationMotivator';
 
 const SOURCE_META = {
   fl: { name: 'FL.ru', color: '#ff6600', flag: '🇷🇺' },
@@ -106,6 +107,8 @@ export function ProjectCard({ project, profile, style }) {
   async function sendResponse() {
     setSending(true);
     try { await navigator.clipboard.writeText(response); } catch (_) {}
+    // Трекаем отклик (AI-генерированный)
+    trackApplication(project.id, true);
     setSendDone(true);
     setSending(false);
     setTimeout(() => window.open(url, '_blank', 'noopener,noreferrer'), 600);
@@ -176,6 +179,7 @@ export function ProjectCard({ project, profile, style }) {
             )}
             <button className={styles.aiBtn} onClick={generateResponse}>✦ Отклик</button>
             <a href={url} target="_blank" rel="noopener noreferrer"
+              onClick={() => trackApplication(project.id, false)}
               className={styles.ctaBtn} style={{ '--source-color': meta.color }}>
               Перейти →
             </a>

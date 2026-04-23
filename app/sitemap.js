@@ -9,6 +9,9 @@ const CATEGORY_SLUGS = [
 const SOURCE_SLUGS = [
   'upwork','peopleperhour','guru',
 ];
+const ROLE_SLUGS = [
+  'designer', 'videomaker', 'developer', 'smm', 'other',
+];
 
 const BLOG_SLUGS = [
   'kak-najti-zakazy-na-freelanse',
@@ -48,6 +51,7 @@ export default async function sitemap() {
     { url: `${SITE_URL}/partners`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE_URL}/faq`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     ...CATEGORY_SLUGS.map(slug => ({ url: `${SITE_URL}/category/${slug}`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 })),
+    ...ROLE_SLUGS.map(slug => ({ url: `${SITE_URL}/for/${slug}`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.95 })),
     ...SOURCE_SLUGS.map(slug => ({ url: `${SITE_URL}/source/${slug}`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 })),
     // Статические статьи блога
     ...BLOG_SLUGS.map(slug => ({ url: `${SITE_URL}/blog/${slug}`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 })),

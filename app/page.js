@@ -4,7 +4,8 @@ import { ProjectsFeed } from '@/components/ProjectsFeed';
 import { Header } from '@/components/Header';
 import { Sidebar } from '@/components/Sidebar';
 import { StatsBar } from '@/components/StatsBar';
-import { RU_SOURCES } from '@/lib/parsers/index';
+import { RU_SOURCES, INT_SOURCES } from '@/lib/parsers/index';
+import { categoriesForRole } from '@/lib/roles';
 
 export const revalidate = 0;
 
@@ -14,14 +15,23 @@ export const metadata = {
   },
 };
 
-async function getInitialProjects() {
+async function getInitialProjects({ role, region }) {
   const db = supabaseAdmin();
-  const { data, count } = await db
+  let query = db
     .from('projects')
     .select('*', { count: 'exact' })
-    .in('source', RU_SOURCES)
     .order('created_at', { ascending: false })
     .limit(20);
+
+  const regionSources = region === 'int' ? INT_SOURCES : RU_SOURCES;
+  query = query.in('source', regionSources);
+
+  if (role) {
+    const cats = categoriesForRole(role);
+    if (cats.length > 0) query = query.in('category', cats);
+  }
+
+  const { data, count } = await query;
   return { projects: data || [], total: count || 0 };
 }
 
@@ -40,11 +50,25 @@ async function getStats() {
   return { stats, total: total || 0 };
 }
 
-export default async function HomePage() {
-  const [{ projects, total: feedTotal }, { stats, total }, { profile }] = await Promise.all([
-    getInitialProjects(),
+export default async function HomePage({ searchParams }) {
+  const { profile } = await getCurrentUser();
+
+  // Если URL без фильтров и у юзера есть user_role — применяем как дефолт
+  const urlRole = searchParams?.role;
+  const urlCategory = searchParams?.category;
+  const urlSource = searchParams?.source;
+  const urlSearch = searchParams?.search;
+
+  const effectiveRole = urlRole
+    || (profile?.user_role && !urlCategory && !urlSource && !urlSearch
+          ? profile.user_role
+          : null);
+
+  const region = searchParams?.region || 'ru';
+
+  const [{ projects, total: feedTotal }, { stats, total }] = await Promise.all([
+    getInitialProjects({ role: effectiveRole, region }),
     getStats(),
-    getCurrentUser(),
   ]);
 
   return (

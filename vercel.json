@@ -1,1 +1,12 @@
-{}
+{
+  "crons": [
+    {
+      "path": "/api/cron/parse",
+      "schedule": "*/2 * * * *"
+    },
+    {
+      "path": "/api/cron/post-telegram-queue",
+      "schedule": "*/12 * * * *"
+    }
+  ]
+}

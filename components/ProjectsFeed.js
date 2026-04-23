@@ -4,6 +4,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { ProjectCard } from './ProjectCard';
 import { SearchBar } from './SearchBar';
 import { AdSlot, YandexAdSlot } from './AdSlot';
+import { ApplicationMotivator } from './ApplicationMotivator';
+import { WelcomeBackBanner } from './WelcomeBackBanner';
 import styles from './ProjectsFeed.module.css';
 
 const GUEST_LIMIT = 5;
@@ -29,8 +31,28 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
       .catch(() => {});
   }, []);
 
+  // Автоприменение роли из профиля — если URL чистый и у юзера есть user_role,
+  // мягко перенаправляем на /?role=X (чтобы и URL отражал фильтр, и SSR/клиент не спорили).
+  // Один раз на маунт. Если пользователь сам убрал фильтр — второй раз не вставляется,
+  // т.к. next.toString() при сбросе содержит empty и эффект не сработает.
+  useEffect(() => {
+    if (!profile?.user_role) return;
+    const hasAnyFilter = params.get('role') || params.get('category')
+      || params.get('source') || params.get('search');
+    if (hasAnyFilter) return;
+    // Проверяем sessionStorage чтобы не навязывать роль повторно после того как юзер её снял
+    try {
+      if (sessionStorage.getItem('role_dismissed') === '1') return;
+    } catch {}
+    const next = new URLSearchParams(params.toString());
+    next.set('role', profile.user_role);
+    router.replace(`/?${next.toString()}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const source   = params.get('source')   || '';
   const category = params.get('category') || '';
+  const role     = params.get('role')     || '';
   const search   = params.get('search')   || '';
   const region   = params.get('region')   || 'ru'; // default: Russian
 
@@ -48,7 +70,7 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
     setHasMore(true);
     setNewCount(0);
     fetchPage(1, true);
-  }, [source, category, search, region]);
+  }, [source, category, role, search, region]);
 
   async function fetchPage(pageNum, replace = false) {
     setLoading(true);
@@ -56,6 +78,7 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
       const qs = new URLSearchParams({ page: pageNum, limit: 20 });
       if (source)   qs.set('source', source);
       if (category) qs.set('category', category);
+      if (role)     qs.set('role', role);
       if (search)   qs.set('search', search);
       if (!source)  qs.set('region', region); // region only when no specific source
       
@@ -140,6 +163,9 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
       </div>
 
       <SearchBar />
+
+      {isLoggedIn && <WelcomeBackBanner />}
+      {isLoggedIn && <ApplicationMotivator />}
 
       {isLoggedIn && newCount > 0 && (
         <button className={styles.newBadge} onClick={loadNewProjects}>
