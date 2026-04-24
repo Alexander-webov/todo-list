@@ -13,7 +13,6 @@ const SOURCES = [
   { key: 'kwork', label: '🇷🇺 Kwork' },
   { key: 'freelanceru', label: '🇷🇺 Freelance.ru' },
   { key: 'youdo', label: '🇷🇺 Youdo' },
-  { key: 'upwork', label: '🌐 Upwork' },
   { key: 'freelancer', label: '🌐 Freelancer.com' },
   { key: 'peopleperhour', label: '🌐 PeoplePerHour' },
   { key: 'guru', label: '🌐 Guru.com' },

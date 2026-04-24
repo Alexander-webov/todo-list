@@ -5,8 +5,8 @@ import { formatDistanceToNow } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { scoreProject } from '@/lib/scoring';
 import { calcMatch, getMatchLabel } from '@/lib/match';
-import { CustomerBadge } from '@/components/CustomerBadge';
 import { trackApplication } from './ApplicationMotivator';
+/* import { CustomerBadge } from '@/components/CustomerBadge'; */
 
 const SOURCE_META = {
   fl: { name: 'FL.ru', color: '#ff6600', flag: '🇷🇺' },
@@ -161,10 +161,10 @@ export function ProjectCard({ project, profile, style }) {
             ))}
           </div>
         )}
-
+        {/* 
         {project.customer_external_id && (
           <CustomerBadge customerId={project.customer_external_id} source={project.source} />
-        )}
+        )} */}
 
         <div className={styles.footer}>
           {budget
