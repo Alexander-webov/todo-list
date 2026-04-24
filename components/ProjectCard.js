@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './ProjectCard.module.css';
 import { formatDistanceToNow } from 'date-fns';
 import { ru } from 'date-fns/locale';
@@ -31,6 +32,7 @@ function timeAgo(dateStr) {
 }
 
 export function ProjectCard({ project, profile, style }) {
+  const router = useRouter();
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState('');
@@ -111,7 +113,24 @@ export function ProjectCard({ project, profile, style }) {
     trackApplication(project.id, true);
     setSendDone(true);
     setSending(false);
-    setTimeout(() => window.open(url, '_blank', 'noopener,noreferrer'), 600);
+    // Открываем биржу в новой вкладке
+    window.open(url, '_blank', 'noopener,noreferrer');
+    // И сразу переключаем текущую вкладку на follow-up экран
+    setTimeout(() => {
+      setModal(false);
+      router.push(`/projects/${project.id}/responded`);
+    }, 400);
+  }
+
+  // Клик по "Перейти →": открывает биржу в новой вкладке,
+  // текущую переводит на follow-up экран. preventDefault нужен потому что
+  // target=_blank в <a> сам по себе не остановит навигацию текущей вкладки
+  // если мы одновременно делаем router.push.
+  function handleGoClick(e) {
+    e.preventDefault();
+    trackApplication(project.id, false);
+    window.open(url, '_blank', 'noopener,noreferrer');
+    router.push(`/projects/${project.id}/responded`);
   }
 
   function closeModal(e) {
@@ -178,8 +197,8 @@ export function ProjectCard({ project, profile, style }) {
               </button>
             )}
             <button className={styles.aiBtn} onClick={generateResponse}>✦ AI Отклик</button>
-            <a href={url} target="_blank" rel="noopener noreferrer"
-              onClick={() => trackApplication(project.id, false)}
+            <a href={url}
+              onClick={handleGoClick}
               className={styles.ctaBtn} style={{ '--source-color': meta.color }}>
               Перейти →
             </a>

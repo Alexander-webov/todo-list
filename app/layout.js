@@ -1,5 +1,6 @@
 import './globals.css';
 import Script from 'next/script';
+import { ExitIntentProvider } from '@/components/ExitIntentProvider';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
 
@@ -134,6 +135,7 @@ export default function RootLayout({ children }) {
           </noscript>
         )}
         {children}
+        <ExitIntentProvider />
       </body>
     </html>
   );

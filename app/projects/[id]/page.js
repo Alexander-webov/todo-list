@@ -1,6 +1,7 @@
 import { supabaseAdmin } from '@/lib/supabase';
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/Header';
+import { GoToProjectButton } from '@/components/GoToProjectButton';
 import styles from './project.module.css';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
@@ -176,9 +177,12 @@ export default async function ProjectPage({ params }) {
             </div>
           )}
 
-          <a href={url} target="_blank" rel="noopener noreferrer" className={styles.cta}>
-            Перейти к проекту на {source} →
-          </a>
+          <GoToProjectButton
+            projectId={project.id}
+            url={url}
+            source={source}
+            className={styles.cta}
+          />
         </div>
 
         {/* Блок для незарегиненных */}
