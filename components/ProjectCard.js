@@ -74,7 +74,7 @@ export function ProjectCard({ project, profile, style }) {
           : '';
         setTranslated({ title, description });
       }
-    } catch (_) {}
+    } catch (_) { }
     setTranslating(false);
   }
 
@@ -106,7 +106,7 @@ export function ProjectCard({ project, profile, style }) {
 
   async function sendResponse() {
     setSending(true);
-    try { await navigator.clipboard.writeText(response); } catch (_) {}
+    try { await navigator.clipboard.writeText(response); } catch (_) { }
     // Трекаем отклик (AI-генерированный)
     trackApplication(project.id, true);
     setSendDone(true);
@@ -177,7 +177,7 @@ export function ProjectCard({ project, profile, style }) {
                 {translating ? '...' : translated ? '🌐 Оригинал' : '🌐 RU'}
               </button>
             )}
-            <button className={styles.aiBtn} onClick={generateResponse}>✦ Отклик</button>
+            <button className={styles.aiBtn} onClick={generateResponse}>✦ AI Отклик</button>
             <a href={url} target="_blank" rel="noopener noreferrer"
               onClick={() => trackApplication(project.id, false)}
               className={styles.ctaBtn} style={{ '--source-color': meta.color }}>
@@ -207,7 +207,7 @@ export function ProjectCard({ project, profile, style }) {
               {loading ? (
                 <div className={styles.generating}>
                   <div className={styles.genDots}>
-                    {[0,1,2].map(i => <span key={i} className={styles.genDot} style={{ animationDelay: `${i*0.2}s` }} />)}
+                    {[0, 1, 2].map(i => <span key={i} className={styles.genDot} style={{ animationDelay: `${i * 0.2}s` }} />)}
                   </div>
                   <p>Генерирую отклик...</p>
                 </div>

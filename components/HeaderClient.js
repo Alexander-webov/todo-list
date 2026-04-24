@@ -45,7 +45,7 @@ export function HeaderClient({ user, isAdmin }) {
         <div className={styles.actions}>
           {user ? (
             <>
-              <a href="/settings" className={styles.navLink} title="Настройка совпадений">🎯</a>
+              <a href="/settings" className={styles.navLink} title="Настройка совпадений">🎯Настройка</a>
               <a href="/dashboard" className={styles.btnOutline}>{user.email.split('@')[0]}</a>
               <button className={styles.btnOutline} onClick={logout}>Выйти</button>
             </>
