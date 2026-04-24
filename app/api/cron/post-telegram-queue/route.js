@@ -14,7 +14,7 @@ export const maxDuration = 60;
 
 // Cron настроен на запуск раз в 12 минут → 5 запусков в час.
 // postsPerHour из админки делим на 5, так получаем постов на один запуск.
-const RUNS_PER_HOUR = 5;
+const RUNS_PER_HOUR = 1;
 
 export async function GET(request) {
   // Защита секретом (как в /api/cron/parse)
