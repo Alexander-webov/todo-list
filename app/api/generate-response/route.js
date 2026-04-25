@@ -49,9 +49,20 @@ async function generateWithAnthropic(prompt) {
 }
 
 export async function POST(request) {
-  const { user } = await getCurrentUser();
+  const { user, profile } = await getCurrentUser();
   if (!user) {
     return NextResponse.json({ error: 'Необходима авторизация' }, { status: 401 });
+  }
+
+  // Проверка премиума: AI-отклики — премиум-фича
+  const isPremium = !!profile?.is_premium && (
+    !profile?.premium_until || new Date(profile.premium_until) > new Date()
+  );
+  if (!isPremium) {
+    return NextResponse.json({
+      error: 'AI-отклики доступны только в премиум-подписке',
+      premium_required: true,
+    }, { status: 402 });
   }
 
   const { title, description, budget, source } = await request.json();

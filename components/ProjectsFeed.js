@@ -6,9 +6,10 @@ import { SearchBar } from './SearchBar';
 import { AdSlot, YandexAdSlot } from './AdSlot';
 import { ApplicationMotivator } from './ApplicationMotivator';
 import { WelcomeBackBanner } from './WelcomeBackBanner';
+import { PremiumGate } from './PremiumGate';
 import styles from './ProjectsFeed.module.css';
 
-const GUEST_LIMIT = 5;
+const FREE_LIMIT = 5;
 const AD_EVERY = 5; // рекламный блок каждые N карточек
 
 export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = false, profile = null }) {
@@ -22,6 +23,13 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
   const lastChecked = useRef(new Date().toISOString());
   const loaderRef = useRef(null);
   const [feedAds, setFeedAds] = useState([]);
+
+  // ── Проверка премиума (нужна выше потому что используется в useEffect'ах) ──
+  // Премиум = is_premium=true И premium_until ещё не прошёл
+  const isPremium = !!profile?.is_premium && (
+    !profile?.premium_until || new Date(profile.premium_until) > new Date()
+  );
+  const hasFullAccess = isPremium; // только премиум видит всё
 
   // Загружаем рекламу для ленты
   useEffect(() => {
@@ -94,9 +102,9 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
     }
   }
 
-  // Infinite scroll — logged in only
+  // Infinite scroll — только премиум
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!hasFullAccess) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading) {
@@ -109,11 +117,11 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
     );
     if (loaderRef.current) observer.observe(loaderRef.current);
     return () => observer.disconnect();
-  }, [hasMore, loading, page, isLoggedIn]);
+  }, [hasMore, loading, page, hasFullAccess]);
 
-  // Live updates — logged in only
+  // Live updates — только премиум (показ "+N новых")
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!hasFullAccess) return;
     const interval = setInterval(async () => {
       try {
         const qs = new URLSearchParams({ since: lastChecked.current, limit: 50 });
@@ -131,7 +139,7 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
       } catch (_) {}
     }, 10_000);
     return () => clearInterval(interval);
-  }, [source, category, region, isLoggedIn]);
+  }, [source, category, region, hasFullAccess]);
 
   function loadNewProjects() {
     setPage(1);
@@ -141,8 +149,11 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  const visibleProjects = isLoggedIn ? projects : projects.slice(0, GUEST_LIMIT);
-  const showRegisterGate = !isLoggedIn && projects.length > GUEST_LIMIT;
+  // ── Премиум / лимит ──
+  const visibleProjects = hasFullAccess ? projects : projects.slice(0, FREE_LIMIT);
+  // Анониму показываем register-gate, не-премиум залогиненному — premium-gate
+  const showRegisterGate = !isLoggedIn && projects.length > FREE_LIMIT;
+  const showPremiumGate = isLoggedIn && !isPremium && projects.length > FREE_LIMIT;
 
   return (
     <div className={styles.feed}>
@@ -164,10 +175,10 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
 
       <SearchBar />
 
-      {isLoggedIn && <WelcomeBackBanner />}
-      {isLoggedIn && <ApplicationMotivator />}
+      {hasFullAccess && <WelcomeBackBanner />}
+      {hasFullAccess && <ApplicationMotivator />}
 
-      {isLoggedIn && newCount > 0 && (
+      {hasFullAccess && newCount > 0 && (
         <button className={styles.newBadge} onClick={loadNewProjects}>
           <span className={styles.newDot} />
           {newCount} новых проектов — нажми, чтобы обновить
@@ -198,16 +209,16 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
           <div className={styles.registerGateBox}>
             <span className={styles.registerGateIcon}>🚀</span>
             <h2 className={styles.registerGateTitle}>
-              Ещё {total - GUEST_LIMIT > 0 ? (total - GUEST_LIMIT).toLocaleString('ru') : '...'} проектов ждут тебя
+              Ещё {total - FREE_LIMIT > 0 ? (total - FREE_LIMIT).toLocaleString('ru') : '...'} проектов ждут тебя
             </h2>
             <p className={styles.registerGateSub}>
-              Зарегистрируйся бесплатно — и получи полный доступ ко всем проектам, уведомлениям и фильтрам.
+              Зарегистрируйся бесплатно — это первый шаг. Премиум подписка открывает доступ ко всем проектам.
             </p>
             <div className={styles.registerGatePerks}>
-              <span>✓ Все проекты без ограничений</span>
-              <span>✓ Уведомления в Telegram</span>
-              <span>✓ Фильтры и поиск</span>
-              <span>✓ Навсегда бесплатно</span>
+              <span>✓ Регистрация бесплатна</span>
+              <span>✓ Подписка от 149 ₽ в месяц</span>
+              <span>✓ Все проекты со всех бирж</span>
+              <span>✓ AI-отклики и Telegram-уведомления</span>
             </div>
             <div className={styles.registerGateBtns}>
               <a href="/register" className={styles.registerGatePrimary}>Зарегистрироваться бесплатно</a>
@@ -217,7 +228,11 @@ export function ProjectsFeed({ initialProjects = [], total = 0, isLoggedIn = fal
         </div>
       )}
 
-      {isLoggedIn && (
+      {showPremiumGate && (
+        <PremiumGate isLoggedIn={true} totalProjects={total} />
+      )}
+
+      {hasFullAccess && (
         <div ref={loaderRef} className={styles.loader}>
           {loading && (
             <div className={styles.spinner}>

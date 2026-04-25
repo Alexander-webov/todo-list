@@ -2,44 +2,65 @@
 import { useState, useEffect } from 'react';
 import styles from './PremiumGate.module.css';
 
-export function PremiumGate({ isLoggedIn = false, trialUsed = false }) {
+export function PremiumGate({ isLoggedIn = false, totalProjects = 0 }) {
   const [stats, setStats] = useState(null);
-  const [trialLoading, setTrialLoading] = useState(false);
-  const [trialDone, setTrialDone] = useState(false);
-  const [trialError, setTrialError] = useState('');
+  const [yookassaLoading, setYookassaLoading] = useState(false);
+  const [stripeLoading, setStripeLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetch('/api/stats')
       .then(r => r.json())
       .then(setStats)
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 
-  async function activateTrial() {
+  async function payYookassa() {
     if (!isLoggedIn) {
-      window.location.href = '/register';
+      window.location.href = '/register?redirect=/pricing';
       return;
     }
-    setTrialLoading(true);
-    setTrialError('');
+    setYookassaLoading(true);
+    setError('');
     try {
-      const res = await fetch('/api/trial', { method: 'POST' });
+      const res = await fetch('/api/payment/yookassa/create', { method: 'POST' });
       const data = await res.json();
-      if (data.success) {
-        setTrialDone(true);
-        setTimeout(() => window.location.reload(), 1500);
+      if (data.confirmation_url) {
+        window.location.href = data.confirmation_url;
       } else {
-        setTrialError(data.error);
+        setError(data.error || 'Не удалось создать платёж');
+        setYookassaLoading(false);
       }
     } catch {
-      setTrialError('Ошибка соединения');
-    } finally {
-      setTrialLoading(false);
+      setError('Ошибка соединения');
+      setYookassaLoading(false);
+    }
+  }
+
+  async function payStripe() {
+    if (!isLoggedIn) {
+      window.location.href = '/register?redirect=/pricing';
+      return;
+    }
+    setStripeLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/payment/stripe/create', { method: 'POST' });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setError(data.error || 'Не удалось создать платёж');
+        setStripeLoading(false);
+      }
+    } catch {
+      setError('Ошибка соединения');
+      setStripeLoading(false);
     }
   }
 
   const projectsToday = stats?.projectsToday || 0;
-  const premiumUsers = stats?.premiumUsers || 0;
+  const total = totalProjects || stats?.totalProjects || 0;
 
   return (
     <div className={styles.gate}>
@@ -54,7 +75,7 @@ export function PremiumGate({ isLoggedIn = false, trialUsed = false }) {
           </div>
           <div className={styles.trigger}>
             <span className={styles.triggerFire}>⚡</span>
-            <span> 189 фрилансеров уже смотрят все проекты прямо сейчас</span>
+            <span>189 фрилансеров уже смотрят все проекты прямо сейчас</span>
           </div>
           <div className={styles.trigger}>
             <span className={styles.triggerFire}>⏱</span>
@@ -63,43 +84,68 @@ export function PremiumGate({ isLoggedIn = false, trialUsed = false }) {
         </div>
 
         <span className={styles.icon}>⚡</span>
-        <h2 className={styles.title}>Ты видишь только 5 из {stats?.totalProjects?.toLocaleString('ru') || '...'} проектов</h2>
+        <h2 className={styles.title}>
+          Ты видишь только 5 из {total ? total.toLocaleString('ru') : '...'} проектов
+        </h2>
         <p className={styles.sub}>
           Открой полный доступ и находи заказы <strong>первым</strong> — раньше других фрилансеров.
         </p>
 
         <div className={styles.perks}>
-          <span className={styles.perk}>✓ Все биржи в одном месте</span>
-          <span className={styles.perk}>✓ Уведомления в Telegram</span>
+          <span className={styles.perk}>✓ Все проекты со всех бирж</span>
           <span className={styles.perk}>✓ AI-генерация откликов</span>
+          <span className={styles.perk}>✓ Уведомления в Telegram</span>
+          <span className={styles.perk}>✓ Фильтры по категориям и стеку</span>
         </div>
 
-        {trialDone ? (
-          <div className={styles.trialSuccess}>
-            🎉 Готово! 3 дня Премиума активированы. Обновляем страницу...
-          </div>
-        ) : (
-          <div className={styles.btns}>
-            {/* Триал */}
-            {!trialUsed && (
-              <button className={styles.btnTrial} onClick={activateTrial} disabled={trialLoading}>
-                {trialLoading ? '...' : isLoggedIn ? '🎁 Попробовать 3 дня бесплатно' : '🎁 Зарегистрироваться и получить подарок'}
-              </button>
+        {/* Две кнопки оплаты */}
+        <div className={styles.payRow}>
+          <button
+            className={styles.payBtnRu}
+            onClick={payYookassa}
+            disabled={yookassaLoading || stripeLoading}
+          >
+            {yookassaLoading ? '...' : (
+              <>
+                <span className={styles.payFlag}>🇷🇺</span>
+                <span className={styles.payText}>
+                  <span className={styles.payAmount}>149 ₽</span>
+                  <span className={styles.payLabel}>YooKassa · карты РФ</span>
+                </span>
+              </>
             )}
+          </button>
 
-            <a href="/pricing" className={styles.btnPrimary}>
-              Смотреть все проекты
-            </a>
-
-            {!isLoggedIn && (
-              <a href="/login" className={styles.btnSecondary}>
-                Уже есть аккаунт? Войти
-              </a>
+          <button
+            className={styles.payBtnInt}
+            onClick={payStripe}
+            disabled={yookassaLoading || stripeLoading}
+          >
+            {stripeLoading ? '...' : (
+              <>
+                <span className={styles.payFlag}>🌍</span>
+                <span className={styles.payText}>
+                  <span className={styles.payAmount}>$5</span>
+                  <span className={styles.payLabel}>Stripe · мировые карты</span>
+                </span>
+              </>
             )}
-          </div>
+          </button>
+        </div>
+
+        <p className={styles.fineprint}>
+          Подписка на 30 дней. Без автопродления — оплачиваешь только когда нужно.
+        </p>
+
+        {!isLoggedIn && (
+          <p className={styles.alt}>
+            Нет аккаунта?{' '}
+            <a href="/register" className={styles.altLink}>Создай бесплатно</a> —
+            это займёт 10 секунд и без аккаунта ничего не получишь.
+          </p>
         )}
 
-        {trialError && <p className={styles.trialError}>{trialError}</p>}
+        {error && <p className={styles.payError}>{error}</p>}
       </div>
     </div>
   );

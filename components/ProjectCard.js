@@ -50,6 +50,11 @@ export function ProjectCard({ project, profile, style }) {
   const matchPct = profile ? calcMatch(project, profile) : null;
   const matchInfo = matchPct !== null ? getMatchLabel(matchPct) : null;
 
+  // Премиум-флаг: только премиум видит кнопку AI-отклика, остальным — замок
+  const isPremium = !!profile?.is_premium && (
+    !profile?.premium_until || new Date(profile.premium_until) > new Date()
+  );
+
   const isEnglish = false;
   const displayTitle = translated?.title || project.title;
   const displayDesc = translated?.description || project.description;
@@ -92,6 +97,13 @@ export function ProjectCard({ project, profile, style }) {
         body: JSON.stringify({ title: project.title, description: project.description, source: project.source, budget }),
       });
       const data = await res.json();
+      // Если требуется премиум — закрываем модалку и ведём на /pricing
+      if (res.status === 402 || data.premium_required) {
+        setModal(false);
+        setLoading(false);
+        window.location.href = '/pricing?from=ai';
+        return;
+      }
       setResponse(data.text || data.error || 'Ошибка генерации');
     } catch {
       setResponse('Ошибка соединения');
@@ -196,7 +208,15 @@ export function ProjectCard({ project, profile, style }) {
                 {translating ? '...' : translated ? '🌐 Оригинал' : '🌐 RU'}
               </button>
             )}
-            <button className={styles.aiBtn} onClick={generateResponse}>✦ AI Отклик</button>
+            {isPremium ? (
+              <button className={styles.aiBtn} onClick={generateResponse}>✦ AI Отклик</button>
+            ) : (
+              <a className={styles.aiBtn}
+                 href="/pricing?from=ai"
+                 title="AI-отклики доступны в премиум-подписке">
+                🔒 AI Отклик
+              </a>
+            )}
             <a href={url}
               onClick={handleGoClick}
               className={styles.ctaBtn} style={{ '--source-color': meta.color }}>

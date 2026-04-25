@@ -10,10 +10,10 @@ const SOURCE_NAMES = {
 };
 
 const STATUS_OPTIONS = [
-  { key: 'sent', label: 'Отправил, жду', emoji: '📤', color: '#6b7280' },
-  { key: 'responded', label: 'Заказчик ответил', emoji: '💬', color: '#3b82f6' },
-  { key: 'accepted', label: 'Взяли в работу', emoji: '✅', color: '#22c55e' },
-  { key: 'rejected', label: 'Отказали', emoji: '❌', color: '#ef4444' },
+  { key: 'sent',      label: 'Отправил, жду',     emoji: '📤', color: '#6b7280' },
+  { key: 'responded', label: 'Заказчик ответил',  emoji: '💬', color: '#3b82f6' },
+  { key: 'accepted',  label: 'Взяли в работу',    emoji: '✅', color: '#22c55e' },
+  { key: 'rejected',  label: 'Отказали',          emoji: '❌', color: '#ef4444' },
 ];
 
 function timeFmt(seconds) {
@@ -25,7 +25,7 @@ function timeFmt(seconds) {
 function budgetFmt(p) {
   if (!p.budget_min && !p.budget_max) return null;
   const sym = p.currency === 'USD' ? '$' : p.currency === 'EUR' ? '€' : '₽';
-  const fmt = n => n >= 1000 ? `${(n / 1000).toFixed(0)}k` : n;
+  const fmt = n => n >= 1000 ? `${(n/1000).toFixed(0)}k` : n;
   if (p.budget_min && p.budget_max) return `${sym}${fmt(p.budget_min)}—${sym}${fmt(p.budget_max)}`;
   if (p.budget_min) return `от ${sym}${fmt(p.budget_min)}`;
   return `до ${sym}${fmt(p.budget_max)}`;
@@ -47,7 +47,7 @@ export function RespondedClient({ project, isLoggedIn, userId }) {
     fetch(`/api/projects/${project.id}/similar`)
       .then(r => r.json())
       .then(d => setSimilar(d.projects || []))
-      .catch(() => { });
+      .catch(() => {});
   }, [project.id]);
 
   // Таймер
@@ -81,7 +81,7 @@ export function RespondedClient({ project, isLoggedIn, userId }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ project_id: project.id, status: newStatus }),
       });
-    } catch { }
+    } catch {}
     setSaving(false);
   }
 
@@ -94,7 +94,7 @@ export function RespondedClient({ project, isLoggedIn, userId }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ project_id: project.id }),
       });
-    } catch { }
+    } catch {}
   }
 
   const source = SOURCE_NAMES[project.source] || project.source;
@@ -106,22 +106,22 @@ export function RespondedClient({ project, isLoggedIn, userId }) {
       <div className={styles.hero}>
         <div className={styles.heroCheck}>✓</div>
         <h1 className={styles.heroTitle}>
-          {returnedBack ? 'Круто! С возвращением!' : 'Отлично, отправили тебя на биржу'}
+          {returnedBack ? 'С возвращением!' : 'Отлично, отправили тебя на биржу'}
         </h1>
         <p className={styles.heroSub}>
           {returnedBack
-            ? 'Пока тебя не было, мы подготовили следующие шаги ↓'
+            ? 'Пока ты там был, мы подготовили следующие шаги ↓'
             : <>Ты откликаешься на <b>{source}</b>. Не закрывай эту вкладку — когда вернёшься, отметь результат.</>
           }
         </p>
 
         <a
-          href="/"
+          href={project.referral_url || project.url}
           target="_blank"
           rel="noopener noreferrer"
           className={styles.heroBack}
         >
-          Хочу еще проекты
+          {returnedBack ? '← Открыть биржу снова' : '→ Открыть биржу ещё раз'}
         </a>
 
         {remaining > 0 && !returnedBack && (
@@ -145,7 +145,7 @@ export function RespondedClient({ project, isLoggedIn, userId }) {
       {/* Блок статуса отклика — для залогиненных */}
       {isLoggedIn && (
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Отметь результат, это важно</h2>
+          <h2 className={styles.sectionTitle}>Отметь результат</h2>
           <p className={styles.sectionSub}>
             Это нужно только тебе — мы посчитаем твою конверсию и подскажем что улучшить.
             За отметку «Получил ответ» +20 XP, за «Взяли в работу» +50 XP.

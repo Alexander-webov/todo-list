@@ -125,3 +125,66 @@
   color: var(--red);
   margin-top: 10px;
 }
+
+/* ─── Две кнопки оплаты ─── */
+.payRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.payBtnRu, .payBtnInt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.12s, filter 0.15s;
+  color: #fff;
+  text-align: left;
+}
+.payBtnRu  { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+.payBtnInt { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+.payBtnRu:hover:not(:disabled),
+.payBtnInt:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
+.payBtnRu:disabled, .payBtnInt:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.payFlag { font-size: 22px; line-height: 1; flex-shrink: 0; }
+.payText { display: flex; flex-direction: column; gap: 1px; align-items: flex-start; }
+.payAmount { font-size: 17px; font-weight: 800; line-height: 1.05; letter-spacing: -0.3px; }
+.payLabel  { font-size: 10px; font-weight: 600; opacity: 0.85; line-height: 1.05; }
+
+.fineprint {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin: 0 0 12px;
+}
+
+.alt {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+.altLink {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
+}
+.altLink:hover { text-decoration: underline; }
+
+.payError {
+  font-size: 13px;
+  color: var(--red);
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 500px) {
+  .payRow { grid-template-columns: 1fr; }
+}
