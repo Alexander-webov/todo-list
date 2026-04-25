@@ -25,8 +25,10 @@ export function PremiumGate({ isLoggedIn = false, totalProjects = 0 }) {
     try {
       const res = await fetch('/api/payment/yookassa/create', { method: 'POST' });
       const data = await res.json();
-      if (data.confirmation_url) {
-        window.location.href = data.confirmation_url;
+      // API может возвращать ключ 'url' или 'confirmation_url' — поддержим оба
+      const redirectUrl = data.confirmation_url || data.url;
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
       } else {
         setError(data.error || 'Не удалось создать платёж');
         setYookassaLoading(false);

@@ -1,11 +1,26 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './DonationBanner.module.css';
 
 export function DonationBanner() {
   const [hidden, setHidden] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
 
-  if (hidden) return null;
+  // Скрываем для премиум-пользователей — они уже поддержали платежом
+  useEffect(() => {
+    fetch('/api/profile/me')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (!data) return;
+        const active = !!data.is_premium && (
+          !data.premium_until || new Date(data.premium_until) > new Date()
+        );
+        if (active) setIsPremium(true);
+      })
+      .catch(() => {});
+  }, []);
+
+  if (hidden || isPremium) return null;
 
   const donationUrl = process.env.NEXT_PUBLIC_DONATION_URL || 'https://www.donationalerts.com/r/allfreelancershere';
 

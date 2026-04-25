@@ -5,13 +5,21 @@ import Stripe from 'stripe';
 
 export const runtime = 'nodejs';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
 export async function POST() {
   const { user } = await getCurrentUser();
   if (!user) {
     return NextResponse.json({ error: 'Необходима авторизация' }, { status: 401 });
   }
+
+  if (!process.env.STRIPE_SECRET_KEY) {
+    console.error('[Stripe] STRIPE_SECRET_KEY не задан в env');
+    return NextResponse.json({
+      error: 'Платёжная система не настроена. Сообщите администратору.',
+    }, { status: 500 });
+  }
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://allfreelancershere.ru';
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -27,27 +35,37 @@ export async function POST() {
         },
         quantity: 1,
       }],
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard?payment=success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing`,
+      success_url: `${siteUrl}/dashboard?payment=success`,
+      cancel_url: `${siteUrl}/pricing`,
       metadata: { user_id: user.id },
       customer_email: user.email,
     });
 
-    // Сохраняем сессию в БД
-    const db = supabaseAdmin();
-    await db.from('payments').insert({
-      user_id: user.id,
-      provider: 'stripe',
-      provider_id: session.id,
-      amount: 5,
-      currency: 'USD',
-      status: 'pending',
-      days_granted: 30,
-    });
+    // Сохраняем сессию в БД (best effort)
+    try {
+      const db = supabaseAdmin();
+      await db.from('payments').insert({
+        user_id: user.id,
+        provider: 'stripe',
+        provider_id: session.id,
+        amount: 5,
+        currency: 'USD',
+        status: 'pending',
+        days_granted: 30,
+      });
+    } catch (dbErr) {
+      console.error('[Stripe] Не удалось сохранить в БД:', dbErr.message);
+    }
 
-    return NextResponse.json({ url: session.url });
+    return NextResponse.json({
+      url: session.url,
+      checkout_url: session.url,
+      session_id: session.id,
+    });
   } catch (err) {
     console.error('[Stripe] Ошибка:', err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({
+      error: err.message || 'Ошибка при создании платежа',
+    }, { status: 500 });
   }
 }
